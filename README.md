@@ -12,7 +12,7 @@ Still needed: (Basic Functionality)
 
 - Textures for objects in game.
 
-- Game ends when one tank hits the other with a missile.
+- Game ends when one tank hits the other with a missile. (Score system)
 
 
 Still needed: (Minor Features)
