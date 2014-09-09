@@ -37,6 +37,6 @@ Still needed: (Major Features)
 
 Maintainers:
 
-Anthony Farquharson <scooterdelta@gmail.com>
+Anthony Farquharson - <scooterdelta@gmail.com>
 
-Frederick Nieuwoudt <frikkie.nieuwoudt@gmail.com>
+Frederick Nieuwoudt - <frikkie.nieuwoudt@gmail.com>
