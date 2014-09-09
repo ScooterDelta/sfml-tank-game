@@ -1,8 +1,5 @@
 #include "Tank.h"
 
-constexpr float rectTankSizeX = 60;
-constexpr float rectTankSizeY = 30;
-
 Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position) :
 	_screenDimensions{window->getSize()},
 	_window{window},
@@ -10,27 +7,35 @@ Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles
 	_velocity{Vector2f{0,0}},
 	_direction{90},
 	_pi{atan(1) * 4},
-	_cornerAngle{atan(rectTankSizeY/rectTankSizeX) * 180 / (atan(1) * 4)},
-	_cornerDistance{sqrt(pow(rectTankSizeX / 2, 2) + pow(rectTankSizeY / 2, 2))},
 	_life{100.f},
 	_missiles{missiles},
 	_missileTimer{0}
 {
-	_tankTexture.loadFromFile("Tank.png");
-	_rectTank.setSize(Vector2f{rectTankSizeX,rectTankSizeY});
-	_rectTank.setOrigin(Vector2f{rectTankSizeX/2,rectTankSizeY/2});
-	_rectTank.setOutlineColor(Color::Blue);
-	_rectTank.setOutlineThickness(1);
-	_rectTank.setTexture(&_tankTexture);
-	_rectTank.setPosition(position);
-	_rectTank.rotate(_direction);
+	// Initialize the tank sprite
+	_tankTexture.loadFromFile("assets/Tank.png");
+	_SpriteTank.setTexture(_tankTexture, true);
+	_SpriteTank.setOrigin(_SpriteTank.getGlobalBounds().width/2, _SpriteTank.getGlobalBounds().height/2);
+	_SpriteTank.setScale(0.1, 0.1);
+
+	// Get the member variables that define the size of the sprite object.
+	FloatRect tempBound{_SpriteTank.getGlobalBounds()};
+	_cornerAngle = tan(tempBound.height/tempBound.width) * 180 / _pi;
+	_cornerDistance = sqrt(pow(tempBound.height/2, 2) + pow(tempBound.width/2,2));
+
+	_SpriteTank.setPosition(position);
+	_SpriteTank.rotate(_direction);
+}
+
+Tank::~Tank()
+{
+
 }
 
 void Tank::respawn()
 {
 	_direction = 90;
 	_life = 100;
-	_rectTank.setPosition(_spawnPosition);
+	_SpriteTank.setPosition(_spawnPosition);
 
 	Tank::update();
 }
@@ -40,14 +45,17 @@ void Tank::setMovement(Movement movement, float Magnitude)
 	switch (movement)
 	{
 	case NONE:
+		// No movement
 		_velocity.x = 0.f;
 		_velocity.y = 0.f;
 		break;
 	case FORWARD:
+		// Move in the current direction.
 		_velocity.x = -Magnitude * cos(_direction * _pi / 180);
 		_velocity.y = -Magnitude * sin(_direction * _pi / 180);
 		break;
 	case BACKWARD:
+		// Move in the reverse of the current direction.
 		_velocity.x = Magnitude * cos(_direction * _pi / 180);
 		_velocity.y = Magnitude * sin(_direction * _pi / 180);
 		break;
@@ -62,9 +70,11 @@ void Tank::setMovement(Direction direction, float Magnitude)
 	switch (direction)
 	{
 	case CLOCKWISE:
+		// Rotate the sprite clockwise
 		_direction += Magnitude;
 		break;
 	case ANTICLOCKWISE:
+		// Rotate the sprite anticlockwise
 		_direction -= Magnitude;
 		break;
 	case STRAIGHT:
@@ -74,43 +84,48 @@ void Tank::setMovement(Direction direction, float Magnitude)
 
 Vector2f Tank::frontLeft()
 {
-	float xLocation = _rectTank.getPosition().x -
+	// Calculate the location of the front left corner of the tank
+	float xLocation = _SpriteTank.getPosition().x -
 			_cornerDistance * cos((_direction - _cornerAngle) * _pi / 180);
-	float yLocation = _rectTank.getPosition().y -
+	float yLocation = _SpriteTank.getPosition().y -
 			_cornerDistance * sin((_direction - _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
 Vector2f Tank::frontRight()
 {
-	float xLocation = _rectTank.getPosition().x -
+	// Calculate the location of the front right corner of the tank
+	float xLocation = _SpriteTank.getPosition().x -
 			_cornerDistance * cos((_direction + _cornerAngle) * _pi / 180);
-	float yLocation = _rectTank.getPosition().y -
+	float yLocation = _SpriteTank.getPosition().y -
 			_cornerDistance * sin((_direction + _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
 Vector2f Tank::backLeft()
 {
-	float xLocation = _rectTank.getPosition().x -
+	// Calculate the location of the back left corner of the tank
+	float xLocation = _SpriteTank.getPosition().x -
 			_cornerDistance * cos((180 + _direction + _cornerAngle) * _pi / 180);
-	float yLocation = _rectTank.getPosition().y -
+	float yLocation = _SpriteTank.getPosition().y -
 			_cornerDistance * sin((180 + _direction + _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
 Vector2f Tank::backRight()
 {
-	float xLocation = _rectTank.getPosition().x -
+	// Calculate the location of the back right corner of the tank
+	float xLocation = _SpriteTank.getPosition().x -
 			_cornerDistance * cos((180 + _direction - _cornerAngle) * _pi / 180);
-	float yLocation = _rectTank.getPosition().y -
+	float yLocation = _SpriteTank.getPosition().y -
 			_cornerDistance * sin((180 + _direction - _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
 void Tank::fireWeapon()
 {
-	if((clock() - _missileTimer) > 100)
+	// Fire a missile from the tank (Change to have multiple missile types?)
+	if((clock() - _missileTimer) > 200)
 	{
 		Vector2f turret{(frontLeft().x + frontRight().x)/2, (frontRight().y + frontLeft().y)/2};
 		std::unique_ptr<Missile> newMissile(new Missile{_window, _direction, turret});
@@ -122,23 +137,28 @@ void Tank::fireWeapon()
 
 Vector2f Tank::getPosition()
 {
-	return _rectTank.getPosition();
+	// Return the center of the tank.
+	return _SpriteTank.getPosition();
 }
 
 void Tank::update()
 {
-	_rectTank.setRotation(_direction);
-	_rectTank.move(_velocity);
+	// Move the tank on the screen and rotate it.
+	_SpriteTank.setRotation(_direction);
+	_SpriteTank.move(_velocity);
 
-	_window->draw(_rectTank);
+	// Draw the tank on the screen
+	_window->draw(_SpriteTank);
 }
 
 void Tank::takeDamage(float damage)
 {
+	// Reduce the tanks life by so much damage
 	_life -= damage;
 }
 
 float Tank::getLife() const
 {
+	// Return the remaining life of the tank.
 	return _life;
 }

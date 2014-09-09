@@ -8,6 +8,7 @@ Battle::Battle(RenderWindow * window) :
 
 void Battle::setControls(Controller::Players & player)
 {
+	// Default control scheme.
 	std::vector<Keyboard::Key> controls1{Keyboard::W, Keyboard::A, Keyboard::S, Keyboard::D, Keyboard::Space};
 	std::vector<Keyboard::Key> controls2{Keyboard::Up, Keyboard::Left, Keyboard::Down, Keyboard::Right, Keyboard::RControl};
 	switch (player)
@@ -26,10 +27,14 @@ void Battle::setControls(Controller::Players & player)
 
 void Battle::addTank(Vector2f position, Controller::Players player, Color color)
 {
+	// Add a pointer to the new tank onto the list
+	// Use unique pointer so that the memory is handled properly
 	unique_ptr<Tank> newTank(new Tank{_window, &_missiles, position});
 	unique_ptr<HUD> newHUD(new HUD{_window, player});
 	_tanks.push_back(std::move(newTank));
+	// Add controls for this tank.
 	setControls(player);
+	// Add a hud for this tank.
 	_HUDs.push_back(std::move(newHUD));
 }
 
@@ -45,6 +50,7 @@ void Battle::update()
 			++_missileIterator;
 	}
 
+	// Check all tank functions and movement.
 	auto _tankIterator = _tanks.begin();
 	auto _tankRevIterator = _tanks.end();
 	auto _controlIterator = _playerControls.begin();
@@ -53,9 +59,10 @@ void Battle::update()
 	while (_tankIterator != _tanks.end())
 	{
 		--_tankRevIterator;
-
+		// Check if any missiles have hit this tank.
 		missileHit(_tankIterator);
 
+		// Check for user input.
 		if(Keyboard::isKeyPressed((*_controlIterator)[0]) && !isFrontWallCollision(_tankIterator)
 				&& !isFrontTankCollision(_tankIterator, _tankRevIterator))
 			(*_tankIterator)->setMovement(Tank::FORWARD);
@@ -74,13 +81,16 @@ void Battle::update()
 
 		if(Keyboard::isKeyPressed((*_controlIterator)[4])) (*_tankIterator)->fireWeapon();
 
+		// Update the tank object (position, rotation, etc.)
 		(*_tankIterator)->update();
 
+		// If life is less then 0 then respawn the tank.
 		if((*_tankIterator)->getLife() <= 0)
 		{
 			(*_tankIterator)->respawn();
 		}
 
+		// Display the life on the HUD.
 		(*_hudIterator)->update((*_tankIterator)->getLife());
 
 		++_tankIterator;
@@ -91,6 +101,7 @@ void Battle::update()
 
 bool Battle::isFrontWallCollision(Tank_iter & tankIterator)
 {
+	// Check for a collision with a wall infront of the tank.
 	Vector2f tempContainerFL = (*tankIterator)->frontLeft();
 	Vector2f tempContainerFR = (*tankIterator)->frontRight();
 
@@ -104,7 +115,7 @@ bool Battle::isFrontWallCollision(Tank_iter & tankIterator)
 
 bool Battle::isBackWallCollision(Tank_iter & tankIterator)
 {
-
+	// Check for a collision with a wall behind the tank.
 	Vector2f tempContainerBL = (*tankIterator)->backLeft();
 	Vector2f tempContainerBR = (*tankIterator)->backRight();
 
@@ -118,6 +129,7 @@ bool Battle::isBackWallCollision(Tank_iter & tankIterator)
 
 void Battle::missileHit(Tank_iter & tankIterator)
 {
+	// Check if any missiles have hit any tanks. If they have the tank takes damage.
 	std::vector<Vector2f> tankVertex;
 	tankVertex.push_back((*tankIterator)->frontLeft());	// 0 - Front Left
 	tankVertex.push_back((*tankIterator)->frontRight()); // 1 - Front Right
@@ -146,6 +158,7 @@ void Battle::missileHit(Tank_iter & tankIterator)
 
 bool Battle::isFrontTankCollision(Tank_iter & aTank, Tank_iter & bTank)
 {
+	// Check if any tanks are touching any other tanks in front .
 	std::vector<Vector2f> aTankVertex, bTankVertex;
 	aTankVertex.push_back((*aTank)->frontLeft());	// 0 - Front Left
 	aTankVertex.push_back((*aTank)->frontRight()); // 1 - Front Right
@@ -176,6 +189,7 @@ bool Battle::isFrontTankCollision(Tank_iter & aTank, Tank_iter & bTank)
 
 bool Battle::isBackTankCollision(Tank_iter & aTank, Tank_iter & bTank)
 {
+	// Check if any tanks are touching any other tanks in the back.
 	std::vector<Vector2f> aTankVertex, bTankVertex;
 	aTankVertex.push_back((*aTank)->frontLeft());	// 0 - Front Left
 	aTankVertex.push_back((*aTank)->frontRight()); // 1 - Front Right
@@ -206,6 +220,7 @@ bool Battle::isBackTankCollision(Tank_iter & aTank, Tank_iter & bTank)
 
 bool Battle::isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector2f> & bVertex)
 {
+	// Check for a collision between any two polygons.
 	Vector2f polyAxis{0,0};
 	double tmp, minA, maxA, minB, maxB;
 
@@ -249,6 +264,7 @@ bool Battle::isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector
 			return false;
 	}
 
+	// If the object only has on vertex then a single check is needed.
 	if(bVertex.size() > 1)
 	{
 		for (unsigned int polySide = 0; polySide < bVertex.size(); polySide++)

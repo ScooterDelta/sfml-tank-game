@@ -4,8 +4,7 @@ HUD::HUD(RenderWindow * window, Controller::Players player):
 	_window{window},
 	_player{player}
 {
-	if(!_font.loadFromFile("cmunit.ttf"))
-		std::cerr << "HUD::HUD - Load Font Error. " << std::endl;
+	_font.loadFromFile("assets/cmunit.ttf");
 	_playerText.setFont(_font);
 	_playerText.setOrigin({0.f, 0.f});
 	_healthText.setFont(_font);

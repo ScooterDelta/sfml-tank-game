@@ -15,23 +15,36 @@ using namespace sf;
 class Tank
 {
 public:
+	// Enumerations for control.
 	enum Movement{NONE = 0, FORWARD, BACKWARD};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
+	// Public access functions.
 	Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position);
+	// Destructor for the tank.
+	~Tank();
+	// Update the location of the tank on the screen and draw it.
 	void update();
+	// Overloaded functions for moving the tank object
 	void setMovement(Movement movement, float Magnitude = 6.f);
 	void setMovement(Direction direction, float Magnitude = 3.f);
+	// Fire the weapon (change for multiple weapon types?)
 	void fireWeapon();
+	// Deal damage to the tank.
 	void takeDamage(float damage);
+	// Reset the life and position of the tank to their starting values.
 	void respawn();
+	// Return the current life of the tank.
 	float getLife() const;
+	// Functions to return the corners of the tank object.
 	Vector2f frontLeft();
 	Vector2f frontRight();
 	Vector2f backLeft();
 	Vector2f backRight();
+	// Return the center of the tank object.
 	Vector2f getPosition();
 private:
-	RectangleShape _rectTank;
+	// Private member variables.
+	Sprite _SpriteTank;
 	Texture _tankTexture;
 	Vector2f _screenDimensions;
 	RenderWindow * _window;
