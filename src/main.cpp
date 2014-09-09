@@ -36,7 +36,6 @@ int main()
 		// Display the window:
 		window.display();
 	}
-
 }
 
 void eventHandle(RenderWindow & window)

@@ -11,7 +11,7 @@ class Missile
 {
 public:
 	// Constructor
-	Missile(RenderWindow * window, float direction, Vector2f location);
+	Missile(RenderWindow * window, float direction, Vector2f location, Texture * missileTexture, Texture * explosionTexture);
 	~Missile();
 	// Return the position of the missile.
 	Vector2f getPosition();
@@ -19,10 +19,13 @@ public:
 	bool updateIsDestroyed();
 private:
 	// Private member variables
-	CircleShape _missile;
+	Sprite _missile;
 	RenderWindow * _window;
 	Vector2f _velocity;
+	Texture * _missileTexture;
+	Texture * _explosionTexture;
 	float _pi;
+	float _direction;
 };
 
 #endif /* MISSILE_H_ */

@@ -19,7 +19,7 @@ public:
 	enum Movement{NONE = 0, FORWARD, BACKWARD};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
 	// Public access functions.
-	Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position);
+	Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Controller::Players player);
 	// Destructor for the tank.
 	~Tank();
 	// Update the location of the tank on the screen and draw it.
@@ -46,6 +46,8 @@ private:
 	// Private member variables.
 	Sprite _SpriteTank;
 	Texture _tankTexture;
+	Texture _missileTexture;
+	Texture _explosionTexture;
 	Vector2f _screenDimensions;
 	RenderWindow * _window;
 	Vector2f _spawnPosition;
@@ -55,6 +57,7 @@ private:
 	float _cornerAngle;
 	float _cornerDistance;
 	float _life;
+	Controller::Players _player;
 	std::list<std::unique_ptr<Missile>> * _missiles;
 	clock_t _missileTimer;
 };

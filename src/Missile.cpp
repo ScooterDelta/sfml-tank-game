@@ -1,15 +1,19 @@
 #include "Missile.h"
 
-Missile::Missile(RenderWindow * window, float direction, Vector2f location) :
+Missile::Missile(RenderWindow * window, float direction, Vector2f location, Texture * missileTexture, Texture * explosionTexture) :
 	_window{window},
 	_velocity{Vector2f{0,0}},
-	_pi{atan(1) * 4}
+	_missileTexture{missileTexture},
+	_explosionTexture{explosionTexture},
+	_pi{atan(1) * 4},
+	_direction{direction}
 {
 	// Initialize the missile object.
-	_missile.setRadius(4);
-	_missile.setOrigin(Vector2f{2,2});
-	_missile.setFillColor(Color::Red);
+	_missile.setTexture(*_missileTexture, true);
+	_missile.setOrigin(_missile.getGlobalBounds().width/2, _missile.getGlobalBounds().height/2);
+	_missile.setScale(0.05,0.05);
 	_missile.setPosition(location);
+	_missile.setRotation(direction);
 
 	_velocity.x = -12.f * cos(direction * _pi / 180);
 	_velocity.y = -12.f * sin(direction * _pi / 180);
@@ -18,9 +22,12 @@ Missile::Missile(RenderWindow * window, float direction, Vector2f location) :
 Missile::~Missile()
 {
 	// Display a destruction animation.
-	_missile.setOrigin(Vector2f{7, 7});
-	_missile.setRadius(14);
-	_missile.setFillColor(Color::Green);
+	Vector2f position{_missile.getPosition()};
+	_missile.setTexture(*_explosionTexture, true);
+	_missile.setOrigin(_missile.getLocalBounds().width/2, _missile.getLocalBounds().height/2);
+	_missile.setScale(0.05, 0.05);
+	_missile.setPosition(position);
+
 	_window->draw(_missile);
 }
 

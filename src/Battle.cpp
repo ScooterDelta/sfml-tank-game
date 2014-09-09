@@ -29,7 +29,7 @@ void Battle::addTank(Vector2f position, Controller::Players player, Color color)
 {
 	// Add a pointer to the new tank onto the list
 	// Use unique pointer so that the memory is handled properly
-	unique_ptr<Tank> newTank(new Tank{_window, &_missiles, position});
+	unique_ptr<Tank> newTank(new Tank{_window, &_missiles, position, player});
 	unique_ptr<HUD> newHUD(new HUD{_window, player});
 	_tanks.push_back(std::move(newTank));
 	// Add controls for this tank.

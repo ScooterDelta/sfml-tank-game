@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position) :
+Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Controller::Players player) :
 	_screenDimensions{window->getSize()},
 	_window{window},
 	_spawnPosition{position},
@@ -8,14 +8,21 @@ Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles
 	_direction{90},
 	_pi{atan(1) * 4},
 	_life{100.f},
+	_player{player},
 	_missiles{missiles},
 	_missileTimer{0}
 {
 	// Initialize the tank sprite
-	_tankTexture.loadFromFile("assets/Tank.png");
+	if(player == Controller::Player1)
+		_tankTexture.loadFromFile("assets/tank1.png");
+	if(player == Controller::Player2)
+		_tankTexture.loadFromFile("assets/tank2.png");
+	// Loading textures is slow, so the texture is loaded in the tank class and then a pointer is passed to the missile.
+	_missileTexture.loadFromFile("assets/projectile1.png");
+	_explosionTexture.loadFromFile("assets/explosion.png");
 	_SpriteTank.setTexture(_tankTexture, true);
 	_SpriteTank.setOrigin(_SpriteTank.getGlobalBounds().width/2, _SpriteTank.getGlobalBounds().height/2);
-	_SpriteTank.setScale(0.1, 0.1);
+	_SpriteTank.setScale(0.08, 0.07);
 
 	// Get the member variables that define the size of the sprite object.
 	FloatRect tempBound{_SpriteTank.getGlobalBounds()};
@@ -128,7 +135,7 @@ void Tank::fireWeapon()
 	if((clock() - _missileTimer) > 200)
 	{
 		Vector2f turret{(frontLeft().x + frontRight().x)/2, (frontRight().y + frontLeft().y)/2};
-		std::unique_ptr<Missile> newMissile(new Missile{_window, _direction, turret});
+		std::unique_ptr<Missile> newMissile(new Missile{_window, _direction, turret, &_missileTexture, &_explosionTexture});
 		_missiles->push_back(std::move(newMissile));
 
 		_missileTimer = clock();
