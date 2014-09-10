@@ -53,6 +53,7 @@ private:
 	std::list<std::unique_ptr<Tank>> _tanks;
 	std::list<std::unique_ptr<HUD>> _HUDs;
 	std::list<std::vector<Keyboard::Key>> _playerControls;
+	// Missile class contains static pointers to these objects.
 	Texture _missileTexture;
 	Texture _explosionTexture;
 };

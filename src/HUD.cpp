@@ -1,5 +1,6 @@
 #include "HUD.h"
 
+// Initialize the HUD
 HUD::HUD(RenderWindow * window, Controller::Players player):
 	_window{window},
 	_player{player}
@@ -34,6 +35,7 @@ HUD::HUD(RenderWindow * window, Controller::Players player):
 	// Create text.
 }
 
+// Update health on screen.
 void HUD::update(float health)
 {
 	_healthText.setString(HUD::floatToString(health));
@@ -41,6 +43,7 @@ void HUD::update(float health)
 	_window->draw(_healthText);
 }
 
+// Convert a float to a string.
 std::string HUD::floatToString(float & input)
 {
 	std::ostringstream buffer;

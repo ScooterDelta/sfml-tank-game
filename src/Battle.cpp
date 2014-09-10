@@ -6,6 +6,7 @@ Battle::Battle(RenderWindow * window) :
 	// Initialize the static members of the missile class.
 	_missileTexture.loadFromFile("assets/projectile1.png");
 	_explosionTexture.loadFromFile("assets/explosion.png");
+	// Set the static members.
 	Missile::setTextures(&_missileTexture, &_explosionTexture);
 	Tank::setRenderWindow(window);
 	Missile::setRenderWindow(window);

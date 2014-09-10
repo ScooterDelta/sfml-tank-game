@@ -16,7 +16,8 @@ Tank::Tank(std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Co
 		_tankTexture.loadFromFile("assets/tank1.png");
 	if(player == Controller::Player2)
 		_tankTexture.loadFromFile("assets/tank2.png");
-	// Loading textures is slow, so the texture is loaded in the tank class and then a pointer is passed to the missile.
+
+	// Set up the sprite object
 	_SpriteTank.setTexture(_tankTexture, true);
 	_SpriteTank.setOrigin(_SpriteTank.getGlobalBounds().width/2, _SpriteTank.getGlobalBounds().height/2);
 	_SpriteTank.setScale(0.08, 0.07);

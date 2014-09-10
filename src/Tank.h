@@ -42,7 +42,7 @@ public:
 	Vector2f backRight();
 	// Return the center of the tank object.
 	Vector2f getPosition();
-	// Function to initialize the static render window.
+	// Function to initialize the static render window. Must be initialized for class to work.
 	static void setRenderWindow(RenderWindow * window){
 		_window = window;
 	}

@@ -2,8 +2,6 @@
 
 Missile::Missile(float direction, Vector2f location) :
 	_velocity{Vector2f{0,0}},
-//	_missileTexture{missileTexture},
-//	_explosionTexture{explosionTexture},
 	_pi{atan(1) * 4},
 	_direction{direction}
 {
