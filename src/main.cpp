@@ -11,6 +11,12 @@ constexpr int windowWidth{1600}, windowHeight{900};
 
 void eventHandle(RenderWindow & window);
 
+// Static variable, must be declared in global scope.
+Texture * Missile::_explosionTexture;
+Texture * Missile::_missileTexture;
+RenderWindow * Tank::_window;
+RenderWindow * Missile::_window;
+
 int main()
 {
 	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};

@@ -1,8 +1,7 @@
 #include "Tank.h"
 
-Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Controller::Players player) :
-	_screenDimensions{window->getSize()},
-	_window{window},
+Tank::Tank(std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Controller::Players player) :
+	_screenDimensions{_window->getSize()},
 	_spawnPosition{position},
 	_velocity{Vector2f{0,0}},
 	_direction{90},
@@ -18,8 +17,6 @@ Tank::Tank(RenderWindow * window, std::list<std::unique_ptr<Missile>> * missiles
 	if(player == Controller::Player2)
 		_tankTexture.loadFromFile("assets/tank2.png");
 	// Loading textures is slow, so the texture is loaded in the tank class and then a pointer is passed to the missile.
-	_missileTexture.loadFromFile("assets/projectile1.png");
-	_explosionTexture.loadFromFile("assets/explosion.png");
 	_SpriteTank.setTexture(_tankTexture, true);
 	_SpriteTank.setOrigin(_SpriteTank.getGlobalBounds().width/2, _SpriteTank.getGlobalBounds().height/2);
 	_SpriteTank.setScale(0.08, 0.07);
@@ -135,7 +132,7 @@ void Tank::fireWeapon()
 	if((clock() - _missileTimer) > 200)
 	{
 		Vector2f turret{(frontLeft().x + frontRight().x)/2, (frontRight().y + frontLeft().y)/2};
-		std::unique_ptr<Missile> newMissile(new Missile{_window, _direction, turret, &_missileTexture, &_explosionTexture});
+		std::unique_ptr<Missile> newMissile(new Missile{_direction, turret});
 		_missiles->push_back(std::move(newMissile));
 
 		_missileTimer = clock();

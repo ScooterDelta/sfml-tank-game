@@ -53,6 +53,8 @@ private:
 	std::list<std::unique_ptr<Tank>> _tanks;
 	std::list<std::unique_ptr<HUD>> _HUDs;
 	std::list<std::vector<Keyboard::Key>> _playerControls;
+	Texture _missileTexture;
+	Texture _explosionTexture;
 };
 
 #endif /* BATTLE_H_ */
