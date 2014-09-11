@@ -9,6 +9,7 @@
 #include "Missile.h"
 #include "Controller.h"
 #include "HUD.h"
+#include "Obstacle.h"
 
 using namespace std;
 using namespace sf;
@@ -52,6 +53,7 @@ private:
 	std::list<std::unique_ptr<Missile>> _missiles;
 	std::list<std::unique_ptr<Tank>> _tanks;
 	std::list<std::unique_ptr<HUD>> _HUDs;
+	std::list<std::unique_ptr<Obstacle>> _obstacles;
 	std::list<std::vector<Keyboard::Key>> _playerControls;
 	// Missile class contains static pointers to these objects.
 	Texture _missileTexture;

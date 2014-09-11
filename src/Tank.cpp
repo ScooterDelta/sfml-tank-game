@@ -20,7 +20,7 @@ Tank::Tank(std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Co
 	// Set up the sprite object
 	_SpriteTank.setTexture(_tankTexture, true);
 	_SpriteTank.setOrigin(_SpriteTank.getGlobalBounds().width/2, _SpriteTank.getGlobalBounds().height/2);
-	_SpriteTank.setScale(0.08, 0.07);
+	_SpriteTank.setScale(0.07, 0.06);
 
 	// Get the member variables that define the size of the sprite object.
 	FloatRect tempBound{_SpriteTank.getGlobalBounds()};

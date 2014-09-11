@@ -7,9 +7,23 @@ Battle::Battle(RenderWindow * window) :
 	_missileTexture.loadFromFile("assets/projectile1.png");
 	_explosionTexture.loadFromFile("assets/explosion.png");
 	// Set the static members.
+	Obstacle::setRenderWindow(window);
 	Missile::setTextures(&_missileTexture, &_explosionTexture);
 	Tank::setRenderWindow(window);
 	Missile::setRenderWindow(window);
+
+	// Initialize the battle area.
+	Rect<float> tempRect;
+	tempRect.height = 100;
+	tempRect.width = 700;
+	tempRect.left = _window->getSize().x/2;
+	tempRect.top = _window->getSize().y/2 + 250;
+	std::unique_ptr<Obstacle> newObstacle(new Obstacle{tempRect});
+	_obstacles.push_back(std::move(newObstacle));
+	tempRect.left = _window->getSize().x/2;
+	tempRect.top = _window->getSize().y/2 - 250;
+	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempRect});
+	_obstacles.push_back(std::move(newObstacle));
 }
 
 void Battle::setControls(Controller::Players & player)
@@ -46,6 +60,12 @@ void Battle::addTank(Vector2f position, Controller::Players player, Color color)
 
 void Battle::update()
 {
+	// Update bottom layer, obstacles
+	for(auto & _obstacleIter : _obstacles)
+	{
+		_obstacleIter->update();
+	}
+
 	// Update all missile objects (delete if they leave the bounds of the screen)
 	auto _missileIterator = _missiles.begin();
 	while(_missileIterator != _missiles.end())

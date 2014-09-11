@@ -8,7 +8,7 @@ Missile::Missile(float direction, Vector2f location) :
 	// Initialize the missile object.
 	_missile.setTexture(*_missileTexture, true);
 	_missile.setOrigin(_missile.getGlobalBounds().width/2, _missile.getGlobalBounds().height/2);
-	_missile.setScale(0.05,0.05);
+	_missile.setScale(0.03,0.03);
 	_missile.setPosition(location);
 	_missile.setRotation(direction);
 

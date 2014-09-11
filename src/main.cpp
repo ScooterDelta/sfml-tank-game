@@ -16,6 +16,7 @@ Texture * Missile::_explosionTexture;
 Texture * Missile::_missileTexture;
 RenderWindow * Tank::_window;
 RenderWindow * Missile::_window;
+RenderWindow * Obstacle::_window;
 
 int main()
 {
