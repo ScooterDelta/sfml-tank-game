@@ -9,10 +9,11 @@
 #include <ctime>
 #include "Missile.h"
 #include "Controller.h"
+#include "RectangleObject.h"
 
 using namespace sf;
 
-class Tank
+class Tank : public RectangleObject
 {
 public:
 	// Enumerations for control.
@@ -21,9 +22,9 @@ public:
 	// Public access functions.
 	Tank(std::list<std::unique_ptr<Missile>> * missiles, Vector2f position, Controller::Players player);
 	// Destructor for the tank.
-	~Tank();
+	virtual ~Tank() {}
 	// Update the location of the tank on the screen and draw it.
-	void update();
+	virtual void update();
 	// Overloaded functions for moving the tank object
 	void setMovement(Movement movement, float Magnitude = 6.f);
 	void setMovement(Direction direction, float Magnitude = 3.f);
@@ -35,20 +36,22 @@ public:
 	void respawn();
 	// Return the current life of the tank.
 	float getLife() const;
-	// Functions to return the corners of the tank object.
-	Vector2f frontLeft();
-	Vector2f frontRight();
-	Vector2f backLeft();
-	Vector2f backRight();
 	// Return the center of the tank object.
-	Vector2f getPosition();
+	virtual Vector2f getPosition();
+	// return the location of the object.
+	virtual Vector2f frontLeft();
+	virtual Vector2f frontRight();
+	virtual Vector2f backLeft();
+	virtual Vector2f backRight();
+	// return the direction of the object
+	virtual float getDirection();
 	// Function to initialize the static render window. Must be initialized for class to work.
 	static void setRenderWindow(RenderWindow * window){
 		_window = window;
 	}
 private:
 	// Private member variables.
-	Sprite _SpriteTank;
+	Sprite _drawable;
 	Texture _tankTexture;
 	Vector2f _screenDimensions;
 	static RenderWindow * _window;

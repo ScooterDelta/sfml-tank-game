@@ -4,19 +4,22 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <cmath>
+#include "DrawableObject.h"
 
 using namespace sf;
 
-class Missile
+class Missile : public DrawableObject
 {
 public:
 	// Constructor
 	Missile(float direction, Vector2f location);
-	~Missile();
+	virtual ~Missile();
 	// Return the position of the missile.
-	Vector2f getPosition();
+	virtual Vector2f getPosition();
+	// Return the direction of the object
+	virtual float getDirection();
 	// Update the missile, returns true if the missile leaves the screen.
-	bool updateIsDestroyed();
+	virtual void update();
 	// Set the pointer to the texture of the explosion and missile.
 	// This must be set for the class to work.
 	static void setTextures(Texture * missileTexture, Texture * explosionTexture){

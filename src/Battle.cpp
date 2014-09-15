@@ -18,11 +18,11 @@ Battle::Battle(RenderWindow * window) :
 	tempRect.width = 700;
 	tempRect.left = _window->getSize().x/2;
 	tempRect.top = _window->getSize().y/2 + 250;
-	std::unique_ptr<Obstacle> newObstacle(new Obstacle{tempRect});
+	std::unique_ptr<Obstacle> newObstacle(new Obstacle{tempRect, 0.f});
 	_obstacles.push_back(std::move(newObstacle));
 	tempRect.left = _window->getSize().x/2;
 	tempRect.top = _window->getSize().y/2 - 250;
-	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempRect});
+	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempRect, 0.f});
 	_obstacles.push_back(std::move(newObstacle));
 }
 
@@ -70,7 +70,12 @@ void Battle::update()
 	auto _missileIterator = _missiles.begin();
 	while(_missileIterator != _missiles.end())
 	{
-		if((*_missileIterator)->updateIsDestroyed())
+		(*_missileIterator)->update();
+
+		if((*_missileIterator)->getPosition().x < 0 || (*_missileIterator)->getPosition().y < 0 ||
+				(*_missileIterator)->getPosition().x > (_window->getSize().x - 10) ||
+				(*_missileIterator)->getPosition().y > (_window->getSize().y - 10))
+
 			_missileIterator = _missiles.erase(_missileIterator);
 		else
 			++_missileIterator;
