@@ -1,28 +1,27 @@
 #ifndef OBSTACLE_H_
 #define OBSTACLE_H_
 
-#include <SFML/Graphics.hpp>
+#include "DrawableObject.h"
 
-using namespace sf;
-
-class Obstacle
+class Obstacle : public DrawableObject
 {
 public:
-	// Constructor
-	Obstacle(Rect<float> ObstacleSize);
-	// Return the bounds of the object
-	Rect<float> getBounds() const;
-	// Update the object, draw on the screen
-	void update();
+	Obstacle(Vector2f position, RectSize size);
+	virtual ~Obstacle() {}
+	virtual float getDirection();
+	virtual Vector2f getPosition();
+	virtual RectSize getSize();
 
-	// Set static render window.
-	static void setRenderWindow(RenderWindow * window){
-		_window = window;
-	}
+	Vector2f topLeft();
+	Vector2f topRight();
+	Vector2f bottomLeft();
+	Vector2f bottomRight();
+
 private:
-	// Private member Variables.
-	RectangleShape _obstacle;
-	static RenderWindow * _window;
+	// Private member variables
+	float _direction;
+	Vector2f _position;
+	RectSize _size;
 };
 
 

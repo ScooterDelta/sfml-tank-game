@@ -1,22 +1,42 @@
 #include "Obstacle.h"
 
-// Constructor
-Obstacle::Obstacle(Rect<float> ObstacleSize)
+Obstacle::Obstacle(Vector2f position, RectSize size) :
+	_direction{0},
+	_position{position}
 {
-	_obstacle.setSize({ObstacleSize.width, ObstacleSize.height});
-	_obstacle.setOrigin({ObstacleSize.width/2.f, ObstacleSize.height/2.f});
-	_obstacle.setPosition(ObstacleSize.left, ObstacleSize.top);
-	_obstacle.setFillColor(Color::Cyan);
+	_size.Width = size.Width;
+	_size.Height = size.Height;
 }
 
-// Function to return the location and size of the object.
-Rect<float> Obstacle::getBounds() const
+float Obstacle::getDirection()
 {
-	return _obstacle.getLocalBounds();
+	return _direction;
 }
 
-// Update the object (Draw on the screen)
-void Obstacle::update()
+Vector2f Obstacle::getPosition()
 {
-	_window->draw(_obstacle);
+	return _position;
+}
+
+RectSize Obstacle::getSize()
+{
+	return _size;
+}
+
+Vector2f Obstacle::topLeft()
+{
+	return Vector2f{_position.x - _size.Width/2, _position.y - _size.Height/2};
+}
+
+Vector2f Obstacle::topRight()
+{
+	return Vector2f{_position.x + _size.Width/2, _position.y - _size.Height/2};
+}
+Vector2f Obstacle::bottomLeft()
+{
+	return Vector2f{_position.x - _size.Width/2, _position.y + _size.Height/2};
+}
+Vector2f Obstacle::bottomRight()
+{
+	return Vector2f{_position.x + _size.Width/2, _position.y + _size.Height/2};
 }
