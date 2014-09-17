@@ -12,34 +12,22 @@ class Missile : public DrawableObject
 {
 public:
 	// Constructor
-	Missile(float direction, Vector2f location);
+	Missile(Vector2f location, float direction);
 	virtual ~Missile();
-	// Return the position of the missile.
-	virtual Vector2f getPosition();
-	// Return the direction of the object
+	// Functions inherited from Drawable
 	virtual float getDirection();
-	// Update the missile, returns true if the missile leaves the screen.
-	virtual void update();
-	// Set the pointer to the texture of the explosion and missile.
-	// This must be set for the class to work.
-	static void setTextures(Texture * missileTexture, Texture * explosionTexture){
-		_missileTexture = missileTexture;
-		_explosionTexture = explosionTexture;
-	}
-	static void setRenderWindow(RenderWindow * window){
-		_window = window;
-	}
+	virtual Vector2f getPosition();
+	virtual RectSize getSize();
+	// Update
+	void update();
 private:
 	// Private member variables
-	Sprite _missile;
-	static RenderWindow * _window;
+	// Private member variables.
 	Vector2f _velocity;
-	float _pi;
+	Vector2f _position;
+	RectSize _size;
 	float _direction;
-	// Since all missile objects use the same texture,
-	// it is declared statically and initialized in the Battle class.
-	static Texture * _missileTexture;
-	static Texture * _explosionTexture;
+	float _pi;
 };
 
 #endif /* MISSILE_H_ */

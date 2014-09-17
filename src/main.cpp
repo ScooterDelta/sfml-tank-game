@@ -2,7 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <memory>
+#include "Display.h"
 #include "Battle.h"
+#include "Gameplay.h"
 
 using namespace std;
 using namespace sf;
@@ -11,35 +13,28 @@ constexpr int windowWidth{1600}, windowHeight{900};
 
 void eventHandle(RenderWindow & window);
 
-// Static variable, must be declared in global scope.
-Texture * Missile::_explosionTexture;
-Texture * Missile::_missileTexture;
-RenderWindow * Tank::_window;
-RenderWindow * Missile::_window;
-RenderWindow * Obstacle::_window;
-
 int main()
 {
+	// Add Style::Fullscreen for fullscreen (last command input)
 	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
 	window.setFramerateLimit(60);
 	//window.setVerticalSyncEnabled(true);
 
 	srand(time(0));
 
-	Battle tankBattle{&window};
-
-	tankBattle.addTank(Vector2f{100, windowHeight/2}, Controller::Player1);
-	tankBattle.addTank(Vector2f{windowWidth - 100, windowHeight/2}, Controller::Player2);
+	Gameplay game(&window);
 
 	while (window.isOpen())
 	{
 		eventHandle(window);
 
-		window.clear(Color::Black);
-
 		if(Keyboard::isKeyPressed(Keyboard::Escape)) break;
 
-		tankBattle.update();
+		window.clear(Color::Black);
+
+		game.update();
+		game.display();
+
 		// Display the window:
 		window.display();
 	}

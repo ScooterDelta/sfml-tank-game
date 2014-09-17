@@ -6,16 +6,48 @@
 
 using namespace sf;
 
+struct RectSize{
+	float Height;
+	float Width;
+
+	RectSize(){
+		Width = 0;
+		Height = 0;
+	}
+
+	RectSize(float width, float height){
+		Width = width;
+		Height = height;
+	}
+
+	RectSize & operator=(const RectSize &rhs){
+		this->Height = rhs.Height;
+		this->Width = rhs.Width;
+		return *this;
+	}
+};
+
 class DrawableObject
 {
 public:
-	virtual float getDirection() = 0;
-	virtual void update() = 0;
-	virtual Vector2f getPosition() = 0;
+	virtual float getDirection(){
+		return _direction;
+	}
+
+	virtual Vector2f getPosition(){
+		return _position;
+	}
+
+	virtual RectSize getSize(){
+		return _size;
+	}
 
 	virtual ~DrawableObject() {}
 private:
-	// No private members
+	// Private member variables
+	float _direction;
+	Vector2f _position;
+	RectSize _size;
 };
 
 
