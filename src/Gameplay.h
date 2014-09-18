@@ -53,8 +53,8 @@ void Gameplay::update()
 	if(Keyboard::isKeyPressed(Keyboard::RControl))
 		_battle.fireMissile(Battle::Player2);
 
-	if(Keyboard::isKeyPressed(Keyboard::LAlt))
-			_battle.plantMine(Battle::Player2);
+	if(Keyboard::isKeyPressed(Keyboard::RAlt))
+		_battle.plantMine(Battle::Player2);
 
 // Update the battle class.
 	_battle.update();

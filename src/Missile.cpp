@@ -8,8 +8,8 @@ Missile::Missile(Vector2f location, float direction) :
 	_velocityModifier{-12.f}
 {
 	// Configure the missile object
-	_size.Height = 16.56;
-	_size.Width = 24.39;
+	_size.Height = 11.07;
+	_size.Width = 19.35;
 
 	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
 	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);

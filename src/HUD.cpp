@@ -18,7 +18,7 @@ void HUD::DrawUI(Tank & tank, Battle::Player player)
 	if(player == Battle::Player1)
 	{
 		_description.setPosition(Vector2f{50.f, (float)_window->getSize().y - 26.f});
-		_description.setString("Player 1 Mines: ");
+		_description.setString("Tank 1 Mines: ");
 		_window->draw(_description);
 		_description.setPosition(Vector2f{220.f, (float)_window->getSize().y - 26.f});
 		_description.setString(intToString(mines));
@@ -27,7 +27,7 @@ void HUD::DrawUI(Tank & tank, Battle::Player player)
 	else
 	{
 		_description.setPosition(Vector2f{(float)_window->getSize().x/2 + 50.f, (float)_window->getSize().y - 26.f});
-		_description.setString("Player 2 Mines: ");
+		_description.setString("Tank 2 Mines: ");
 		_window->draw(_description);
 		_description.setPosition(Vector2f{(float)_window->getSize().x/2 + 220.f, (float)_window->getSize().y - 26.f});
 		_description.setString(intToString(mines));
