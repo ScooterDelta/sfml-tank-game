@@ -1,12 +1,14 @@
 #include "Display.h"
 
 Display::Display(RenderWindow * window) :
-	_window{window}
+	_window{window},
+	_hud{window}
 {
 	initializeTank();
 	initializeMissile();
 	initializeExplosion();
 	initializeObstacle();
+	initializeMine();
 
 //	std::cout << "Tank Size: " << _drawPlayer1Tank.getGlobalBounds().width << "  -  " << _drawPlayer1Tank.getGlobalBounds().height << std::endl;
 //	std::cout << "Missile Size: " << _drawMissile.getGlobalBounds().width << "  -  " << _drawMissile.getGlobalBounds().height << std::endl;
@@ -20,6 +22,8 @@ void Display::draw(Tank & tank, Battle::Player player)
 		_drawPlayer1Tank.setRotation(tank.getDirection());
 
 		_window->draw(_drawPlayer1Tank);
+
+		_hud.DrawUI(tank, player);
 	}
 	else
 	{
@@ -28,6 +32,7 @@ void Display::draw(Tank & tank, Battle::Player player)
 
 		_window->draw(_drawPlayer2Tank);
 	}
+	_hud.DrawUI(tank, player);
 }
 
 void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
@@ -73,6 +78,18 @@ void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 	}
 }
 
+void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
+{
+	auto _mineIterator = mine->begin();
+	while (_mineIterator != mine->end())
+	{
+		_drawMine.setPosition((*_mineIterator)->getPosition());
+
+		_window->draw(_drawMine);
+		++_mineIterator;
+	}
+}
+
 void Display::initializeTank()
 {
 	_player1TankTexture.loadFromFile("assets/tank1.png");
@@ -107,4 +124,13 @@ void Display::initializeObstacle()
 	// Need to initialize texture here.
 	_drawObstacle.setFillColor(Color::Red);
 	_drawObstacle.setRotation(0);
+}
+
+void Display::initializeMine()
+{
+	// Initialize mine texture.
+	_mineTexture.loadFromFile("assets/mine.png");
+	_drawMine.setTexture(_mineTexture);
+	_drawMine.setOrigin(_drawMine.getGlobalBounds().width/2, _drawMine.getGlobalBounds().height/2);
+	_drawMine.setScale(0.05,0.05);
 }

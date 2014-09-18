@@ -10,6 +10,7 @@
 #include "Obstacle.h"
 #include "Explosion.h"
 #include "Angle.h"
+#include "Mine.h"
 
 using namespace sf;
 
@@ -23,6 +24,7 @@ public:
 	void moveTank(Player player, Tank::Direction direction);
 	void moveTank(Player player, Tank::Movement movement);
 	void fireMissile(Player player);
+	void plantMine(Player player);
 
 	// Getters for display
 	Tank * getTank1();
@@ -30,6 +32,7 @@ public:
 	std::list<std::unique_ptr<Missile>> * getMissiles();
 	std::list<std::unique_ptr<Explosion>> * getExplosions();
 	std::list<std::unique_ptr<Obstacle>> * getObstacles();
+	std::list<std::unique_ptr<Mine>> * getMines();
 
 private:
 	Vector2f _screenDimensions;
@@ -38,8 +41,11 @@ private:
 	std::list<std::unique_ptr<Missile>> _missiles;
 	std::list<std::unique_ptr<Explosion>> _explosions;
 	std::list<std::unique_ptr<Obstacle>> _obstacles;
+	std::list<std::unique_ptr<Mine>> _mines;
 	clock_t _missileTimer1;
 	clock_t _missileTimer2;
+	clock_t _mineTimer1;
+	clock_t _mineTimer2;
 
 	// Private helper functions
 
@@ -57,6 +63,8 @@ private:
 	bool isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector2f> & bVertex);
 	// Test if missile has hit a tank.
 	void missileHit(Tank & tank);
+	// Test if a tank has driven over a mine.
+	void mineHit(Tank & tank);
 	// Check missile obstacle collisions;
 	void checkMissiles();
 	// Make map

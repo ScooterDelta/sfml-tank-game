@@ -1,6 +1,8 @@
 #ifndef ANGLE_H_
 #define ANGLE_H_
 
+#include <cmath>
+
 // Class to hold an angle, can only exist
 // between (equal to) 0 and (not equal to) 360 degrees.
 class Angle
@@ -20,8 +22,10 @@ public:
 	Angle & operator-=(float rhs);
 
 	float getAngle();
+	float getAngleRadians();
 private:
 	float _angle;
+	float _pi;
 };
 
 

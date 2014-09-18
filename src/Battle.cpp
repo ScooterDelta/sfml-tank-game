@@ -5,8 +5,11 @@ Battle::Battle(Vector2f screenDimensions) :
 	_tank1{{200, screenDimensions.y/2}},
 	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}},
 	_missileTimer1{0},
-	_missileTimer2{0}
+	_missileTimer2{0},
+	_mineTimer1{0},
+	_mineTimer2{0}
 {
+	// Make the map for the game.
 	makeMap();
 }
 
@@ -60,6 +63,10 @@ void Battle::update()
 	missileHit(_tank1);
 	missileHit(_tank2);
 
+	// Check if a tank has driven over a mine.
+	mineHit(_tank1);
+	mineHit(_tank2);
+
 	auto _explosionIterator = _explosions.begin();
 	while(_explosionIterator != _explosions.end())
 	{
@@ -73,6 +80,7 @@ void Battle::update()
 void Battle::checkMissiles()
 {
 	// Update all missile objects (delete if they leave the bounds of the screen)
+	// Bounce or delete if missiles hit obstacles or leave screen.
 	Vector2f _missilePos;
 	bool _collisionHorizontal = false;
 	auto _missileIterator = _missiles.begin();
@@ -98,6 +106,7 @@ void Battle::checkMissiles()
 
 bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 {
+	// Check the particular missile against all obstacles.
 	Vector2f tempObstacleTL, tempObstacleBR;
 	auto _obstacleIter = _obstacles.begin();
 	float leftDistance = 0, rightDistance = 0;
@@ -106,6 +115,7 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 	{
 		tempObstacleTL = (*_obstacleIter)->topLeft();
 		tempObstacleBR = (*_obstacleIter)->bottomRight();
+		// See if missile is inside the bounds of this object.
 		if(_missilePos.x > tempObstacleTL.x && _missilePos.x < tempObstacleBR.x
 				&& _missilePos.y < tempObstacleBR.y && _missilePos.y > tempObstacleTL.y)
 		{
@@ -114,6 +124,7 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 			topDistance = abs(_missilePos.y - tempObstacleTL.y);
 			bottomDistance = abs(_missilePos.y - tempObstacleBR.y);
 
+			// Check which side the missile is touching on (for bounce).
 			if(leftDistance < bottomDistance && leftDistance < topDistance && leftDistance < rightDistance)
 				isHorizontal = false;
 			else if (rightDistance < bottomDistance && rightDistance < topDistance && rightDistance < leftDistance)
@@ -167,6 +178,35 @@ void Battle::fireMissile(Player player)
 
 }
 
+void Battle::plantMine(Player player)
+{
+	Vector2f turret;
+	if(player == Player1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
+	{
+		turret.x = (_tank1.backLeft().x + _tank1.backRight().x)/2;
+		turret.y = (_tank1.backRight().y + _tank1.backLeft().y)/2;
+
+		std::unique_ptr<Mine> newMine(new Mine{turret});
+		_mines.push_back(std::move(newMine));
+
+		_tank1.plantMine();
+
+		_mineTimer1 = clock();
+	}
+	else if (player == Player2 && (clock() - _mineTimer2) > 1000 &&  _tank2.getAllowedMines() != 0)
+	{
+		turret.x = (_tank2.backLeft().x + _tank2.backRight().x)/2;
+		turret.y = (_tank2.backRight().y + _tank2.backLeft().y)/2;
+
+		std::unique_ptr<Mine> newMine(new Mine{turret});
+		_mines.push_back(std::move(newMine));
+
+		_tank2.plantMine();
+
+		_mineTimer2 = clock();
+	}
+}
+
 Tank * Battle::getTank1()
 {
 	return & _tank1;
@@ -190,6 +230,11 @@ std::list<std::unique_ptr<Explosion>> * Battle::getExplosions()
 std::list<std::unique_ptr<Obstacle>> * Battle::getObstacles()
 {
 	return & _obstacles;
+}
+
+std::list<std::unique_ptr<Mine>> * Battle::getMines()
+{
+	return & _mines;
 }
 
 bool Battle::isFrontWallCollision(Tank & tank)
@@ -281,6 +326,33 @@ void Battle::missileHit(Tank & tank)
 		}
 		else
 			++_missileIterator;
+	}
+}
+
+void Battle::mineHit(Tank & tank)
+{
+	// Check if any missiles have hit any tanks. If they have the tank takes damage.
+	Vector2f _mineCenter, _tankCenter;
+	float distance = 0;
+
+	_tankCenter.x = tank.getPosition().x;
+	_tankCenter.y = tank.getPosition().y;
+
+	auto _mineIterator = _mines.begin();
+	while(_mineIterator != _mines.end())
+	{
+		_mineCenter.x = (*_mineIterator)->getPosition().x;
+		_mineCenter.y = (*_mineIterator)->getPosition().y;
+
+		distance = sqrt(pow(_tankCenter.x - _mineCenter.x,2) + pow(_tankCenter.y - _mineCenter.y,2));
+		if(distance < 30)
+		{
+			std::unique_ptr<Explosion> newExplosion(new Explosion{_mineCenter});
+			_explosions.push_back(std::move(newExplosion));
+			_mineIterator = _mines.erase(_mineIterator);
+		}
+		else
+			++_mineIterator;
 	}
 }
 

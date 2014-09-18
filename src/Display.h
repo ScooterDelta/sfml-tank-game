@@ -11,7 +11,9 @@
 #include "Tank.h"
 #include "Missile.h"
 #include "Explosion.h"
+#include "Mine.h"
 #include "Obstacle.h"
+#include "HUD.h"
 
 using namespace sf;
 
@@ -23,6 +25,7 @@ public:
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
 	void draw(std::list<std::unique_ptr<Explosion>> * explosion);
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle);
+	void draw(std::list<std::unique_ptr<Mine>> * mine);
 
 private:
 	RenderWindow * _window;
@@ -32,18 +35,23 @@ private:
 	Texture _missileTexture;
 	Texture _obstacleTexture;
 	Texture _explosionTexture;
+	Texture _mineTexture;
 
 	Sprite _drawPlayer1Tank;
 	Sprite _drawPlayer2Tank;
 	Sprite _drawMissile;
 	RectangleShape _drawObstacle;
 	Sprite _drawExplosion;
+	Sprite _drawMine;
+
+	HUD _hud;
 
 	// Private helper functions
 	void initializeTank();
 	void initializeMissile();
 	void initializeExplosion();
 	void initializeObstacle();
+	void initializeMine();
 };
 
 #endif /* DISPLAY_H_ */

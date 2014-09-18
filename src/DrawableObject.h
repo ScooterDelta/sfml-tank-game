@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "Angle.h"
 
 using namespace sf;
 
@@ -33,7 +34,7 @@ class DrawableObject
 public:
 	// Return the direction the object is facing.
 	virtual float getDirection(){
-		return _direction;
+		return _direction.getAngle();
 	}
 	// Return the position of the object.
 	virtual Vector2f getPosition(){
@@ -47,7 +48,7 @@ public:
 	virtual ~DrawableObject() {}
 private:
 	// Private member variables
-	float _direction;
+	Angle _direction;
 	Vector2f _position;
 	RectSize _size;
 };

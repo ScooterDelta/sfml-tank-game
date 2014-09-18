@@ -2,7 +2,6 @@
 #define MISSILE_H_
 
 #include <SFML/Graphics.hpp>
-#include <memory>
 #include <cmath>
 #include "Angle.h"
 #include "DrawableObject.h"
@@ -19,9 +18,9 @@ public:
 	virtual float getDirection();
 	virtual Vector2f getPosition();
 	virtual RectSize getSize();
-	// Update
+	// Update missile object
 	void update();
-	// Check if missile is Destroyable
+	// Check if missile is Destroyable.
 	bool isDestroyable(bool isHorizontal);
 private:
 	// Private member variables

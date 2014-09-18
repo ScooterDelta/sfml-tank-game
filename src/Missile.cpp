@@ -43,6 +43,7 @@ void Missile::update()
 
 bool Missile::isDestroyable(bool isHorizontal)
 {
+	// Returns true if the missile is out of bounces and can be destroyed.
 	if(_collisions == 0)
 		return true;
 	else

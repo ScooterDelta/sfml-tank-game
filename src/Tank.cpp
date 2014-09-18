@@ -3,7 +3,8 @@
 Tank::Tank(Vector2f position) :
 	_position{position},
 	_direction{90},
-	_pi{atan(1) * 4}
+	_pi{atan(1) * 4},
+	_allowedMines{3}
 {
 	// Configure the tank object
 	_size.Height = 50;//55.14;
@@ -107,4 +108,14 @@ float Tank::getDirection()
 RectSize Tank::getSize()
 {
 	return _size;
+}
+
+int Tank::getAllowedMines()
+{
+	return _allowedMines;
+}
+
+void Tank::plantMine()
+{
+	_allowedMines--;
 }

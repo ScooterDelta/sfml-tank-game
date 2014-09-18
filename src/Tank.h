@@ -29,6 +29,10 @@ public:
 	// Overloaded functions for moving the tank object
 	void setMovement(Movement movement, float Magnitude = 6.f);
 	void setMovement(Direction direction, float Magnitude = 4.f);
+	// Return number of mines remaining.
+	int getAllowedMines();
+	// Decrement mines since one is planted
+	void plantMine();
 	// Vertexes of tank.
 	Vector2f frontLeft();
 	Vector2f frontRight();
@@ -42,6 +46,7 @@ private:
 	float _pi;
 	float _cornerAngle;
 	float _cornerDistance;
+	int _allowedMines;
 };
 
 #endif /* TANK_H_ */

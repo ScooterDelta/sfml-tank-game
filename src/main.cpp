@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <memory>
-#include "Display.h"
-#include "Battle.h"
 #include "Gameplay.h"
 
 using namespace std;
