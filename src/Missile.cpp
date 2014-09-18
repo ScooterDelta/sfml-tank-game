@@ -3,14 +3,16 @@
 Missile::Missile(Vector2f location, float direction) :
 	_position{location},
 	_direction{direction},
-	_pi{atan(1) * 4}
+	_pi{atan(1) * 4},
+	_collisions{1},
+	_velocityModifier{-12.f}
 {
 	// Configure the missile object
 	_size.Height = 16.56;
 	_size.Width = 24.39;
 
-	_velocity.x = -12.f * cos(direction * _pi / 180);
-	_velocity.y = -12.f * sin(direction * _pi / 180);
+	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
+	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);
 }
 
 Missile::~Missile()
@@ -20,7 +22,7 @@ Missile::~Missile()
 
 float Missile::getDirection()
 {
-	return _direction;
+	return _direction.getAngle();
 }
 
 Vector2f Missile::getPosition()
@@ -37,4 +39,33 @@ void Missile::update()
 {
 	_position.x += _velocity.x;
 	_position.y += _velocity.y;
+}
+
+bool Missile::isDestroyable(bool isHorizontal)
+{
+	if(_collisions == 0)
+		return true;
+	else
+	{
+		_collisions--;
+		if(isHorizontal)
+		{
+			_velocity.y *= -1;
+			if(_direction.getAngle() >= 90 && _direction.getAngle() < 270)
+				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
+			else
+				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
+		}
+		else
+		{
+			_velocity.x *= -1;
+
+			if(_direction.getAngle() > 90 && _direction.getAngle() <= 270)
+				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
+			else
+				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
+		}
+
+		return false;
+	}
 }

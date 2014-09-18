@@ -22,13 +22,13 @@ void Tank::setMovement(Movement movement, float Magnitude)
 		break;
 	case FORWARD:
 		// Move in the current direction.
-		_position.x += -Magnitude * cos(_direction * _pi / 180);
-		_position.y += -Magnitude * sin(_direction * _pi / 180);
+		_position.x += -Magnitude * cos(_direction.getAngle() * _pi / 180);
+		_position.y += -Magnitude * sin(_direction.getAngle() * _pi / 180);
 		break;
 	case BACKWARD:
 		// Move in the reverse of the current direction.
-		_position.x += Magnitude * cos(_direction * _pi / 180);
-		_position.y += Magnitude * sin(_direction * _pi / 180);
+		_position.x += Magnitude * cos(_direction.getAngle() * _pi / 180);
+		_position.y += Magnitude * sin(_direction.getAngle() * _pi / 180);
 		break;
 	default:
 		std::cerr << "Tank::setMovement - Oops something went wrong." << std::endl;
@@ -57,9 +57,9 @@ Vector2f Tank::frontLeft()
 {
 	// Calculate the location of the front left corner of the tank
 	float xLocation = _position.x -
-			_cornerDistance * cos((_direction - _cornerAngle) * _pi / 180);
+			_cornerDistance * cos((_direction.getAngle() - _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
-			_cornerDistance * sin((_direction - _cornerAngle) * _pi / 180);
+			_cornerDistance * sin((_direction.getAngle() - _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
@@ -67,9 +67,9 @@ Vector2f Tank::frontRight()
 {
 	// Calculate the location of the front right corner of the tank
 	float xLocation = _position.x -
-			_cornerDistance * cos((_direction + _cornerAngle) * _pi / 180);
+			_cornerDistance * cos((_direction.getAngle() + _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
-			_cornerDistance * sin((_direction + _cornerAngle) * _pi / 180);
+			_cornerDistance * sin((_direction.getAngle() + _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
@@ -77,9 +77,9 @@ Vector2f Tank::backLeft()
 {
 	// Calculate the location of the back left corner of the tank
 	float xLocation = _position.x -
-			_cornerDistance * cos((180 + _direction + _cornerAngle) * _pi / 180);
+			_cornerDistance * cos((180 + _direction.getAngle() + _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
-			_cornerDistance * sin((180 + _direction + _cornerAngle) * _pi / 180);
+			_cornerDistance * sin((180 + _direction.getAngle() + _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
@@ -87,9 +87,9 @@ Vector2f Tank::backRight()
 {
 	// Calculate the location of the back right corner of the tank
 	float xLocation = _position.x -
-			_cornerDistance * cos((180 + _direction - _cornerAngle) * _pi / 180);
+			_cornerDistance * cos((180 + _direction.getAngle() - _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
-			_cornerDistance * sin((180 + _direction - _cornerAngle) * _pi / 180);
+			_cornerDistance * sin((180 + _direction.getAngle() - _cornerAngle) * _pi / 180);
 	return Vector2f{xLocation, yLocation};
 }
 
@@ -101,7 +101,7 @@ Vector2f Tank::getPosition()
 
 float Tank::getDirection()
 {
-	return _direction;
+	return _direction.getAngle();
 }
 
 RectSize Tank::getSize()

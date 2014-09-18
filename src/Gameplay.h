@@ -55,8 +55,8 @@ void Gameplay::display()
 {
 	_display.draw(_battle.getObstacles());
 	_display.draw(_battle.getMissiles());
-	_display.draw(*_battle.getTank1());
-	_display.draw(*_battle.getTank2());
+	_display.draw(*_battle.getTank1(), Battle::Player1);
+	_display.draw(*_battle.getTank2(), Battle::Player2);
 	_display.draw(_battle.getExplosions());
 }
 

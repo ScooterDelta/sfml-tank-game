@@ -4,7 +4,8 @@ Battle::Battle(Vector2f screenDimensions) :
 	_screenDimensions{screenDimensions},
 	_tank1{{200, screenDimensions.y/2}},
 	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}},
-	_missileTimer{0}
+	_missileTimer1{0},
+	_missileTimer2{0}
 {
 	makeMap();
 }
@@ -53,34 +54,7 @@ void Battle::moveTank(Player player, Tank::Movement movement)
 
 void Battle::update()
 {
-	// Update all missile objects (delete if they leave the bounds of the screen)
-	Vector2f _missilePos;
-	auto _missileIterator = _missiles.begin();
-	while(_missileIterator != _missiles.end())
-	{
-		(*_missileIterator)->update();
-
-		_missilePos = (*_missileIterator)->getPosition();
-
-		if(_missilePos.x < 0 || _missilePos.y < 0 ||
-				_missilePos.x > (_screenDimensions.x - 10) ||
-				_missilePos.y > (_screenDimensions.y - 10))
-		{
-			std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIterator)->getPosition()});
-			_explosions.push_back(std::move(newExplosion));
-			_missileIterator = _missiles.erase(_missileIterator);
-		}
-
-		else if(isMissileWallCollision(_missilePos))
-		{
-			std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIterator)->getPosition()});
-			_explosions.push_back(std::move(newExplosion));
-			_missileIterator = _missiles.erase(_missileIterator);
-		}
-		else
-			++_missileIterator;
-
-	}
+	checkMissiles();
 
 	// Check if the missiles have hit any tanks.
 	missileHit(_tank1);
@@ -96,10 +70,38 @@ void Battle::update()
 	}
 }
 
-bool Battle::isMissileWallCollision(Vector2f & _missilePos)
+void Battle::checkMissiles()
+{
+	// Update all missile objects (delete if they leave the bounds of the screen)
+	Vector2f _missilePos;
+	bool _collisionHorizontal = false;
+	auto _missileIterator = _missiles.begin();
+	while(_missileIterator != _missiles.end())
+	{
+		(*_missileIterator)->update();
+
+		_missilePos = (*_missileIterator)->getPosition();
+
+		if(isMissileWallCollision(_missilePos, _collisionHorizontal))
+		{
+			if((*_missileIterator)->isDestroyable(_collisionHorizontal))
+			{
+				std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIterator)->getPosition()});
+				_explosions.push_back(std::move(newExplosion));
+				_missileIterator = _missiles.erase(_missileIterator);
+			}
+		}
+		else
+			++_missileIterator;
+	}
+}
+
+bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 {
 	Vector2f tempObstacleTL, tempObstacleBR;
 	auto _obstacleIter = _obstacles.begin();
+	float leftDistance = 0, rightDistance = 0;
+	float bottomDistance = 0, topDistance = 0;
 	while(_obstacleIter != _obstacles.end())
 	{
 		tempObstacleTL = (*_obstacleIter)->topLeft();
@@ -107,38 +109,62 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos)
 		if(_missilePos.x > tempObstacleTL.x && _missilePos.x < tempObstacleBR.x
 				&& _missilePos.y < tempObstacleBR.y && _missilePos.y > tempObstacleTL.y)
 		{
+			leftDistance = abs(_missilePos.x - tempObstacleTL.x);
+			rightDistance = abs(_missilePos.x - tempObstacleBR.x);
+			topDistance = abs(_missilePos.y - tempObstacleTL.y);
+			bottomDistance = abs(_missilePos.y - tempObstacleBR.y);
+
+			if(leftDistance < bottomDistance && leftDistance < topDistance && leftDistance < rightDistance)
+				isHorizontal = false;
+			else if (rightDistance < bottomDistance && rightDistance < topDistance && rightDistance < leftDistance)
+				isHorizontal = false;
+			else
+				isHorizontal = true;
+
 			return true;
 		}
 
 		++_obstacleIter;
 	}
-	return false;
+	if(_missilePos.x < 0 || _missilePos.y < 0 ||
+			_missilePos.x > (_screenDimensions.x - 10) ||
+			_missilePos.y > (_screenDimensions.y - 10))
+	{
+		if(_missilePos.x < 0 || _missilePos.x > (_screenDimensions.x - 10))
+			isHorizontal = false;
+		else
+			isHorizontal = true;
+
+		return true;
+	}
+	else
+		return false;
 }
 
 void Battle::fireMissile(Player player)
 {
-	if((clock() - _missileTimer) > 600)
+	Vector2f turret;
+	if(player == Player1 && (clock() - _missileTimer1) > 600)
 	{
-		Vector2f turret;
-		if(player == Player1)
-		{
-			turret.x = (_tank1.frontLeft().x + _tank1.frontRight().x)/2;
-			turret.y = (_tank1.frontRight().y + _tank1.frontLeft().y)/2;
+		turret.x = (_tank1.frontLeft().x + _tank1.frontRight().x)/2;
+		turret.y = (_tank1.frontRight().y + _tank1.frontLeft().y)/2;
 
-			std::unique_ptr<Missile> newMissile(new Missile{turret, _tank1.getDirection()});
-			_missiles.push_back(std::move(newMissile));
-		}
-		else if (player == Player2)
-		{
-			turret.x = (_tank2.frontLeft().x + _tank2.frontRight().x)/2;
-			turret.y = (_tank2.frontRight().y + _tank2.frontLeft().y)/2;
+		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank1.getDirection()});
+		_missiles.push_back(std::move(newMissile));
 
-			std::unique_ptr<Missile> newMissile(new Missile{turret, _tank2.getDirection()});
-			_missiles.push_back(std::move(newMissile));
-		}
-
-		_missileTimer = clock();
+		_missileTimer1 = clock();
 	}
+	else if (player == Player2 && (clock() - _missileTimer2) > 600)
+	{
+		turret.x = (_tank2.frontLeft().x + _tank2.frontRight().x)/2;
+		turret.y = (_tank2.frontRight().y + _tank2.frontLeft().y)/2;
+
+		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank2.getDirection()});
+		_missiles.push_back(std::move(newMissile));
+
+		_missileTimer2 = clock();
+	}
+
 }
 
 Tank * Battle::getTank1()

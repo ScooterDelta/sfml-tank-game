@@ -8,6 +8,7 @@
 #include <memory>
 #include <ctime>
 #include "DrawableObject.h"
+#include "Angle.h"
 
 using namespace sf;
 
@@ -37,7 +38,7 @@ private:
 	// Private member variables.
 	Vector2f _position;
 	RectSize _size;
-	float _direction;
+	Angle _direction;
 	float _pi;
 	float _cornerAngle;
 	float _cornerDistance;

@@ -12,12 +12,22 @@ Display::Display(RenderWindow * window) :
 //	std::cout << "Missile Size: " << _drawMissile.getGlobalBounds().width << "  -  " << _drawMissile.getGlobalBounds().height << std::endl;
 }
 
-void Display::draw(Tank & tank)
+void Display::draw(Tank & tank, Battle::Player player)
 {
-	_drawPlayer1Tank.setPosition(tank.getPosition());
-	_drawPlayer1Tank.setRotation(tank.getDirection());
+	if (player == Battle::Player1)
+	{
+		_drawPlayer1Tank.setPosition(tank.getPosition());
+		_drawPlayer1Tank.setRotation(tank.getDirection());
 
-	_window->draw(_drawPlayer1Tank);
+		_window->draw(_drawPlayer1Tank);
+	}
+	else
+	{
+		_drawPlayer2Tank.setPosition(tank.getPosition());
+		_drawPlayer2Tank.setRotation(tank.getDirection());
+
+		_window->draw(_drawPlayer2Tank);
+	}
 }
 
 void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
@@ -72,7 +82,7 @@ void Display::initializeTank()
 
 	_drawPlayer1Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
 	_drawPlayer1Tank.setScale(0.07, 0.06);
-	_drawPlayer2Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
+	_drawPlayer2Tank.setOrigin(_drawPlayer2Tank.getGlobalBounds().width/2, _drawPlayer2Tank.getGlobalBounds().height/2);
 	_drawPlayer2Tank.setScale(0.07, 0.06);
 }
 

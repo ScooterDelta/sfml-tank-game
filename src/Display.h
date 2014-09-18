@@ -7,6 +7,7 @@
 #include <memory>
 #include <iostream>
 #include "DrawableObject.h"
+#include "Battle.h"
 #include "Tank.h"
 #include "Missile.h"
 #include "Explosion.h"
@@ -18,7 +19,7 @@ class Display
 {
 public:
 	Display(RenderWindow * window);
-	void draw(Tank & tank);
+	void draw(Tank & tank, Battle::Player player);
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
 	void draw(std::list<std::unique_ptr<Explosion>> * explosion);
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle);

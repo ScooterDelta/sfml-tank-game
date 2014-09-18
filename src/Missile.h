@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <cmath>
+#include "Angle.h"
 #include "DrawableObject.h"
 
 using namespace sf;
@@ -20,14 +21,18 @@ public:
 	virtual RectSize getSize();
 	// Update
 	void update();
+	// Check if missile is Destroyable
+	bool isDestroyable(bool isHorizontal);
 private:
 	// Private member variables
 	// Private member variables.
 	Vector2f _velocity;
 	Vector2f _position;
 	RectSize _size;
-	float _direction;
+	Angle _direction;
 	float _pi;
+	float _collisions;
+	float _velocityModifier;
 };
 
 #endif /* MISSILE_H_ */

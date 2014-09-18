@@ -9,6 +9,7 @@
 #include "Missile.h"
 #include "Obstacle.h"
 #include "Explosion.h"
+#include "Angle.h"
 
 using namespace sf;
 
@@ -37,7 +38,8 @@ private:
 	std::list<std::unique_ptr<Missile>> _missiles;
 	std::list<std::unique_ptr<Explosion>> _explosions;
 	std::list<std::unique_ptr<Obstacle>> _obstacles;
-	clock_t _missileTimer;
+	clock_t _missileTimer1;
+	clock_t _missileTimer2;
 
 	// Private helper functions
 
@@ -50,11 +52,13 @@ private:
 	bool isFrontWallCollision(Tank & tank);
 	bool isBackWallCollision(Tank & tank);
 	// Test missile collision with wall
-	bool isMissileWallCollision(Vector2f & _missilePos);
+	bool isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal);
 	// Generic collision function, tests for collision between two polygons.
 	bool isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector2f> & bVertex);
 	// Test if missile has hit a tank.
 	void missileHit(Tank & tank);
+	// Check missile obstacle collisions;
+	void checkMissiles();
 	// Make map
 	void makeMap();
 };

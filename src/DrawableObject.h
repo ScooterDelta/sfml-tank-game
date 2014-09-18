@@ -6,20 +6,21 @@
 
 using namespace sf;
 
+// Structure for the size of the object.
 struct RectSize{
 	float Height;
 	float Width;
-
+	// Empty initializer.
 	RectSize(){
 		Width = 0;
 		Height = 0;
 	}
-
+	// Overloaded initializer.
 	RectSize(float width, float height){
 		Width = width;
 		Height = height;
 	}
-
+	// Equals overloading.
 	RectSize & operator=(const RectSize &rhs){
 		this->Height = rhs.Height;
 		this->Width = rhs.Width;
@@ -30,18 +31,19 @@ struct RectSize{
 class DrawableObject
 {
 public:
+	// Return the direction the object is facing.
 	virtual float getDirection(){
 		return _direction;
 	}
-
+	// Return the position of the object.
 	virtual Vector2f getPosition(){
 		return _position;
 	}
-
+	// Return the size of the object
 	virtual RectSize getSize(){
 		return _size;
 	}
-
+	// Destructor.
 	virtual ~DrawableObject() {}
 private:
 	// Private member variables
