@@ -1,11 +1,12 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(Vector2f position, RectSize size) :
+Obstacle::Obstacle(Vector2f position, Vector2f windowSize) :
 	_direction{0},
-	_position{position}
+	_position{position},
+	_remainingHits{1}
 {
-	_size.Width = size.Width;
-	_size.Height = size.Height;
+	_size.Width = windowSize.x/32;
+	_size.Height = windowSize.y/18;
 }
 
 float Obstacle::getDirection()
@@ -25,18 +26,29 @@ RectSize Obstacle::getSize()
 
 Vector2f Obstacle::topLeft()
 {
-	return Vector2f{_position.x - _size.Width/2, _position.y - _size.Height/2};
+	return _position;
 }
 
 Vector2f Obstacle::topRight()
 {
-	return Vector2f{_position.x + _size.Width/2, _position.y - _size.Height/2};
+	return Vector2f{_position.x + _size.Width, _position.y};
 }
 Vector2f Obstacle::bottomLeft()
 {
-	return Vector2f{_position.x - _size.Width/2, _position.y + _size.Height/2};
+	return Vector2f{_position.x, _position.y + _size.Height};
 }
 Vector2f Obstacle::bottomRight()
 {
-	return Vector2f{_position.x + _size.Width/2, _position.y + _size.Height/2};
+	return Vector2f{_position.x + _size.Width, _position.y + _size.Height};
+}
+
+int Obstacle::remainingHits()
+{
+	return _remainingHits;
+}
+
+bool Obstacle::isDestroyable()
+{
+	_remainingHits--;
+	return _remainingHits < 0;
 }

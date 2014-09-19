@@ -32,6 +32,9 @@ private:
 	float _pi;
 	float _collisions;
 	float _velocityModifier;
+
+	// Private helper functions
+	bool isDestroyCone(float cone = 5);
 };
 
 #endif /* MISSILE_H_ */

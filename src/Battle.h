@@ -69,8 +69,8 @@ private:
 	void checkMissiles();
 	// Make map
 	void makeMap();
+	// Fill group
+	void fillObstacle(Vector2f location, Vector2f size);
 };
-
-
 
 #endif /* BATTLE_H_ */

@@ -6,11 +6,14 @@
 class Obstacle : public DrawableObject
 {
 public:
-	Obstacle(Vector2f position, RectSize size);
+	Obstacle(Vector2f position, Vector2f windowSize);
 	virtual ~Obstacle() {}
 	virtual float getDirection();
 	virtual Vector2f getPosition();
 	virtual RectSize getSize();
+
+	int remainingHits();
+	bool isDestroyable();
 
 	Vector2f topLeft();
 	Vector2f topRight();
@@ -22,6 +25,7 @@ private:
 	float _direction;
 	Vector2f _position;
 	RectSize _size;
+	int _remainingHits;
 };
 
 

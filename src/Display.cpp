@@ -10,7 +10,7 @@ Display::Display(RenderWindow * window) :
 	initializeObstacle();
 	initializeMine();
 
-//	std::cout << "Tank Size: " << _drawPlayer1Tank.getGlobalBounds().width << "  -  " << _drawPlayer1Tank.getGlobalBounds().height << std::endl;
+	std::cout << "Tank Size: " << _drawPlayer1Tank.getGlobalBounds().width << "  -  " << _drawPlayer1Tank.getGlobalBounds().height << std::endl;
 //	std::cout << "Missile Size: " << _drawMissile.getGlobalBounds().width << "  -  " << _drawMissile.getGlobalBounds().height << std::endl;
 }
 
@@ -63,15 +63,15 @@ void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
 
 void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 {
-	RectSize tempRect;
 	auto _obstacleIterator = obstacle->begin();
 	while (_obstacleIterator != obstacle->end())
 	{
-		tempRect.Height = (*_obstacleIterator)->getSize().Height;
-		tempRect.Width = (*_obstacleIterator)->getSize().Width;
-		_drawObstacle.setSize({tempRect.Width, tempRect.Height});
-		_drawObstacle.setOrigin(tempRect.Width/2, tempRect.Height/2);
 		_drawObstacle.setPosition((*_obstacleIterator)->getPosition());
+
+		if((*_obstacleIterator)->remainingHits() == 0)
+			_drawObstacle.setFillColor(Color::Blue);
+		else
+			_drawObstacle.setFillColor(Color::Red);
 
 		_window->draw(_drawObstacle);
 		++_obstacleIterator;
@@ -98,9 +98,9 @@ void Display::initializeTank()
 	_drawPlayer2Tank.setTexture(_player2TankTexture, true);
 
 	_drawPlayer1Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
-	_drawPlayer1Tank.setScale(0.07, 0.06);
+	_drawPlayer1Tank.setScale(0.05, 0.05);
 	_drawPlayer2Tank.setOrigin(_drawPlayer2Tank.getGlobalBounds().width/2, _drawPlayer2Tank.getGlobalBounds().height/2);
-	_drawPlayer2Tank.setScale(0.07, 0.06);
+	_drawPlayer2Tank.setScale(0.05, 0.05);
 }
 
 void Display::initializeMissile()
@@ -108,7 +108,7 @@ void Display::initializeMissile()
 	_missileTexture.loadFromFile("assets/projectile1.png");
 	_drawMissile.setTexture(_missileTexture, true);
 	_drawMissile.setOrigin(_drawMissile.getGlobalBounds().width/2, _drawMissile.getGlobalBounds().height/2);
-	_drawMissile.setScale(0.03,0.03);
+	_drawMissile.setScale(0.025,0.025);
 }
 
 void Display::initializeExplosion()
@@ -124,6 +124,9 @@ void Display::initializeObstacle()
 	// Need to initialize texture here.
 	_drawObstacle.setFillColor(Color::Red);
 	_drawObstacle.setRotation(0);
+	Vector2f windowSize{_window->getSize()};
+	_drawObstacle.setSize({windowSize.x/32, windowSize.y/18});
+	_drawObstacle.setOrigin({0.f, 0.f});
 }
 
 void Display::initializeMine()

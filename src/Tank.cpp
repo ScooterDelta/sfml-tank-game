@@ -7,8 +7,8 @@ Tank::Tank(Vector2f position) :
 	_allowedMines{3}
 {
 	// Configure the tank object
-	_size.Height = 50;
-	_size.Width = 80;
+	_size.Height = 32;
+	_size.Width = 56;
 
 	_cornerDistance = sqrt(pow(_size.Height/2,2) + pow(_size.Width/2,2));
 	_cornerAngle = atan(_size.Height/_size.Width) * 180 / _pi;

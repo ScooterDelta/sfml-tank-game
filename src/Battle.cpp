@@ -107,8 +107,8 @@ void Battle::checkMissiles()
 bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 {
 	// Check the particular missile against all obstacles.
-	Vector2f tempObstacleTL, tempObstacleBR;
 	auto _obstacleIter = _obstacles.begin();
+	Vector2f tempObstacleTL, tempObstacleBR;
 	float leftDistance = 0, rightDistance = 0;
 	float bottomDistance = 0, topDistance = 0;
 	while(_obstacleIter != _obstacles.end())
@@ -131,6 +131,9 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 				isHorizontal = false;
 			else
 				isHorizontal = true;
+
+			if((*_obstacleIter)->isDestroyable())
+				_obstacleIter = _obstacles.erase(_obstacleIter);
 
 			return true;
 		}
@@ -513,28 +516,33 @@ bool Battle::isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector
 
 void Battle::makeMap()
 {
+	// Top obstacle:
+	fillObstacle({6.f, 2.f},{20.f, 2.f});
+	// Bottom obstacle:
+	fillObstacle({6.f, 14.f},{20.f, 2.f});
+	// Left obstacle:
+	fillObstacle({6.f, 6.f},{2.f, 6.f});
+	// Right obstacle:
+	fillObstacle({24.f, 6.f},{2.f, 6.f});
+	// Top under obstacle:
+	fillObstacle({11.f, 4.f},{10.f, 1.f});
+	// Bottom over obstacle:
+	fillObstacle({11.f, 13.f},{10.f, 1.f});
+}
+
+void Battle::fillObstacle(Vector2f location, Vector2f size)
+{
+	std::unique_ptr<Obstacle> newObstacle;
 	Vector2f tempVect;
-	RectSize tempRect;
-	// First Obstacle
-	tempRect.Width = _screenDimensions.x * 3 / 5;
-	tempRect.Height = _screenDimensions.y * 1/8;
-	tempVect.x = _screenDimensions.x/2;
-	tempVect.y = _screenDimensions.y /6;
-	std::unique_ptr<Obstacle> newObstacle(new Obstacle{tempVect, tempRect});
-	_obstacles.push_back(std::move(newObstacle));
-	// Second Obstacle
-	tempVect.y = _screenDimensions.y - _screenDimensions.y /6;
-	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempVect, tempRect});
-	_obstacles.push_back(std::move(newObstacle));
-	// Third Obstacle
-	tempRect.Width = _screenDimensions.x/16;
-	tempRect.Height = _screenDimensions.y/4;
-	tempVect.x = _screenDimensions.x/4;
-	tempVect.y = _screenDimensions.y/2;
-	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempVect, tempRect});
-	_obstacles.push_back(std::move(newObstacle));
-	// Forth Obstacle
-	tempVect.x = _screenDimensions.x - _screenDimensions.x/4;
-	newObstacle = std::unique_ptr<Obstacle>(new Obstacle{tempVect, tempRect});
-	_obstacles.push_back(std::move(newObstacle));
+	tempVect.x = _screenDimensions.x/32;
+	tempVect.y = _screenDimensions.y/18;
+	for(int i = 0; i < size.y; i++)
+	{
+		for(int j = 0; j < size.x; j++)
+		{
+			newObstacle = std::unique_ptr<Obstacle>(new Obstacle
+					{{tempVect.x * (location.x + j), tempVect.y * (location.y + i)}, _screenDimensions});
+			_obstacles.push_back(std::move(newObstacle));
+		}
+	}
 }

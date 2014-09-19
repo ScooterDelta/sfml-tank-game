@@ -18,8 +18,6 @@ int main()
 	window.setFramerateLimit(60);
 	//window.setVerticalSyncEnabled(true);
 
-	srand(time(0));
-
 	Gameplay game(&window);
 
 	while (window.isOpen())

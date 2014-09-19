@@ -53,6 +53,4 @@ private:
 	RectSize _size;
 };
 
-
-
 #endif /* DRAWABLEOBJECT_H_ */

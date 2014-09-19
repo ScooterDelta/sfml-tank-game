@@ -8,8 +8,8 @@ Missile::Missile(Vector2f location, float direction) :
 	_velocityModifier{-12.f}
 {
 	// Configure the missile object
-	_size.Height = 11.07;
-	_size.Width = 19.35;
+	_size.Height = 9.225;
+	_size.Width = 16.125;
 
 	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
 	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);
@@ -44,7 +44,7 @@ void Missile::update()
 bool Missile::isDestroyable(bool isHorizontal)
 {
 	// Returns true if the missile is out of bounces and can be destroyed.
-	if(_collisions == 0)
+	if(_collisions == 0 || isDestroyCone())
 		return true;
 	else
 	{
@@ -52,6 +52,7 @@ bool Missile::isDestroyable(bool isHorizontal)
 		if(isHorizontal)
 		{
 			_velocity.y *= -1;
+
 			if(_direction.getAngle() >= 90 && _direction.getAngle() < 270)
 				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
 			else
@@ -69,4 +70,20 @@ bool Missile::isDestroyable(bool isHorizontal)
 
 		return false;
 	}
+}
+
+// Check if the missile is hitting the wall within a small angle,
+// if so the missile can be destroyed.
+bool Missile::isDestroyCone(float cone)
+{
+	if (_direction.getAngle() < (90 + cone) && _direction.getAngle() > (90 - cone))
+		return true;
+	else if ((_direction.getAngle() < cone && _direction.getAngle() >= 0) ||
+			(_direction.getAngle() > (360 - cone) && _direction.getAngle() < 360))
+		return true;
+	else if (_direction.getAngle() < (180 + cone) && _direction.getAngle() > (180 - cone))
+		return true;
+	else if (_direction.getAngle() < (270 + cone) && _direction.getAngle() > (270 - cone))
+		return true;
+	else return false;
 }
