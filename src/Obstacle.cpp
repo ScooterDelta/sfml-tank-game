@@ -3,7 +3,7 @@
 Obstacle::Obstacle(Vector2f position, Vector2f windowSize) :
 	_direction{0},
 	_position{position},
-	_remainingHits{1}
+	_remainingHits{3}
 {
 	_size.Width = windowSize.x/32;
 	_size.Height = windowSize.y/18;

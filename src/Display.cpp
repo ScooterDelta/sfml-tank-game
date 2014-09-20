@@ -10,13 +10,13 @@ Display::Display(RenderWindow * window) :
 	initializeObstacle();
 	initializeMine();
 
-	std::cout << "Tank Size: " << _drawPlayer1Tank.getGlobalBounds().width << "  -  " << _drawPlayer1Tank.getGlobalBounds().height << std::endl;
+//	std::cout << "Tank Size: " << _drawPlayer1Tank.getGlobalBounds().width << "  -  " << _drawPlayer1Tank.getGlobalBounds().height << std::endl;
 //	std::cout << "Missile Size: " << _drawMissile.getGlobalBounds().width << "  -  " << _drawMissile.getGlobalBounds().height << std::endl;
 }
 
-void Display::draw(Tank & tank, Battle::Player player)
+void Display::draw(Tank & tank, Players::PLAYER player)
 {
-	if (player == Battle::Player1)
+	if (player == Players::PLAYER1)
 	{
 		_drawPlayer1Tank.setPosition(tank.getPosition());
 		_drawPlayer1Tank.setRotation(tank.getDirection());
@@ -69,7 +69,11 @@ void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 		_drawObstacle.setPosition((*_obstacleIterator)->getPosition());
 
 		if((*_obstacleIterator)->remainingHits() == 0)
-			_drawObstacle.setFillColor(Color::Blue);
+			_drawObstacle.setFillColor(Color{100, 0, 0});
+		else if((*_obstacleIterator)->remainingHits() == 1)
+			_drawObstacle.setFillColor(Color{150, 0, 0});
+		else if((*_obstacleIterator)->remainingHits() == 2)
+			_drawObstacle.setFillColor(Color{200, 0, 0});
 		else
 			_drawObstacle.setFillColor(Color::Red);
 
@@ -97,7 +101,10 @@ void Display::initializeTank()
 	_player2TankTexture.loadFromFile("assets/tank2.png");
 	_drawPlayer2Tank.setTexture(_player2TankTexture, true);
 
-	_drawPlayer1Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
+	_drawPlayer1Tank.setOrigin(760.f, _drawPlayer1Tank.getGlobalBounds().height/2);
+	_drawPlayer2Tank.setOrigin(760.f, _drawPlayer2Tank.getGlobalBounds().height/2);
+
+	//_drawPlayer1Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
 	_drawPlayer1Tank.setScale(0.05, 0.05);
 	_drawPlayer2Tank.setOrigin(_drawPlayer2Tank.getGlobalBounds().width/2, _drawPlayer2Tank.getGlobalBounds().height/2);
 	_drawPlayer2Tank.setScale(0.05, 0.05);

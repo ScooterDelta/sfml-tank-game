@@ -1,14 +1,15 @@
 #include "Tank.h"
 
-Tank::Tank(Vector2f position) :
+Tank::Tank(Vector2f position, Players::PLAYER player) :
 	_position{position},
 	_direction{90},
 	_pi{atan(1) * 4},
-	_allowedMines{3}
+	_allowedMines{3},
+	_player{player}
 {
 	// Configure the tank object
-	_size.Height = 32;
-	_size.Width = 56;
+	_size.Height = 41.65;
+	_size.Width = 41.65;
 
 	_cornerDistance = sqrt(pow(_size.Height/2,2) + pow(_size.Width/2,2));
 	_cornerAngle = atan(_size.Height/_size.Width) * 180 / _pi;
@@ -118,4 +119,9 @@ int Tank::getAllowedMines()
 void Tank::plantMine()
 {
 	_allowedMines--;
+}
+
+Players::PLAYER Tank::getPlayer()
+{
+	return _player;
 }

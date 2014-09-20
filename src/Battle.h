@@ -11,20 +11,20 @@
 #include "Explosion.h"
 #include "Angle.h"
 #include "Mine.h"
+#include "Players.h"
 
 using namespace sf;
 
 class Battle
 {
 public:
-	enum Player {Player1 = 1, Player2};
 	Battle(Vector2f screenDimensions);
 	friend class Display;
 	void update();
-	void moveTank(Player player, Tank::Direction direction);
-	void moveTank(Player player, Tank::Movement movement);
-	void fireMissile(Player player);
-	void plantMine(Player player);
+	void moveTank(Players::PLAYER player, Tank::Direction direction);
+	void moveTank(Players::PLAYER player, Tank::Movement movement);
+	void fireMissile(Players::PLAYER player);
+	void plantMine(Players::PLAYER player);
 
 	// Getters for display
 	Tank * getTank1();
@@ -71,6 +71,9 @@ private:
 	void makeMap();
 	// Fill group
 	void fillObstacle(Vector2f location, Vector2f size);
+	// Check which side a collision happened
+	bool checkIsHorizontal(Vector2f & point, Obstacle & obstacle);
+	bool checkIsHorizontal(Vector2f & point);
 };
 
 #endif /* BATTLE_H_ */

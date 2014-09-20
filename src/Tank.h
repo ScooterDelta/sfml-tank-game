@@ -8,6 +8,7 @@
 #include <memory>
 #include <ctime>
 #include "DrawableObject.h"
+#include "Players.h"
 #include "Angle.h"
 
 using namespace sf;
@@ -19,7 +20,7 @@ public:
 	enum Movement{NONE = 0, FORWARD, BACKWARD};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
 	// Public access functions.
-	Tank(Vector2f position);
+	Tank(Vector2f position, Players::PLAYER player);
 	// Virtual functions from Drawable
 	virtual float getDirection();
 	virtual Vector2f getPosition();
@@ -38,6 +39,8 @@ public:
 	Vector2f frontRight();
 	Vector2f backLeft();
 	Vector2f backRight();
+	// Return the player of the tank
+	Players::PLAYER getPlayer();
 private:
 	// Private member variables.
 	Vector2f _position;
@@ -47,6 +50,7 @@ private:
 	float _cornerAngle;
 	float _cornerDistance;
 	int _allowedMines;
+	Players::PLAYER _player;
 };
 
 #endif /* TANK_H_ */

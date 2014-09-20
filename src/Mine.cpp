@@ -1,7 +1,9 @@
 #include "Mine.h"
 
-Mine::Mine(Vector2f position):
-	_position{position}
+Mine::Mine(Vector2f position, Players::PLAYER player):
+	_position{position},
+	_isActive{false},
+	_player{player}
 {}
 
 // Return the direction the object is facing.
@@ -20,4 +22,21 @@ Vector2f Mine::getPosition()
 RectSize Mine::getSize()
 {
 	return _size;
+}
+
+bool Mine::checkIsActive()
+{
+	return _isActive;
+}
+
+void Mine::activateMine()
+{
+	if(_isActive == false)
+		_isActive = true;
+}
+
+
+Players::PLAYER Mine::getPlayer()
+{
+	return _player;
 }

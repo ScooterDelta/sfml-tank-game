@@ -12,10 +12,10 @@ HUD::HUD(RenderWindow * window):
 	_description.setColor(Color::White);
 }
 
-void HUD::DrawUI(Tank & tank, Battle::Player player)
+void HUD::DrawUI(Tank & tank, Players::PLAYER player)
 {
 	int mines = tank.getAllowedMines();
-	if(player == Battle::Player1)
+	if(player == Players::PLAYER1)
 	{
 		_description.setPosition(Vector2f{50.f, (float)_window->getSize().y - 26.f});
 		_description.setString("Tank 1 Mines: ");

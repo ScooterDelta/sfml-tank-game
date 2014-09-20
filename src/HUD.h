@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "Battle.h"
+#include "Players.h"
 
 using namespace sf;
 
@@ -14,7 +15,7 @@ public:
 	// Initializer.
 	HUD(RenderWindow * window);
 	// DrawUI for a tank.
-	void DrawUI(Tank & tank, Battle::Player player);
+	void DrawUI(Tank & tank, Players::PLAYER player);
 
 private:
 	RenderWindow * _window;
