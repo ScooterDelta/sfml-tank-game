@@ -4,8 +4,8 @@ Missile::Missile(Vector2f location, float direction) :
 	_position{location},
 	_direction{direction},
 	_pi{atan(1) * 4},
-	_collisions{2},
-	_velocityModifier{-12.f}
+	_collisions{1},
+	_velocityModifier{-6.f}
 {
 	// Configure the missile object
 	_size.Height = 9.225;

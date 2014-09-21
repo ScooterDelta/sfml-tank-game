@@ -55,8 +55,8 @@ private:
 	bool isFrontTankCollision(Tank & aTank, Tank & bTank);
 	bool isBackTankCollision(Tank & aTank, Tank & bTank);
 	// Tests collision with a wall.
-	bool isFrontWallCollision(Tank & tank);
-	bool isBackWallCollision(Tank & tank);
+	bool isFrontWallCollision(Tank & tank, bool & isHorizontal);
+	bool isBackWallCollision(Tank & tank, bool & isHorizontal);
 	// Test missile collision with wall
 	bool isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal);
 	// Generic collision function, tests for collision between two polygons.

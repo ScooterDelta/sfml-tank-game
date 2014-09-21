@@ -15,7 +15,7 @@ Tank::Tank(Vector2f position, Players::PLAYER player) :
 	_cornerAngle = atan(_size.Height/_size.Width) * 180 / _pi;
 }
 
-void Tank::setMovement(Movement movement, float Magnitude)
+void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 {
 	switch (movement)
 	{
@@ -31,6 +31,18 @@ void Tank::setMovement(Movement movement, float Magnitude)
 		// Move in the reverse of the current direction.
 		_position.x += Magnitude * cos(_direction.getAngle() * _pi / 180);
 		_position.y += Magnitude * sin(_direction.getAngle() * _pi / 180);
+		break;
+	case FORWARDOBSTACLE:
+		if(isHorizontal == false)
+			_position.y += -Magnitude * sin(_direction.getAngle() * _pi / 180);
+		else
+			_position.x += -Magnitude * cos(_direction.getAngle() * _pi / 180);
+		break;
+	case BACKWARDOBSTACLE:
+		if(isHorizontal == false)
+			_position.y += Magnitude * sin(_direction.getAngle() * _pi / 180);
+		else
+			_position.x += Magnitude * cos(_direction.getAngle() * _pi / 180);
 		break;
 	default:
 		std::cerr << "Tank::setMovement - Oops something went wrong." << std::endl;

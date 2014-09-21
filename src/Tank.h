@@ -17,7 +17,7 @@ class Tank : public DrawableObject
 {
 public:
 	// Enumerations for control.
-	enum Movement{NONE = 0, FORWARD, BACKWARD};
+	enum Movement{NONE = 0, FORWARD, BACKWARD, FORWARDOBSTACLE, BACKWARDOBSTACLE};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
 	// Public access functions.
 	Tank(Vector2f position, Players::PLAYER player);
@@ -28,8 +28,8 @@ public:
 	// Destructor for the tank.
 	virtual ~Tank() {}
 	// Overloaded functions for moving the tank object
-	void setMovement(Movement movement, float Magnitude = 6.f);
-	void setMovement(Direction direction, float Magnitude = 4.f);
+	void setMovement(Movement movement, bool isHorizontal = false, float Magnitude = 3.f);
+	void setMovement(Direction direction, float Magnitude = 2.f);
 	// Return number of mines remaining.
 	int getAllowedMines();
 	// Decrement mines since one is planted

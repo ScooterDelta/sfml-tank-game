@@ -15,20 +15,21 @@ Battle::Battle(Vector2f screenDimensions) :
 
 void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
 {
+	bool isHorizontal = false;
 	if(player == Players::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
-		if (isFrontWallCollision(_tank1)
+		if (isFrontWallCollision(_tank1, isHorizontal)
 				||  isFrontTankCollision(_tank1, _tank2))
 		{
-			while(isFrontWallCollision(_tank1) || isFrontTankCollision(_tank1, _tank2))
+			while(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
 				_tank1.setMovement(Tank::BACKWARD, 0.1);
 			_tank1.setMovement(Tank::FORWARD, 0.1);
 		}
-		else if (isBackWallCollision(_tank1)
+		else if (isBackWallCollision(_tank1, isHorizontal)
 				||  isBackTankCollision(_tank1, _tank2))
 		{
-			while(isBackWallCollision(_tank1) || isBackTankCollision(_tank1, _tank2))
+			while(isBackWallCollision(_tank1, isHorizontal) || isBackTankCollision(_tank1, _tank2))
 				_tank1.setMovement(Tank::FORWARD, 0.1);
 			_tank1.setMovement(Tank::BACKWARD, 0.1);
 		}
@@ -37,17 +38,17 @@ void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
 	else if (player == Players::PLAYER2)
 	{
 		// Act on tank2 (collisions with walls)
-		if (isFrontWallCollision(_tank2)
+		if (isFrontWallCollision(_tank2, isHorizontal)
 				||  isFrontTankCollision(_tank2, _tank1))
 		{
-			while(isFrontWallCollision(_tank2) || isFrontTankCollision(_tank2, _tank1))
+			while(isFrontWallCollision(_tank2, isHorizontal) || isFrontTankCollision(_tank2, _tank1))
 				_tank2.setMovement(Tank::BACKWARD, 0.1);
 			_tank2.setMovement(Tank::FORWARD, 0.1);
 		}
-		else if (isBackWallCollision(_tank2)
+		else if (isBackWallCollision(_tank2, isHorizontal)
 				||  isBackTankCollision(_tank2, _tank1))
 		{
-			while(isBackWallCollision(_tank2) || isBackTankCollision(_tank2, _tank1))
+			while(isBackWallCollision(_tank2, isHorizontal) || isBackTankCollision(_tank2, _tank1))
 				_tank2.setMovement(Tank::FORWARD, 0.1);
 			_tank2.setMovement(Tank::BACKWARD, 0.1);
 		}
@@ -57,29 +58,33 @@ void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
 
 void Battle::moveTank(Players::PLAYER player, Tank::Movement movement)
 {
+	bool isHorizontal = false;
 	if(player == Players::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
-
-		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank1)
+		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank1, isHorizontal)
 				&&  !isFrontTankCollision(_tank1, _tank2))
 			_tank1.setMovement(movement);
-		else if (movement == Tank::BACKWARD && !isBackWallCollision(_tank1)
+		else if (movement == Tank::BACKWARD && !isBackWallCollision(_tank1, isHorizontal)
 				&& !isBackTankCollision(_tank1, _tank2))
 			_tank1.setMovement(movement);
-		else if (movement == Tank::FORWARD && (isFrontWallCollision(_tank1)
+		else if (isFrontWallCollision(_tank1, isHorizontal) && isBackWallCollision(_tank1, isHorizontal))
+			_tank1.setMovement(Tank::NONE);
+		else if (movement == Tank::FORWARD && (isFrontWallCollision(_tank1, isHorizontal)
 				||  isFrontTankCollision(_tank1, _tank2)))
 		{
-			while(isFrontWallCollision(_tank1) || isFrontTankCollision(_tank1, _tank2))
-				_tank1.setMovement(Tank::BACKWARD, 0.1);
-			_tank1.setMovement(Tank::FORWARD, 0.1);
+			while(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
+				_tank1.setMovement(Tank::BACKWARD, 0.01);
+			_tank1.setMovement(Tank::FORWARD, 0.01);
+			_tank1.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
 		}
-		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank1)
+		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank1, isHorizontal)
 				||  isBackTankCollision(_tank1, _tank2)))
 		{
-			while(isBackWallCollision(_tank1) || isBackTankCollision(_tank1, _tank2))
-				_tank1.setMovement(Tank::FORWARD, 0.1);
-			_tank1.setMovement(Tank::BACKWARD, 0.1);
+			while(isBackWallCollision(_tank1, isHorizontal) || isBackTankCollision(_tank1, _tank2))
+				_tank1.setMovement(Tank::FORWARD, 0.01);
+			_tank1.setMovement(Tank::BACKWARD, 0.01);
+			_tank1.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
 		}
 		else
 			_tank1.setMovement(Tank::NONE);
@@ -87,25 +92,29 @@ void Battle::moveTank(Players::PLAYER player, Tank::Movement movement)
 	else if (player == Players::PLAYER2)
 	{
 		// Act on tank2 (collisions with walls)
-		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank2)
+		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank2, isHorizontal)
 				&&  !isFrontTankCollision(_tank2, _tank1))
 			_tank2.setMovement(movement);
-		else if (movement == Tank::BACKWARD && !isBackWallCollision(_tank2)
+		else if (movement == Tank::BACKWARD && !isBackWallCollision(_tank2, isHorizontal)
 				&& !isBackTankCollision(_tank2, _tank1))
 			_tank2.setMovement(movement);
-		else if (movement == Tank::FORWARD && (isFrontWallCollision(_tank2)
+		else if (isFrontWallCollision(_tank2, isHorizontal) && isBackWallCollision(_tank2, isHorizontal))
+			_tank2.setMovement(Tank::NONE);
+		else if (movement == Tank::FORWARD && (isFrontWallCollision(_tank2, isHorizontal)
 				||  isFrontTankCollision(_tank2, _tank1)))
 		{
-			while(isFrontWallCollision(_tank2) || isFrontTankCollision(_tank2, _tank1))
+			while(isFrontWallCollision(_tank2, isHorizontal) || isFrontTankCollision(_tank2, _tank1))
 				_tank2.setMovement(Tank::BACKWARD, 0.1);
 			_tank2.setMovement(Tank::FORWARD, 0.1);
+			_tank2.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
 		}
-		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank2)
+		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank2, isHorizontal)
 				||  isBackTankCollision(_tank2, _tank1)))
 		{
-			while(isBackWallCollision(_tank2) || isBackTankCollision(_tank2, _tank1))
+			while(isBackWallCollision(_tank2, isHorizontal) || isBackTankCollision(_tank2, _tank1))
 				_tank2.setMovement(Tank::FORWARD, 0.1);
 			_tank2.setMovement(Tank::BACKWARD, 0.1);
+			_tank2.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
 		}
 		else
 			_tank2.setMovement(Tank::NONE);
@@ -198,6 +207,7 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 
 bool Battle::checkIsHorizontal(Vector2f & point, Obstacle & obstacle)
 {
+	// Check if the collision with the obstacle is horizontal or not
 	Vector2f tempObstacleTL{obstacle.topLeft()};
 	Vector2f tempObstacleBR{obstacle.bottomRight()};
 	float leftDistance = abs(point.x - tempObstacleTL.x);
@@ -216,6 +226,7 @@ bool Battle::checkIsHorizontal(Vector2f & point, Obstacle & obstacle)
 
 bool Battle::checkIsHorizontal(Vector2f & point)
 {
+	// Check that the collision with the screen boundaries is horizontal or not.
 	if(point.x < 0 || point.x > (_screenDimensions.x - 10))
 		return false;
 	else return true;
@@ -223,6 +234,7 @@ bool Battle::checkIsHorizontal(Vector2f & point)
 
 void Battle::fireMissile(Players::PLAYER player)
 {
+	// Fire a missile for the particular player in the direction that it is facing.
 	Vector2f turret;
 	if(player == Players::PLAYER1 && (clock() - _missileTimer1) > 500)
 	{
@@ -306,7 +318,7 @@ std::list<std::unique_ptr<Mine>> * Battle::getMines()
 	return & _mines;
 }
 
-bool Battle::isFrontWallCollision(Tank & tank)
+bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 {
 	// Check for a collision with a wall infront of the tank.
 	Vector2f tempContainerFL = tank.frontLeft();
@@ -319,9 +331,15 @@ bool Battle::isFrontWallCollision(Tank & tank)
 	Vector2f tempObstacleTL, tempObstacleBR;
 
 	if (tempContainerFL.x < 0 || tempContainerFL.y < 0 || tempContainerFL.x > _screenDimensions.x || tempContainerFL.y > _screenDimensions.y)
+	{
+		isHorizontal = checkIsHorizontal(tempContainerFL);
 		return true;
+	}
 	else if (tempContainerFR.x < 0 || tempContainerFR.y < 0 || tempContainerFR.x > _screenDimensions.x || tempContainerFR.y > _screenDimensions.y)
+	{
+		isHorizontal = checkIsHorizontal(tempContainerFR);
 		return true;
+	}
 	else
 	{
 		auto _obstacleIter = _obstacles.begin();
@@ -331,13 +349,22 @@ bool Battle::isFrontWallCollision(Tank & tank)
 			tempObstacleBR = (*_obstacleIter)->bottomRight();
 			if(tempContainerFL.x > tempObstacleTL.x && tempContainerFL.x < tempObstacleBR.x
 					&& tempContainerFL.y < tempObstacleBR.y && tempContainerFL.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerFL, **_obstacleIter);
 				return true;
+			}
 			else if (tempContainerFR.x > tempObstacleTL.x && tempContainerFR.x < tempObstacleBR.x
 					&& tempContainerFR.y < tempObstacleBR.y && tempContainerFR.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerFR, **_obstacleIter);
 				return true;
+			}
 			if(tempContainerFM.x > tempObstacleTL.x && tempContainerFM.x < tempObstacleBR.x
 					&& tempContainerFM.y < tempObstacleBR.y && tempContainerFM.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerFM, **_obstacleIter);
 				return true;
+			}
 
 			++_obstacleIter;
 		}
@@ -345,7 +372,7 @@ bool Battle::isFrontWallCollision(Tank & tank)
 	}
 }
 
-bool Battle::isBackWallCollision(Tank & tank)
+bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 {
 	// Check for a collision with a wall behind the tank.
 	Vector2f tempContainerBL = tank.backLeft();
@@ -625,6 +652,8 @@ void Battle::makeMap()
 
 void Battle::fillObstacle(Vector2f location, Vector2f size)
 {
+	// Fill up an area starting from top left (location) for the size.
+	// Uses small objects that are predefined.
 	std::unique_ptr<Obstacle> newObstacle;
 	Vector2f tempVect;
 	tempVect.x = _screenDimensions.x/32;

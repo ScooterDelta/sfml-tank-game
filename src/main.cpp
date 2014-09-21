@@ -15,7 +15,7 @@ int main()
 {
 	// Add Style::Fullscreen for fullscreen (last command input)
 	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(120);
 	//window.setVerticalSyncEnabled(true);
 
 	Gameplay game(&window);
