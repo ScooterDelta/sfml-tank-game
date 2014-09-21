@@ -11,7 +11,7 @@
 #include "Explosion.h"
 #include "Angle.h"
 #include "Mine.h"
-#include "Players.h"
+#include "Score.h"
 
 using namespace sf;
 
@@ -21,10 +21,11 @@ public:
 	Battle(Vector2f screenDimensions);
 	friend class Display;
 	void update();
-	void moveTank(Players::PLAYER player, Tank::Direction direction);
-	void moveTank(Players::PLAYER player, Tank::Movement movement);
-	void fireMissile(Players::PLAYER player);
-	void plantMine(Players::PLAYER player);
+	void moveTank(Score::PLAYER player, Tank::Direction direction);
+	void moveTank(Score::PLAYER player, Tank::Movement movement);
+	void fireMissile(Score::PLAYER player);
+	void plantMine(Score::PLAYER player);
+	void restartBattle();
 
 	// Getters for display
 	Tank * getTank1();
@@ -33,6 +34,8 @@ public:
 	std::list<std::unique_ptr<Explosion>> * getExplosions();
 	std::list<std::unique_ptr<Obstacle>> * getObstacles();
 	std::list<std::unique_ptr<Mine>> * getMines();
+
+	Score getScore();
 
 private:
 	Vector2f _screenDimensions;
@@ -46,6 +49,7 @@ private:
 	clock_t _missileTimer2;
 	clock_t _mineTimer1;
 	clock_t _mineTimer2;
+	Score _score;
 
 	// Private helper functions
 

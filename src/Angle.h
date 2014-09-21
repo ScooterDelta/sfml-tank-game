@@ -13,13 +13,24 @@ public:
 	Angle(float angle);
 	Angle(const Angle & angle);
 
-	// Operators
+	// Operators.
 	Angle & operator=(const Angle & rhs);
 	Angle & operator=(float rhs);
 	Angle & operator+=(const Angle & rhs);
 	Angle & operator-=(const Angle & rhs);
 	Angle & operator+=(float rhs);
 	Angle & operator-=(float rhs);
+	// Equality operators.
+	bool operator==(const Angle & rhs);
+	bool operator==(float rhs);
+	bool operator>=(const Angle & rhs);
+	bool operator>=(float rhs);
+	bool operator<=(const Angle & rhs);
+	bool operator<=(float rhs);
+	bool operator>(const Angle & rhs);
+	bool operator>(float rhs);
+	bool operator<(const Angle & rhs);
+	bool operator<(float rhs);
 
 	float getAngle();
 	float getAngleRadians();

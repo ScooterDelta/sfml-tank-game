@@ -14,7 +14,7 @@
 #include "Mine.h"
 #include "Obstacle.h"
 #include "HUD.h"
-#include "Players.h"
+#include "Score.h"
 
 using namespace sf;
 
@@ -22,11 +22,12 @@ class Display
 {
 public:
 	Display(RenderWindow * window);
-	void draw(Tank & tank, Players::PLAYER player);
+	void draw(Tank & tank, Score::PLAYER player);
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
 	void draw(std::list<std::unique_ptr<Explosion>> * explosion);
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle);
 	void draw(std::list<std::unique_ptr<Mine>> * mine);
+	void draw(Score & _score, bool isPaused = false);
 
 private:
 	RenderWindow * _window;

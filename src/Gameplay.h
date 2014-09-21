@@ -1,6 +1,7 @@
 #ifndef GAMEPLAY_H_
 #define GAMEPLAY_H_
 
+#include <ctime>
 #include "Battle.h"
 #include "Display.h"
 
@@ -8,56 +9,52 @@ class Gameplay
 {
 public:
 	Gameplay(RenderWindow * window);
-	void update();
+	bool isGameOver();
+	Score getScore();
+	// Pause game will return true if the game is paused,
+	// False if ready to resume.
+	void pauseGame();
 	void display();
+	void restartGame();
 private:
 	Battle _battle;
 	Display _display;
+	Score _score;
+	clock_t _timer;
+	clock_t _pauseTime;
+
+	// Helper functions
+	void checkControls();
 };
 
 Gameplay::Gameplay(RenderWindow * window):
 	_battle{Vector2f{(float)window->getSize().x, (float)window->getSize().y}},
-	_display{window} {}
+	_display{window},
+	_score{0, 0},
+	_timer{clock()},
+	_pauseTime{0}
+{}
 
-
-void Gameplay::update()
+bool Gameplay::isGameOver()
 {
-// Player 1 Controls.
-	if(Keyboard::isKeyPressed(Keyboard::W))
-		_battle.moveTank(Players::PLAYER1, Tank::FORWARD);
-	else if (Keyboard::isKeyPressed(Keyboard::S))
-		_battle.moveTank(Players::PLAYER1, Tank::BACKWARD);
+	if(((clock() - _timer)/(double) CLOCKS_PER_SEC - _pauseTime) < 120)
+	{
+		checkControls();
 
-	if(Keyboard::isKeyPressed(Keyboard::A))
-		_battle.moveTank(Players::PLAYER1, Tank::ANTICLOCKWISE);
-	else if (Keyboard::isKeyPressed(Keyboard::D))
-		_battle.moveTank(Players::PLAYER1, Tank::CLOCKWISE);
-
-	if(Keyboard::isKeyPressed(Keyboard::Space))
-		_battle.fireMissile(Players::PLAYER1);
-
-	if(Keyboard::isKeyPressed(Keyboard::LControl))
-		_battle.plantMine(Players::PLAYER1);
-
-// Player 2 Controls.
-	if(Keyboard::isKeyPressed(Keyboard::Up))
-		_battle.moveTank(Players::PLAYER2, Tank::FORWARD);
-	else if (Keyboard::isKeyPressed(Keyboard::Down))
-		_battle.moveTank(Players::PLAYER2, Tank::BACKWARD);
-
-	if(Keyboard::isKeyPressed(Keyboard::Left))
-		_battle.moveTank(Players::PLAYER2, Tank::ANTICLOCKWISE);
-	else if (Keyboard::isKeyPressed(Keyboard::Right))
-		_battle.moveTank(Players::PLAYER2, Tank::CLOCKWISE);
-
-	if(Keyboard::isKeyPressed(Keyboard::RControl))
-		_battle.fireMissile(Players::PLAYER2);
-
-	if(Keyboard::isKeyPressed(Keyboard::Slash))
-		_battle.plantMine(Players::PLAYER2);
-
-// Update the battle class.
-	_battle.update();
+		// Update the battle class.
+		_battle.update();
+		// Update the score.
+		_score = _battle.getScore();
+		return false;
+	}
+	else
+	{
+		_score = _battle.getScore();
+		_display.draw(_score);
+		if(Keyboard::isKeyPressed(Keyboard::P))
+			restartGame();
+		return true;
+	}
 }
 
 void Gameplay::display()
@@ -66,9 +63,65 @@ void Gameplay::display()
 	_display.draw(_battle.getObstacles());
 	_display.draw(_battle.getMines());
 	_display.draw(_battle.getMissiles());
-	_display.draw(*_battle.getTank1(), Players::PLAYER1);
-	_display.draw(*_battle.getTank2(), Players::PLAYER2);
+	_display.draw(*_battle.getTank1(), Score::PLAYER1);
+	_display.draw(*_battle.getTank2(), Score::PLAYER2);
 	_display.draw(_battle.getExplosions());
+}
+
+Score Gameplay::getScore()
+{
+	return _score;
+}
+
+void Gameplay::pauseGame()
+{
+	_score = _battle.getScore();
+	_display.draw(_score, true);
+	_pauseTime = (clock() - _timer)/(double) CLOCKS_PER_SEC;
+}
+
+void Gameplay::checkControls()
+{
+	// Player 1 Controls.
+	if(Keyboard::isKeyPressed(Keyboard::W))
+		_battle.moveTank(Score::PLAYER1, Tank::FORWARD);
+	else if (Keyboard::isKeyPressed(Keyboard::S))
+		_battle.moveTank(Score::PLAYER1, Tank::BACKWARD);
+
+	if(Keyboard::isKeyPressed(Keyboard::A))
+		_battle.moveTank(Score::PLAYER1, Tank::ANTICLOCKWISE);
+	else if (Keyboard::isKeyPressed(Keyboard::D))
+		_battle.moveTank(Score::PLAYER1, Tank::CLOCKWISE);
+
+	if(Keyboard::isKeyPressed(Keyboard::Space))
+		_battle.fireMissile(Score::PLAYER1);
+
+	if(Keyboard::isKeyPressed(Keyboard::LControl))
+		_battle.plantMine(Score::PLAYER1);
+
+	// Player 2 Controls.
+	if(Keyboard::isKeyPressed(Keyboard::Up))
+		_battle.moveTank(Score::PLAYER2, Tank::FORWARD);
+	else if (Keyboard::isKeyPressed(Keyboard::Down))
+		_battle.moveTank(Score::PLAYER2, Tank::BACKWARD);
+
+	if(Keyboard::isKeyPressed(Keyboard::Left))
+		_battle.moveTank(Score::PLAYER2, Tank::ANTICLOCKWISE);
+	else if (Keyboard::isKeyPressed(Keyboard::Right))
+		_battle.moveTank(Score::PLAYER2, Tank::CLOCKWISE);
+
+	if(Keyboard::isKeyPressed(Keyboard::RControl))
+		_battle.fireMissile(Score::PLAYER2);
+
+	if(Keyboard::isKeyPressed(Keyboard::Slash))
+		_battle.plantMine(Score::PLAYER2);
+}
+
+void Gameplay::restartGame()
+{
+	_score = Score{0,0};
+	_timer = clock();
+	_battle.restartBattle();
 }
 
 #endif /* GAMEPLAY_H_ */

@@ -14,9 +14,9 @@ Display::Display(RenderWindow * window) :
 //	std::cout << "Missile Size: " << _drawMissile.getGlobalBounds().width << "  -  " << _drawMissile.getGlobalBounds().height << std::endl;
 }
 
-void Display::draw(Tank & tank, Players::PLAYER player)
+void Display::draw(Tank & tank, Score::PLAYER player)
 {
-	if (player == Players::PLAYER1)
+	if (player == Score::PLAYER1)
 	{
 		_drawPlayer1Tank.setPosition(tank.getPosition());
 		_drawPlayer1Tank.setRotation(tank.getDirection());
@@ -92,6 +92,11 @@ void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
 		_window->draw(_drawMine);
 		++_mineIterator;
 	}
+}
+
+void Display::draw(Score & _score, bool isPaused)
+{
+	_hud.DrawScore(_score, isPaused);
 }
 
 void Display::initializeTank()

@@ -3,13 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 #include "DrawableObject.h"
-#include "Players.h"
+#include "Score.h"
 
 class Mine : public DrawableObject
 {
 public:
 	~Mine(){}
-	Mine(Vector2f position, Players::PLAYER player);
+	Mine(Vector2f position, Score::PLAYER player);
 	// Return the direction the object is facing.
 	virtual float getDirection();
 	// Return the position of the object.
@@ -21,14 +21,14 @@ public:
 	// Activate the mine.
 	void activateMine();
 	// Which player planted the mine
-	Players::PLAYER getPlayer();
+	Score::PLAYER getPlayer();
 private:
 	// Private member variables
 	Angle _direction;
 	Vector2f _position;
 	RectSize _size;
 	bool _isActive;
-	Players::PLAYER _player;
+	Score::PLAYER _player;
 };
 
 

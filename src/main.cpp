@@ -9,6 +9,7 @@ using namespace sf;
 
 constexpr int windowWidth{1600}, windowHeight{900};
 
+bool endGame(Gameplay & game, RenderWindow & window);
 void eventHandle(RenderWindow & window);
 
 int main()
@@ -24,16 +25,46 @@ int main()
 	{
 		eventHandle(window);
 
-		if(Keyboard::isKeyPressed(Keyboard::Escape)) break;
-
 		window.clear(Color::Black);
 
-		game.update();
-		game.display();
+		if(Keyboard::isKeyPressed(Keyboard::Escape))
+			if(endGame(game, window))
+				break;
+
+		if(!game.isGameOver())
+			game.display();
 
 		// Display the window:
 		window.display();
 	}
+}
+
+bool endGame(Gameplay & game, RenderWindow & window)
+{
+	while(Keyboard::isKeyPressed(Keyboard::Escape));
+
+	if(game.isGameOver())
+		return true;
+
+	while(1)
+	{
+		window.clear(Color::Black);
+
+		game.pauseGame();
+		if(Keyboard::isKeyPressed(Keyboard::R))
+			return false;
+		else if(Keyboard::isKeyPressed(Keyboard::P))
+		{
+			game.restartGame();
+			return false;
+		}
+		else if(Keyboard::isKeyPressed(Keyboard::Escape))
+			return true;
+
+		// Display the window:
+		window.display();
+	}
+	return false;
 }
 
 void eventHandle(RenderWindow & window)

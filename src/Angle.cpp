@@ -104,3 +104,84 @@ float Angle::getAngleRadians()
 {
 	return _angle/180 * _pi;
 }
+
+bool Angle::operator==(const Angle & rhs)
+{
+	return (_angle == rhs._angle);
+}
+
+bool Angle::operator==(float rhs)
+{
+	while(rhs >= 360)
+		rhs -= 360;
+
+	while(rhs < 0)
+		rhs += 360;
+
+	return (_angle == rhs);
+}
+
+bool Angle::operator>=(const Angle & rhs)
+{
+	return (_angle >= rhs._angle);
+}
+
+
+bool Angle::operator>=(float rhs)
+{
+	while(rhs >= 360)
+		rhs -= 360;
+
+	while(rhs < 0)
+		rhs += 360;
+
+	return (_angle >= rhs);
+}
+
+bool Angle::operator<=(const Angle & rhs)
+{
+	return (_angle <= rhs._angle);
+}
+
+bool Angle::operator<=(float rhs)
+{
+	while(rhs >= 360)
+		rhs -= 360;
+
+	while(rhs < 0)
+		rhs += 360;
+
+	return (_angle <= rhs);
+}
+
+bool Angle::operator>(const Angle & rhs)
+{
+	return (_angle > rhs._angle);
+}
+
+bool Angle::operator>(float rhs)
+{
+	while(rhs >= 360)
+		rhs -= 360;
+
+	while(rhs < 0)
+		rhs += 360;
+
+	return (_angle > rhs);
+}
+
+bool Angle::operator<(const Angle & rhs)
+{
+	return (_angle < rhs._angle);
+}
+
+bool Angle::operator<(float rhs)
+{
+	while(rhs >= 360)
+		rhs -= 360;
+
+	while(rhs < 0)
+		rhs += 360;
+
+	return (_angle < rhs);
+}

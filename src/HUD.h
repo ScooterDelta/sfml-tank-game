@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include "Battle.h"
-#include "Players.h"
+#include "Score.h"
 
 using namespace sf;
 
@@ -15,7 +15,8 @@ public:
 	// Initializer.
 	HUD(RenderWindow * window);
 	// DrawUI for a tank.
-	void DrawUI(Tank & tank, Players::PLAYER player);
+	void DrawUI(Tank & tank, Score::PLAYER player);
+	void DrawScore(Score & score, bool isPaused);
 
 private:
 	RenderWindow * _window;
@@ -25,6 +26,8 @@ private:
 	// Converts a float to a string.
 	std::string floatToString(float input);
 	std::string intToString(int input);
+	void displayScore(Score & score);
+	void displayString(std::string str, Vector2f location, unsigned int size = 20);
 };
 
 

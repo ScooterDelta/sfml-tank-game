@@ -2,21 +2,22 @@
 
 Battle::Battle(Vector2f screenDimensions) :
 	_screenDimensions{screenDimensions},
-	_tank1{{200, screenDimensions.y/2}, Players::PLAYER1},
-	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Players::PLAYER2},
+	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1},
+	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2},
 	_missileTimer1{0},
 	_missileTimer2{0},
 	_mineTimer1{0},
-	_mineTimer2{0}
+	_mineTimer2{0},
+	_score{0, 0}
 {
 	// Make the map for the game.
 	makeMap();
 }
 
-void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
+void Battle::moveTank(Score::PLAYER player, Tank::Direction direction)
 {
 	bool isHorizontal = false;
-	if(player == Players::PLAYER1)
+	if(player == Score::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
 		if (isFrontWallCollision(_tank1, isHorizontal)
@@ -35,7 +36,7 @@ void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
 		}
 		_tank1.setMovement(direction);
 	}
-	else if (player == Players::PLAYER2)
+	else if (player == Score::PLAYER2)
 	{
 		// Act on tank2 (collisions with walls)
 		if (isFrontWallCollision(_tank2, isHorizontal)
@@ -56,10 +57,10 @@ void Battle::moveTank(Players::PLAYER player, Tank::Direction direction)
 	}
 }
 
-void Battle::moveTank(Players::PLAYER player, Tank::Movement movement)
+void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 {
 	bool isHorizontal = false;
-	if(player == Players::PLAYER1)
+	if(player == Score::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
 		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank1, isHorizontal)
@@ -89,7 +90,7 @@ void Battle::moveTank(Players::PLAYER player, Tank::Movement movement)
 		else
 			_tank1.setMovement(Tank::NONE);
 	}
-	else if (player == Players::PLAYER2)
+	else if (player == Score::PLAYER2)
 	{
 		// Act on tank2 (collisions with walls)
 		if(movement == Tank::FORWARD && !isFrontWallCollision(_tank2, isHorizontal)
@@ -232,26 +233,26 @@ bool Battle::checkIsHorizontal(Vector2f & point)
 	else return true;
 }
 
-void Battle::fireMissile(Players::PLAYER player)
+void Battle::fireMissile(Score::PLAYER player)
 {
 	// Fire a missile for the particular player in the direction that it is facing.
 	Vector2f turret;
-	if(player == Players::PLAYER1 && (clock() - _missileTimer1) > 500)
+	if(player == Score::PLAYER1 && (clock() - _missileTimer1) > 500)
 	{
 		turret.x = (_tank1.frontLeft().x + _tank1.frontRight().x)/2;
 		turret.y = (_tank1.frontRight().y + _tank1.frontLeft().y)/2;
 
-		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank1.getDirection()});
+		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank1.getDirection(), player});
 		_missiles.push_back(std::move(newMissile));
 
 		_missileTimer1 = clock();
 	}
-	else if (player == Players::PLAYER2 && (clock() - _missileTimer2) > 500)
+	else if (player == Score::PLAYER2 && (clock() - _missileTimer2) > 500)
 	{
 		turret.x = (_tank2.frontLeft().x + _tank2.frontRight().x)/2;
 		turret.y = (_tank2.frontRight().y + _tank2.frontLeft().y)/2;
 
-		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank2.getDirection()});
+		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank2.getDirection(), player});
 		_missiles.push_back(std::move(newMissile));
 
 		_missileTimer2 = clock();
@@ -259,27 +260,27 @@ void Battle::fireMissile(Players::PLAYER player)
 
 }
 
-void Battle::plantMine(Players::PLAYER player)
+void Battle::plantMine(Score::PLAYER player)
 {
 	Vector2f turret;
-	if(player == Players::PLAYER1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
+	if(player == Score::PLAYER1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
 	{
 		turret.x = (_tank1.backLeft().x + _tank1.backRight().x)/2;
 		turret.y = (_tank1.backRight().y + _tank1.backLeft().y)/2;
 
-		std::unique_ptr<Mine> newMine(new Mine{turret, Players::PLAYER1});
+		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER1});
 		_mines.push_back(std::move(newMine));
 
 		_tank1.plantMine();
 
 		_mineTimer1 = clock();
 	}
-	else if (player == Players::PLAYER2 && (clock() - _mineTimer2) > 1000 &&  _tank2.getAllowedMines() != 0)
+	else if (player == Score::PLAYER2 && (clock() - _mineTimer2) > 1000 &&  _tank2.getAllowedMines() != 0)
 	{
 		turret.x = (_tank2.backLeft().x + _tank2.backRight().x)/2;
 		turret.y = (_tank2.backRight().y + _tank2.backLeft().y)/2;
 
-		std::unique_ptr<Mine> newMine(new Mine{turret, Players::PLAYER2});
+		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER2});
 		_mines.push_back(std::move(newMine));
 
 		_tank2.plantMine();
@@ -316,6 +317,11 @@ std::list<std::unique_ptr<Obstacle>> * Battle::getObstacles()
 std::list<std::unique_ptr<Mine>> * Battle::getMines()
 {
 	return & _mines;
+}
+
+Score Battle::getScore()
+{
+	return _score;
 }
 
 bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
@@ -420,6 +426,9 @@ void Battle::missileHit(Tank & tank)
 	tankVertex.push_back(tank.backRight()); // 2 - back Right
 	tankVertex.push_back(tank.backLeft()); // 3 - back left
 
+	Score::PLAYER tempTankPlayer, tempMissilePlayer;
+	tempTankPlayer = tank.getPlayer();
+
 	Vector2f _missileCenter;
 	std::vector<Vector2f> _missileVertex;
 
@@ -432,9 +441,29 @@ void Battle::missileHit(Tank & tank)
 		_missileVertex.push_back(_missileCenter);
 		if(isPolyCollision(tankVertex, _missileVertex))
 		{
+			tempMissilePlayer = (*_missileIterator)->getPlayer();
+
 			std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIterator)->getPosition()});
 			_explosions.push_back(std::move(newExplosion));
 			_missileIterator = _missiles.erase(_missileIterator);
+
+			if(tempTankPlayer == Score::PLAYER1 && tempMissilePlayer == Score::PLAYER1)
+				_score.increaseDeaths(Score::PLAYER1);
+			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER2)
+				_score.increaseDeaths(Score::PLAYER2);
+			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER1)
+			{
+				_score.increaseKills(Score::PLAYER1);
+				_score.increaseDeaths(Score::PLAYER2);
+			}
+			else if(tempTankPlayer == Score::PLAYER1 && tempMissilePlayer == Score::PLAYER2)
+			{
+				_score.increaseKills(Score::PLAYER2);
+				_score.increaseDeaths(Score::PLAYER1);
+			}
+
+			_tank1.respawn();
+			_tank2.respawn();
 		}
 		else
 			++_missileIterator;
@@ -451,6 +480,9 @@ void Battle::mineHit(Tank & tank)
 	tankVertex.push_back(tank.frontRight()); // 1 - Front Right
 	tankVertex.push_back(tank.backRight()); // 2 - back Right
 	tankVertex.push_back(tank.backLeft()); // 3 - back left
+
+	Score::PLAYER tempTankPlayer, tempMinePlayer;
+	tempTankPlayer = tank.getPlayer();
 
 	auto _mineIterator = _mines.begin();
 	while(_mineIterator != _mines.end())
@@ -470,9 +502,29 @@ void Battle::mineHit(Tank & tank)
 		}
 		else if(isCollision && (*_mineIterator)->checkIsActive())
 		{
+			tempMinePlayer = (*_mineIterator)->getPlayer();
+
 			std::unique_ptr<Explosion> newExplosion(new Explosion{_mineCenter});
 			_explosions.push_back(std::move(newExplosion));
 			_mineIterator = _mines.erase(_mineIterator);
+
+			if(tempTankPlayer == Score::PLAYER1 && tempMinePlayer == Score::PLAYER1)
+				_score.increaseDeaths(Score::PLAYER1);
+			else if(tempTankPlayer == Score::PLAYER2 && tempMinePlayer == Score::PLAYER2)
+				_score.increaseDeaths(Score::PLAYER2);
+			else if(tempTankPlayer == Score::PLAYER2 && tempMinePlayer == Score::PLAYER1)
+			{
+				_score.increaseKills(Score::PLAYER1);
+				_score.increaseDeaths(Score::PLAYER2);
+			}
+			else if(tempTankPlayer == Score::PLAYER1 && tempMinePlayer == Score::PLAYER2)
+			{
+				_score.increaseKills(Score::PLAYER2);
+				_score.increaseDeaths(Score::PLAYER1);
+			}
+
+			_tank1.respawn();
+			_tank2.respawn();
 		}
 		else
 			++_mineIterator;
@@ -667,4 +719,16 @@ void Battle::fillObstacle(Vector2f location, Vector2f size)
 			_obstacles.push_back(std::move(newObstacle));
 		}
 	}
+}
+
+void Battle::restartBattle()
+{
+	_tank1.respawn();
+	_tank2.respawn();
+	_obstacles.clear();
+	_missiles.clear();
+	_explosions.clear();
+	_mines.clear();
+	_score = Score{0,0};
+	makeMap();
 }

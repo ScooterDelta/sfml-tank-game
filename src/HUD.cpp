@@ -12,27 +12,71 @@ HUD::HUD(RenderWindow * window):
 	_description.setColor(Color::White);
 }
 
-void HUD::DrawUI(Tank & tank, Players::PLAYER player)
+void HUD::DrawUI(Tank & tank, Score::PLAYER player)
 {
 	int mines = tank.getAllowedMines();
-	if(player == Players::PLAYER1)
+	std::string tempString;
+	Vector2f tempLocation;
+	if(player == Score::PLAYER1)
 	{
-		_description.setPosition(Vector2f{50.f, (float)_window->getSize().y - 26.f});
-		_description.setString("Tank 1 Mines: ");
-		_window->draw(_description);
-		_description.setPosition(Vector2f{220.f, (float)_window->getSize().y - 26.f});
-		_description.setString(intToString(mines));
-		_window->draw(_description);
+		tempLocation = Vector2f{50.f, (float)_window->getSize().y - 26.f};
+		displayString("Tank 1 Mines: ", tempLocation);
+		tempString = intToString(mines);
+		tempLocation = Vector2f{220.f, (float)_window->getSize().y - 26.f};
+		displayString(tempString, tempLocation);
 	}
 	else
 	{
-		_description.setPosition(Vector2f{(float)_window->getSize().x/2 + 50.f, (float)_window->getSize().y - 26.f});
-		_description.setString("Tank 2 Mines: ");
-		_window->draw(_description);
-		_description.setPosition(Vector2f{(float)_window->getSize().x/2 + 220.f, (float)_window->getSize().y - 26.f});
-		_description.setString(intToString(mines));
-		_window->draw(_description);
+		tempLocation = Vector2f{(float)_window->getSize().x/2 + 50.f, (float)_window->getSize().y - 26.f};
+		displayString("Tank 2 Mines: ", tempLocation);
+		tempString = intToString(mines);
+		tempLocation = Vector2f{(float)_window->getSize().x/2 + 220.f, (float)_window->getSize().y - 26.f};
+		displayString(tempString, tempLocation);
 	}
+}
+
+void HUD::DrawScore(Score & score, bool isPaused)
+{
+	Vector2f windowSize{_window->getSize()};
+	std::string tempString;
+
+	displayScore(score);
+
+	// Display message:
+	if(isPaused)
+	{
+		tempString = "Press ESC to end game.";
+		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
+		tempString = "press R to resume game, or P to restart game.";
+		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9 + 30});
+	}
+	else
+	{
+		tempString = "Press ESC to end game, or press P to play again.";
+		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
+	}
+}
+
+void HUD::displayScore(Score & score)
+{
+	Vector2f windowSize{_window->getSize()};
+	std::string tempString;
+
+	displayString("SCORE:", {windowSize.x/16, windowSize.y/9}, 40);
+	displayString("Kills", {windowSize.x/16 + 200, windowSize.y/9 + 120});
+	displayString("Deaths", {windowSize.x/16 + 300, windowSize.y/9 + 120});
+	// Player 1
+	displayString("Player 1: ", {windowSize.x/16, windowSize.y/9 + 150});
+	tempString = intToString(score.getKills(Score::PLAYER1));
+	displayString(tempString, {windowSize.x/16 + 200, windowSize.y/9 + 150});
+	tempString = intToString(score.getDeaths(Score::PLAYER1));
+	displayString(tempString, {windowSize.x/16 + 300, windowSize.y/9 + 150});
+	// Player 2
+	displayString("Player 2: ", {windowSize.x/16, windowSize.y/9 + 180});
+	tempString = intToString(score.getKills(Score::PLAYER2));
+	displayString(tempString, {windowSize.x/16 + 200, windowSize.y/9 + 180});
+	tempString = intToString(score.getDeaths(Score::PLAYER2));
+	displayString(tempString, {windowSize.x/16 + 300, windowSize.y/9 + 180});
 }
 
 std::string HUD::floatToString(float input)
@@ -47,4 +91,13 @@ std::string HUD::intToString(int input)
 	std::ostringstream buffer;
 	buffer << input;
 	return buffer.str();
+}
+
+void HUD::displayString(std::string str, Vector2f location, unsigned int size)
+{
+	_description.setCharacterSize(size);
+	_description.setPosition(location);
+	_description.setString(str);
+
+	_window->draw(_description);
 }

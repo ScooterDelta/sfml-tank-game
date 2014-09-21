@@ -1,10 +1,11 @@
 #include "Tank.h"
 
-Tank::Tank(Vector2f position, Players::PLAYER player) :
+Tank::Tank(Vector2f position, Score::PLAYER player) :
 	_position{position},
 	_direction{90},
 	_pi{atan(1) * 4},
 	_allowedMines{3},
+	_spawnLocation{position},
 	_player{player}
 {
 	// Configure the tank object
@@ -133,7 +134,14 @@ void Tank::plantMine()
 	_allowedMines--;
 }
 
-Players::PLAYER Tank::getPlayer()
+Score::PLAYER Tank::getPlayer()
 {
 	return _player;
+}
+
+void Tank::respawn()
+{
+	_position = _spawnLocation;
+	_direction = 90;
+	_allowedMines = 3;
 }

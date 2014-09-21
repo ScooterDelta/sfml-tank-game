@@ -1,11 +1,12 @@
 #include "Missile.h"
 
-Missile::Missile(Vector2f location, float direction) :
+Missile::Missile(Vector2f location, float direction, Score::PLAYER player) :
 	_position{location},
 	_direction{direction},
 	_pi{atan(1) * 4},
 	_collisions{1},
-	_velocityModifier{-6.f}
+	_velocityModifier{-6.f},
+	_player{player}
 {
 	// Configure the missile object
 	_size.Height = 9.225;
@@ -86,4 +87,9 @@ bool Missile::isDestroyCone(float cone)
 	else if (_direction.getAngle() < (270 + cone) && _direction.getAngle() > (270 - cone))
 		return true;
 	else return false;
+}
+
+Score::PLAYER Missile::getPlayer()
+{
+	return _player;
 }

@@ -5,6 +5,7 @@
 #include <cmath>
 #include "Angle.h"
 #include "DrawableObject.h"
+#include "Score.h"
 
 using namespace sf;
 
@@ -12,7 +13,7 @@ class Missile : public DrawableObject
 {
 public:
 	// Constructor
-	Missile(Vector2f location, float direction);
+	Missile(Vector2f location, float direction, Score::PLAYER player);
 	virtual ~Missile();
 	// Functions inherited from Drawable
 	virtual float getDirection();
@@ -22,6 +23,8 @@ public:
 	void update();
 	// Check if missile is Destroyable.
 	bool isDestroyable(bool isHorizontal);
+	// Check which player the missile was fired from
+	Score::PLAYER getPlayer();
 private:
 	// Private member variables
 	// Private member variables.
@@ -32,6 +35,7 @@ private:
 	float _pi;
 	float _collisions;
 	float _velocityModifier;
+	Score::PLAYER _player;
 
 	// Private helper functions
 	bool isDestroyCone(float cone = 5);

@@ -1,6 +1,6 @@
 #include "Mine.h"
 
-Mine::Mine(Vector2f position, Players::PLAYER player):
+Mine::Mine(Vector2f position, Score::PLAYER player):
 	_position{position},
 	_isActive{false},
 	_player{player}
@@ -36,7 +36,7 @@ void Mine::activateMine()
 }
 
 
-Players::PLAYER Mine::getPlayer()
+Score::PLAYER Mine::getPlayer()
 {
 	return _player;
 }
