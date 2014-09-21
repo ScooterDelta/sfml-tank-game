@@ -4,6 +4,8 @@ Tank::Tank(Vector2f position, Score::PLAYER player) :
 	_position{position},
 	_direction{90},
 	_pi{atan(1) * 4},
+	_velocityModifier{0},
+	_angleModifier{0},
 	_allowedMines{3},
 	_spawnLocation{position},
 	_player{player}
@@ -21,29 +23,58 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 	switch (movement)
 	{
 	case NONE:
-		// No movement
+		if(Magnitude == 0)
+			_velocityModifier = 0;
+		else
+		{
+			if(_velocityModifier < -0.1)
+				_velocityModifier += 0.05;
+			else if(_velocityModifier > 0.1)
+				_velocityModifier -= 0.05;
+			else
+				_velocityModifier = 0;
+			_position.x += -_velocityModifier * cos(_direction.getAngle() * _pi / 180);
+			_position.y += -_velocityModifier * sin(_direction.getAngle() * _pi / 180);
+		}
 		break;
 	case FORWARD:
 		// Move in the current direction.
-		_position.x += -Magnitude * cos(_direction.getAngle() * _pi / 180);
-		_position.y += -Magnitude * sin(_direction.getAngle() * _pi / 180);
+		if(_velocityModifier < 0)
+			_velocityModifier = -_velocityModifier;
+		if(_velocityModifier < Magnitude)
+			_velocityModifier += 0.05;
+		_position.x += -_velocityModifier * cos(_direction.getAngle() * _pi / 180);
+		_position.y += -_velocityModifier * sin(_direction.getAngle() * _pi / 180);
 		break;
 	case BACKWARD:
 		// Move in the reverse of the current direction.
-		_position.x += Magnitude * cos(_direction.getAngle() * _pi / 180);
-		_position.y += Magnitude * sin(_direction.getAngle() * _pi / 180);
+		if(_velocityModifier > 0)
+			_velocityModifier = -_velocityModifier;
+		if(_velocityModifier > -Magnitude)
+			_velocityModifier -= 0.05;
+		_position.x += -_velocityModifier * cos(_direction.getAngle() * _pi / 180);
+		_position.y += -_velocityModifier * sin(_direction.getAngle() * _pi / 180);
 		break;
 	case FORWARDOBSTACLE:
+		if(_velocityModifier < 0)
+			_velocityModifier = -_velocityModifier;
+		if(_velocityModifier < Magnitude)
+			_velocityModifier += 0.05;
 		if(isHorizontal == false)
-			_position.y += -Magnitude * sin(_direction.getAngle() * _pi / 180);
+			_position.y += -_velocityModifier * sin(_direction.getAngle() * _pi / 180);
 		else
-			_position.x += -Magnitude * cos(_direction.getAngle() * _pi / 180);
+			_position.x += -_velocityModifier * cos(_direction.getAngle() * _pi / 180);
 		break;
 	case BACKWARDOBSTACLE:
+		_velocityModifier = 0;
+		if(_velocityModifier > 0)
+			_velocityModifier = -_velocityModifier;
+		if(_velocityModifier > -Magnitude)
+			_velocityModifier -= 0.05;
 		if(isHorizontal == false)
-			_position.y += Magnitude * sin(_direction.getAngle() * _pi / 180);
+			_position.y += -_velocityModifier * sin(_direction.getAngle() * _pi / 180);
 		else
-			_position.x += Magnitude * cos(_direction.getAngle() * _pi / 180);
+			_position.x += -_velocityModifier * cos(_direction.getAngle() * _pi / 180);
 		break;
 	default:
 		std::cerr << "Tank::setMovement - Oops something went wrong." << std::endl;
@@ -57,13 +88,22 @@ void Tank::setMovement(Direction direction, float Magnitude)
 	{
 	case CLOCKWISE:
 		// Rotate the sprite clockwise
-		_direction += Magnitude;
+		if(_angleModifier < 0)
+			_angleModifier = 0;
+		if(_angleModifier < Magnitude)
+			_angleModifier += 0.1;
+		_direction += _angleModifier;
 		break;
 	case ANTICLOCKWISE:
 		// Rotate the sprite anticlockwise
-		_direction -= Magnitude;
+		if(_angleModifier > 0)
+			_angleModifier = 0;
+		if(_angleModifier > -Magnitude)
+			_angleModifier -= 0.1;
+		_direction += _angleModifier;
 		break;
 	case STRAIGHT:
+		_angleModifier = 0;
 		break;
 	}
 }

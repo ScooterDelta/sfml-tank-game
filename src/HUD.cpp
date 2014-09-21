@@ -47,7 +47,7 @@ void HUD::DrawScore(Score & score, bool isPaused)
 	{
 		tempString = "Press ESC to end game.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
-		tempString = "press R to resume game, or P to restart game.";
+		tempString = "Press R to resume game, or P to restart game.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9 + 30});
 	}
 	else

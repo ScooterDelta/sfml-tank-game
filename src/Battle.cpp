@@ -87,6 +87,12 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 			_tank1.setMovement(Tank::BACKWARD, 0.01);
 			_tank1.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
 		}
+		else if(movement == Tank::NONE && (isBackWallCollision(_tank1, isHorizontal)
+				|| isBackTankCollision(_tank1, _tank2)))
+			_tank1.setMovement(Tank::NONE, 0, 0);
+		else if(movement == Tank::NONE && (isFrontWallCollision(_tank1, isHorizontal)
+				|| isFrontTankCollision(_tank1, _tank2)))
+			_tank1.setMovement(Tank::NONE, 0, 0);
 		else
 			_tank1.setMovement(Tank::NONE);
 	}
@@ -117,6 +123,12 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 			_tank2.setMovement(Tank::BACKWARD, 0.1);
 			_tank2.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
 		}
+		else if(movement == Tank::NONE && (isBackWallCollision(_tank2, isHorizontal)
+				|| isBackTankCollision(_tank2, _tank1)))
+			_tank2.setMovement(Tank::NONE, 0, 0);
+		else if(movement == Tank::NONE && (isFrontWallCollision(_tank2, isHorizontal)
+				|| isFrontTankCollision(_tank2, _tank1)))
+			_tank2.setMovement(Tank::NONE, 0, 0);
 		else
 			_tank2.setMovement(Tank::NONE);
 	}
@@ -181,8 +193,8 @@ bool Battle::isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal)
 		tempObstacleTL = (*_obstacleIter)->topLeft();
 		tempObstacleBR = (*_obstacleIter)->bottomRight();
 		// See if missile is inside the bounds of this object.
-		if(_missilePos.x > tempObstacleTL.x && _missilePos.x < tempObstacleBR.x
-				&& _missilePos.y < tempObstacleBR.y && _missilePos.y > tempObstacleTL.y)
+		if(_missilePos.x >= tempObstacleTL.x && _missilePos.x <= tempObstacleBR.x
+				&& _missilePos.y <= tempObstacleBR.y && _missilePos.y >= tempObstacleTL.y)
 		{
 			isHorizontal = checkIsHorizontal(_missilePos, **_obstacleIter);
 

@@ -51,6 +51,8 @@ private:
 	float _pi;
 	float _cornerAngle;
 	float _cornerDistance;
+	float _velocityModifier;
+	float _angleModifier;
 	int _allowedMines;
 	Vector2f _spawnLocation;
 	Score::PLAYER _player;

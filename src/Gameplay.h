@@ -87,11 +87,15 @@ void Gameplay::checkControls()
 		_battle.moveTank(Score::PLAYER1, Tank::FORWARD);
 	else if (Keyboard::isKeyPressed(Keyboard::S))
 		_battle.moveTank(Score::PLAYER1, Tank::BACKWARD);
+	else
+		_battle.moveTank(Score::PLAYER1, Tank::NONE);
 
 	if(Keyboard::isKeyPressed(Keyboard::A))
 		_battle.moveTank(Score::PLAYER1, Tank::ANTICLOCKWISE);
 	else if (Keyboard::isKeyPressed(Keyboard::D))
 		_battle.moveTank(Score::PLAYER1, Tank::CLOCKWISE);
+	else
+		_battle.moveTank(Score::PLAYER1, Tank::STRAIGHT);
 
 	if(Keyboard::isKeyPressed(Keyboard::Space))
 		_battle.fireMissile(Score::PLAYER1);
@@ -104,11 +108,15 @@ void Gameplay::checkControls()
 		_battle.moveTank(Score::PLAYER2, Tank::FORWARD);
 	else if (Keyboard::isKeyPressed(Keyboard::Down))
 		_battle.moveTank(Score::PLAYER2, Tank::BACKWARD);
+	else
+		_battle.moveTank(Score::PLAYER2, Tank::NONE);
 
 	if(Keyboard::isKeyPressed(Keyboard::Left))
 		_battle.moveTank(Score::PLAYER2, Tank::ANTICLOCKWISE);
 	else if (Keyboard::isKeyPressed(Keyboard::Right))
 		_battle.moveTank(Score::PLAYER2, Tank::CLOCKWISE);
+	else
+		_battle.moveTank(Score::PLAYER2, Tank::STRAIGHT);
 
 	if(Keyboard::isKeyPressed(Keyboard::RControl))
 		_battle.fireMissile(Score::PLAYER2);
