@@ -1,5 +1,6 @@
 #include "Angle.h"
 
+// Constructors:
 Angle::Angle() :
 	_pi{atan(1) * 4}
 {
@@ -24,6 +25,7 @@ Angle::Angle(const Angle & angle):
 	_angle = angle._angle;
 }
 
+// Operators:
 Angle & Angle::operator=(const Angle & rhs)
 {
 	this->_angle = rhs._angle;
@@ -93,16 +95,6 @@ Angle & Angle::operator-=(float rhs)
 		this->_angle += 360;
 
 	return *this;
-}
-
-float Angle::getAngle()
-{
-	return _angle;
-}
-
-float Angle::getAngleRadians()
-{
-	return _angle/180 * _pi;
 }
 
 bool Angle::operator==(const Angle & rhs)
@@ -184,4 +176,15 @@ bool Angle::operator<(float rhs)
 		rhs += 360;
 
 	return (_angle < rhs);
+}
+
+// Getters:
+float Angle::getAngle()
+{
+	return _angle;
+}
+
+float Angle::getAngleRadians()
+{
+	return _angle/180 * _pi;
 }

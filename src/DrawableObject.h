@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - DrawableObject.h
+
 #ifndef DRAWABLEOBJECT_H_
 #define DRAWABLEOBJECT_H_
 

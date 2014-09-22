@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Gameplay.h
+
 #ifndef GAMEPLAY_H_
 #define GAMEPLAY_H_
 
@@ -8,16 +12,24 @@
 class Gameplay
 {
 public:
+	// Constructor.
 	Gameplay(RenderWindow * window);
+	// Check if the game is over, call continuously in game loop.
 	bool isGameOver();
+	// Get score of current game.
 	Score getScore();
 	// Pause game, call continuously while game is paused
 	void pauseGame();
+	// Pause timer, call when pause game is initially called.
 	void pauseTimer();
+	// Resume timer is used when pause game is finished being called.
 	void resumeTimer();
+	// Display the obstacles on the screen.
 	void display();
+	// Restart the game if needed.
 	void restartGame();
 private:
+	// Private member variables.
 	Battle _battle;
 	Display _display;
 	Score _score;
@@ -29,6 +41,7 @@ private:
 	void checkControls();
 };
 
+// Constructor.
 Gameplay::Gameplay(RenderWindow * window):
 	_battle{Vector2D{(float)window->getSize().x, (float)window->getSize().y}},
 	_display{window},
@@ -38,6 +51,7 @@ Gameplay::Gameplay(RenderWindow * window):
 	_pausedTime{0}
 {}
 
+// Continuously check if game is over.
 bool Gameplay::isGameOver()
 {
 	float runTime = ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
@@ -53,8 +67,10 @@ bool Gameplay::isGameOver()
 	}
 	else
 	{
+		// Display score screen.
 		_score = _battle.getScore();
 		_display.draw(_score);
+		// Press P to restart game.
 		if(Keyboard::isKeyPressed(Keyboard::P))
 			restartGame();
 		return true;
@@ -80,6 +96,7 @@ Score Gameplay::getScore()
 	return _score;
 }
 
+// Display pause game screen, showing the score.
 void Gameplay::pauseGame()
 {
 	_score = _battle.getScore();
@@ -133,6 +150,7 @@ void Gameplay::checkControls()
 
 void Gameplay::restartGame()
 {
+	// Reset all members to initial conditions.
 	_score = Score{0,0};
 	_timer = clock();
 	_battle.restartBattle();
@@ -142,11 +160,13 @@ void Gameplay::restartGame()
 
 void Gameplay::pauseTimer()
 {
+	// Store time that game is paused.
 	_pauseTime = clock();
 }
 
 void Gameplay::resumeTimer()
 {
+	// When game is resumed add to paused time total.
 	_pausedTime += (clock() - _pauseTime) / (double) CLOCKS_PER_SEC;
 }
 

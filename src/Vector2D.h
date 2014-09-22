@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Vector2D.h
+
 #ifndef VECTOR2D_H_
 #define VECTOR2D_H_
 
@@ -19,6 +23,7 @@ public:
 	Vector2D(sf::Vector2f inpt);
 	Vector2D & operator=(const sf::Vector2f & rhs);
 
+	// Data containers for the Vector class.
 	float x;
 	float y;
 };

@@ -1,5 +1,10 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Display.cpp
+
 #include "Display.h"
 
+// Constructor:
 Display::Display(RenderWindow * window) :
 	_window{window},
 	_hud{window},
@@ -13,11 +18,14 @@ Display::Display(RenderWindow * window) :
 	initializeBackGround();
 }
 
+// Draw functions for various objects.
+// Draw the back drop on the game.
 void Display::drawBackGround()
 {
 	_window->draw(_drawBackGround);
 }
 
+// Draw the tank on the screen in a particular position.
 void Display::draw(Tank & tank, Score::PLAYER player)
 {
 	if (player == Score::PLAYER1)
@@ -34,13 +42,16 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 
 		_window->draw(_drawPlayer2Tank);
 	}
+	// Draw the UI for the particular tank.
 	_hud.DrawUI(tank, player);
 }
 
+// Draw the missiles on the screen in their positions
 void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
 {
 	Vector2f tempVect;
 	auto _missileIterator = missile->begin();
+	// Iterate the list of missiles displaying them all.
 	while(_missileIterator != missile->end())
 	{
 		tempVect = {(*_missileIterator)->getPosition().x, (*_missileIterator)->getPosition().y};
@@ -53,10 +64,12 @@ void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
 
 }
 
+// Draw the explosions on the screen in their positions.
 void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
 {
 	Vector2f tempVect;
 	auto _explosionIterator = explosion->begin();
+	// Iterate through the list of explosions displaying them all.
 	while(_explosionIterator != explosion->end())
 	{
 		tempVect = {(*_explosionIterator)->getPosition().x, (*_explosionIterator)->getPosition().y};
@@ -67,10 +80,13 @@ void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
 	}
 }
 
+// Draw the obstacles on the screen.
 void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 {
 	Vector2f tempVect;
 	auto _obstacleIterator = obstacle->begin();
+	// Iterate through the list of obstacles, displaying a different one
+	// depending on the damage to the obstacle and the type of obstacle.
 	while (_obstacleIterator != obstacle->end())
 	{
 		tempVect = {(*_obstacleIterator)->getPosition().x, (*_obstacleIterator)->getPosition().y};
@@ -99,16 +115,19 @@ void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 				_drawObstacle.setTexture(&_obstacleTextureBrick1, true);
 		}
 
-
+		// Draw on the screen.
 		_window->draw(_drawObstacle);
 		++_obstacleIterator;
 	}
 }
 
+// Draw the mines on the screen.
 void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
 {
 	Vector2f tempVect;
 	_mineTime++;
+	// Every 30 calls change the texture of the mine.
+	// This gives a "Blinking" animation.
 	if(_mineTime % 30 == 0)
 		_mineLight = !_mineLight;
 	auto _mineIterator = mine->begin();
@@ -133,16 +152,19 @@ void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
 	}
 }
 
+// Draw the score screen.
 void Display::draw(Score & _score, bool isPaused)
 {
 	_hud.DrawScore(_score, isPaused);
 }
 
+// Draw the remaining time on the game screen.
 void Display::draw(float remainingTime)
 {
 	_hud.DrawTimer(remainingTime);
 }
 
+// Initialize the tank sprite and texture.
 void Display::initializeTank()
 {
 	_player1TankTexture.loadFromFile("assets/tank1.png");
@@ -159,6 +181,7 @@ void Display::initializeTank()
 	_drawPlayer2Tank.setScale(0.04 * (_window)->getSize().x/1600, 0.04 * (_window)->getSize().y/900);
 }
 
+// Initializes the missile sprite and texture.
 void Display::initializeMissile()
 {
 	_missileTexture.loadFromFile("assets/projectile1.png");
@@ -167,6 +190,7 @@ void Display::initializeMissile()
 	_drawMissile.setScale(0.025 * (_window)->getSize().x/1600, 0.025 * (_window)->getSize().y/900);
 }
 
+// Initialize the explosion sprite and texture.
 void Display::initializeExplosion()
 {
 	// Initialize mine texture.
@@ -178,6 +202,7 @@ void Display::initializeExplosion()
 	_drawExplosion.setScale(0.06 * windowSize.x / 1600, 0.06 * windowSize.y / 900);
 }
 
+// Initialize the obstacle sprite and textures.
 void Display::initializeObstacle()
 {
 	// Need to initialize texture here.
@@ -196,6 +221,7 @@ void Display::initializeObstacle()
 	_obstacleTextureBrick4.loadFromFile("assets/brick4.png");
 }
 
+// Initialize the mine sprite and texture.
 void Display::initializeMine()
 {
 	// Initialize mine texture.
@@ -211,6 +237,7 @@ void Display::initializeMine()
 	_drawMine2.setScale(0.05 * windowSize.x / 1600, 0.05 * windowSize.y / 900);
 }
 
+// Initialize the background sprite and texture.
 void Display::initializeBackGround()
 {
 	Vector2f windowSize{_window->getSize()};

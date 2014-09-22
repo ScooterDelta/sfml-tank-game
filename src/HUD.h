@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - HUD.h
+
 #ifndef HUD_H_
 #define HUD_H_
 
@@ -20,6 +24,7 @@ public:
 	void DrawTimer(float remainingTime);
 
 private:
+	// Private member variables.
 	RenderWindow * _window;
 	Font _font;
 	Text _description;
@@ -27,7 +32,9 @@ private:
 	// Converts a float to a string.
 	std::string floatToString(float input);
 	std::string intToString(int input);
+	// Display the score screen.
 	void displayScore(Score & score);
+	// Display a string in a particular location.
 	void displayString(std::string str, Vector2f location, unsigned int size = 20);
 };
 

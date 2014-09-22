@@ -20,6 +20,7 @@ public:
 	Angle & operator-=(const Angle & rhs);
 	Angle & operator+=(float rhs);
 	Angle & operator-=(float rhs);
+
 	// Equality operators.
 	bool operator==(const Angle & rhs);
 	bool operator==(float rhs);
@@ -32,6 +33,7 @@ public:
 	bool operator<(const Angle & rhs);
 	bool operator<(float rhs);
 
+	// Getters:
 	float getAngle();
 	float getAngleRadians();
 private:

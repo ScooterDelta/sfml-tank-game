@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Display.h
+
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
@@ -21,7 +25,9 @@ using namespace sf;
 class Display
 {
 public:
+	// Cosntructor
 	Display(RenderWindow * window);
+	// Draw functions for various objects in the game.
 	void drawBackGround();
 	void draw(Tank & tank, Score::PLAYER player);
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
@@ -34,6 +40,7 @@ public:
 private:
 	RenderWindow * _window;
 
+	// Textures for objects
 	Texture _player1TankTexture;
 	Texture _player2TankTexture;
 	Texture _missileTexture;
@@ -50,6 +57,7 @@ private:
 	Texture _mineTexture2;
 	Texture _backGroundTexture;
 
+	// Sprites for objects on screen.
 	Sprite _drawPlayer1Tank;
 	Sprite _drawPlayer2Tank;
 	Sprite _drawMissile;
@@ -59,6 +67,7 @@ private:
 	Sprite _drawMine2;
 	Sprite _drawBackGround;
 
+	// Private member variables.
 	HUD _hud;
 	unsigned int _mineTime;
 	bool _mineLight;

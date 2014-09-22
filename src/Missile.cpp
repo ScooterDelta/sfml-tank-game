@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Missile.cpp
+
 #include "Missile.h"
 
 Missile::Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize) :

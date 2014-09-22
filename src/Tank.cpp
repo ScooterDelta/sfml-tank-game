@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Tank.h
+
 #include "Tank.h"
 
 Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :

@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Battle.cpp
+
 #include "Battle.h"
 
 Battle::Battle(Vector2D screenDimensions) :
@@ -17,6 +21,8 @@ Battle::Battle(Vector2D screenDimensions) :
 void Battle::moveTank(Score::PLAYER player, Tank::Direction direction)
 {
 	bool isHorizontal = false;
+	// The tank is not allowed to exist inside of an obstacle, if it enters into
+	// an obstacle it is then moved out again.
 	if(player == Score::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
@@ -60,6 +66,10 @@ void Battle::moveTank(Score::PLAYER player, Tank::Direction direction)
 void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 {
 	bool isHorizontal = false;
+	// The tank is not allowed to exist inside of an obstacle, if it enters into
+	// an obstacle it is then moved out again.
+	// If the tank collides with a barrier it is allowed to slide along the barrier,
+	// but not to pass through it. The following condition checks ensure this.
 	if(player == Score::PLAYER1)
 	{
 		// Act on tank1 (collisions with walls)
@@ -156,6 +166,8 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 
 void Battle::update()
 {
+	// Check that missiles are not colliding, if they are either bounce them or
+	// display an explosion.
 	checkMissiles();
 
 	// Check if the missiles have hit any tanks.
@@ -166,6 +178,8 @@ void Battle::update()
 	mineHit(_tank1);
 	mineHit(_tank2);
 
+	// Iterate through explosions, remove them from the screen if their life time
+	// has expired.
 	auto _explosionIterator = _explosions.begin();
 	while(_explosionIterator != _explosions.end())
 	{
@@ -183,6 +197,7 @@ void Battle::checkMissiles()
 	Vector2D _missilePos;
 	bool _collisionHorizontal = false;
 	auto _missileIterator = _missiles.begin();
+	// Check collisions against all objects on the screen.
 	while(_missileIterator != _missiles.end())
 	{
 		(*_missileIterator)->update();
@@ -216,6 +231,7 @@ bool Battle::isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal)
 		if(_missilePos.x >= tempObstacleTL.x && _missilePos.x <= tempObstacleBR.x
 				&& _missilePos.y <= tempObstacleBR.y && _missilePos.y >= tempObstacleTL.y)
 		{
+			// Check if the collision is with a horizontal or vertical surface.
 			isHorizontal = checkIsHorizontal(_missilePos, **_obstacleIter);
 
 			if((*_obstacleIter)->isDestroyable())
@@ -226,10 +242,12 @@ bool Battle::isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal)
 
 		++_obstacleIter;
 	}
+	// Check if the missile has collided with the screen boundaries.
 	if(_missilePos.x < 0 || _missilePos.y < 0 ||
 			_missilePos.x > (_screenDimensions.x - 10) ||
 			_missilePos.y > (_screenDimensions.y - 10))
 	{
+		// Check if the collision is with a horizontal or vertical surface.
 		isHorizontal = checkIsHorizontal(_missilePos);
 
 		return true;
@@ -243,6 +261,7 @@ bool Battle::checkIsHorizontal(Vector2D & point, Obstacle & obstacle)
 	// Check if the collision with the obstacle is horizontal or not
 	Vector2D tempObstacleTL{obstacle.topLeft()};
 	Vector2D tempObstacleBR{obstacle.bottomRight()};
+	// Calculate the distance of each point from the wall.
 	float leftDistance = abs(point.x - tempObstacleTL.x);
 	float rightDistance = abs(point.x - tempObstacleBR.x);
 	float topDistance = abs(point.y - tempObstacleTL.y);
@@ -294,6 +313,7 @@ void Battle::fireMissile(Score::PLAYER player)
 
 void Battle::plantMine(Score::PLAYER player)
 {
+	// Plant a mine from the location of the tank related to player.
 	Vector2D turret;
 	if(player == Score::PLAYER1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
 	{
@@ -323,36 +343,43 @@ void Battle::plantMine(Score::PLAYER player)
 
 Tank * Battle::getTank1()
 {
+	// Return a pointer to tank 1.
 	return & _tank1;
 }
 
 Tank * Battle::getTank2()
 {
+	// Return a pointer to tank 2.
 	return & _tank2;
 }
 
 std::list<std::unique_ptr<Missile>> * Battle::getMissiles()
 {
+	// Return a pointer to list of missiles.
 	return & _missiles;
 }
 
 std::list<std::unique_ptr<Explosion>> * Battle::getExplosions()
 {
+	// Return a pointer to list of explosions.
 	return & _explosions;
 }
 
 std::list<std::unique_ptr<Obstacle>> * Battle::getObstacles()
 {
+	// Return a pointer to list of obstacles.
 	return & _obstacles;
 }
 
 std::list<std::unique_ptr<Mine>> * Battle::getMines()
 {
+	// Return a pointer to list of mines.
 	return & _mines;
 }
 
 Score Battle::getScore()
 {
+	// Return the score.
 	return _score;
 }
 
@@ -363,11 +390,13 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 	Vector2D tempContainerFR = tank.frontRight();
 	Vector2D tempContainerFM;
 
+	// Get the front middle of the tank for more accurate collision detection.
 	tempContainerFM.x = (tank.frontLeft().x + tank.frontRight().x)/2;
 	tempContainerFM.y = (tank.frontLeft().y + tank.frontRight().y)/2;
 
 	Vector2D tempObstacleTL, tempObstacleBR;
 
+	// Check collisions with the bounds of the screen.
 	if (tempContainerFL.x < 0 || tempContainerFL.y < 0 || tempContainerFL.x > _screenDimensions.x || tempContainerFL.y > _screenDimensions.y)
 	{
 		isHorizontal = checkIsHorizontal(tempContainerFL);
@@ -378,11 +407,14 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 		isHorizontal = checkIsHorizontal(tempContainerFR);
 		return true;
 	}
+	// Check collisions with obstacles of the screen.
 	else
 	{
 		auto _obstacleIter = _obstacles.begin();
 		while(_obstacleIter != _obstacles.end())
 		{
+			// For each obstacle check if a collision has occurred.
+			// If it does then check if it is a vertical or horizontal collision.
 			tempObstacleTL = (*_obstacleIter)->topLeft();
 			tempObstacleBR = (*_obstacleIter)->bottomRight();
 			if(tempContainerFL.x > tempObstacleTL.x && tempContainerFL.x < tempObstacleBR.x
@@ -417,11 +449,13 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 	Vector2D tempContainerBR = tank.backRight();
 	Vector2D tempContainerBM;
 
+	// Get the front middle of the tank for more accurate collision detection.
 	tempContainerBM.x = (tank.backLeft().x + tank.backRight().x)/2;
 	tempContainerBM.y = (tank.backLeft().y + tank.backRight().y)/2;
 
 	Vector2D tempObstacleTL, tempObstacleBR;
 
+	// Check collisions with the bounds of the screen.
 	if (tempContainerBL.x < 0 || tempContainerBL.y < 0 || tempContainerBL.x > _screenDimensions.x || tempContainerBL.y > _screenDimensions.y)
 	{
 		isHorizontal = checkIsHorizontal(tempContainerBL);
@@ -432,6 +466,8 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 		isHorizontal = checkIsHorizontal(tempContainerBR);
 		return true;
 	}
+	// Check for a collision with the back of the tank against each obstacle.
+	// if a collision occurs then check if it is vertical or horizontal collision.
 	else
 	{
 		auto _obstacleIter = _obstacles.begin();
@@ -473,6 +509,7 @@ void Battle::missileHit(Tank & tank)
 	tankVertex.push_back(tank.backRight()); // 2 - back Right
 	tankVertex.push_back(tank.backLeft()); // 3 - back left
 
+	// Helper variables.
 	Score::PLAYER tempTankPlayer, tempMissilePlayer;
 	tempTankPlayer = tank.getPlayer();
 
@@ -480,6 +517,7 @@ void Battle::missileHit(Tank & tank)
 	std::vector<Vector2D> _missileVertex;
 
 	auto _missileIterator = _missiles.begin();
+	// For all missiles on the screen check if they collide with a tank.
 	while(_missileIterator != _missiles.end())
 	{
 		_missileCenter.x = (*_missileIterator)->getPosition().x;
@@ -490,10 +528,13 @@ void Battle::missileHit(Tank & tank)
 		{
 			tempMissilePlayer = (*_missileIterator)->getPlayer();
 
+			// If the missile hits a tank then display an explosion.
 			std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIterator)->getPosition()});
 			_explosions.push_back(std::move(newExplosion));
 			_missileIterator = _missiles.erase(_missileIterator);
 
+			// Check who the owner of the missile is in order to count kill toward a particular
+			// character.
 			if(tempTankPlayer == Score::PLAYER1 && tempMissilePlayer == Score::PLAYER1)
 				_score.increaseDeaths(Score::PLAYER1);
 			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER2)
@@ -509,9 +550,11 @@ void Battle::missileHit(Tank & tank)
 				_score.increaseDeaths(Score::PLAYER1);
 			}
 
+			// Respawn both tanks to prevent an unfair spawn advantage.
 			_tank1.respawn();
 			_tank2.respawn();
 
+			// Clear the missiles and mines from the screen to prevent accidental deaths from respawning.
 			_missiles.clear();
 			_mines.clear();
 			break;
@@ -532,10 +575,12 @@ void Battle::mineHit(Tank & tank)
 	tankVertex.push_back(tank.backRight()); // 2 - back Right
 	tankVertex.push_back(tank.backLeft()); // 3 - back left
 
+	// Helper variables.
 	Score::PLAYER tempTankPlayer, tempMinePlayer;
 	tempTankPlayer = tank.getPlayer();
 
 	auto _mineIterator = _mines.begin();
+	// Check collisions with all mines on the screen.
 	while(_mineIterator != _mines.end())
 	{
 		_mineCenter.x = (*_mineIterator)->getPosition().x;
@@ -544,6 +589,8 @@ void Battle::mineHit(Tank & tank)
 		_mineVertex.clear();
 		_mineVertex.push_back(_mineCenter);
 
+		// Check if the tank has driven off the mine the first time,
+		// this prevents accidental suicide from planting the mine.
 		isCollision = isPolyCollision(tankVertex, _mineVertex);
 		if(!isCollision && !(*_mineIterator)->checkIsActive())
 		{
@@ -555,10 +602,14 @@ void Battle::mineHit(Tank & tank)
 		{
 			tempMinePlayer = (*_mineIterator)->getPlayer();
 
+			// If the mine is detonated then display an explosion animation.
+
 			std::unique_ptr<Explosion> newExplosion(new Explosion{_mineCenter});
 			_explosions.push_back(std::move(newExplosion));
 			_mineIterator = _mines.erase(_mineIterator);
 
+			// Check who the owner of the mine is in order to count kill toward a particular
+			// character.
 			if(tempTankPlayer == Score::PLAYER1 && tempMinePlayer == Score::PLAYER1)
 				_score.increaseDeaths(Score::PLAYER1);
 			else if(tempTankPlayer == Score::PLAYER2 && tempMinePlayer == Score::PLAYER2)
@@ -574,9 +625,11 @@ void Battle::mineHit(Tank & tank)
 				_score.increaseDeaths(Score::PLAYER1);
 			}
 
+			// Reset the locations of the tanks to prevent unfair advantage.
 			_tank1.respawn();
 			_tank2.respawn();
 
+			// Clear list of missiles and mines to prevent accidental detonation.
 			_missiles.clear();
 			_mines.clear();
 			break;
@@ -600,12 +653,14 @@ bool Battle::isFrontTankCollision(Tank & aTank, Tank & bTank)
 	bTankVertex.push_back(bTank.backRight()); // 2 - back Right
 	bTankVertex.push_back(bTank.backLeft()); // 3 - back left
 
+	// Check if a collision has happened between two objects.
 	if(isPolyCollision(aTankVertex, bTankVertex))
 	{
 		Vector2D aTankFront{(aTankVertex[0].x + aTankVertex[1].x)/2, (aTankVertex[0].y + aTankVertex[1].y)/2};
 		Vector2D aTankBack{(aTankVertex[2].x + aTankVertex[3].x)/2, (aTankVertex[2].y + aTankVertex[3].y)/2};
 		Vector2D bTankCenter{bTank.getPosition()};
 
+		// Calculate distance between front and back of object to test if front or back collision.
 		double frontDistance = sqrt(pow(aTankFront.x - bTankCenter.x, 2) + pow(aTankFront.y - bTankCenter.y, 2));
 		double backDistance = sqrt(pow(aTankBack.x - bTankCenter.x, 2) + pow(aTankBack.y - bTankCenter.y, 2));
 
@@ -631,12 +686,14 @@ bool Battle::isBackTankCollision(Tank & aTank, Tank & bTank)
 	bTankVertex.push_back(bTank.backRight()); // 2 - back Right
 	bTankVertex.push_back(bTank.backLeft()); // 3 - back left
 
+	// Check if a collision has happened between two objects.
 	if(isPolyCollision(aTankVertex, bTankVertex))
 	{
 		Vector2D aTankFront{(aTankVertex[0].x + aTankVertex[1].x)/2, (aTankVertex[0].y + aTankVertex[1].y)/2};
 		Vector2D aTankBack{(aTankVertex[2].x + aTankVertex[3].x)/2, (aTankVertex[2].y + aTankVertex[3].y)/2};
 		Vector2D bTankCenter{bTank.getPosition()};
 
+		// Calculate distance between front and back of object to test if front or back collision.
 		double frontDistance = sqrt(pow(aTankFront.x - bTankCenter.x, 2) + pow(aTankFront.y - bTankCenter.y, 2));
 		double backDistance = sqrt(pow(aTankBack.x - bTankCenter.x, 2) + pow(aTankBack.y - bTankCenter.y, 2));
 
@@ -779,6 +836,7 @@ void Battle::fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE te
 
 void Battle::restartBattle()
 {
+	// Reset all values to their initial conditions to restart the battle.
 	_tank1.respawn();
 	_tank2.respawn();
 	_obstacles.clear();

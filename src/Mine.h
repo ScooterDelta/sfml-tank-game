@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Mine.h
+
 #ifndef MINE_H_
 #define MINE_H_
 
@@ -8,6 +12,7 @@
 class Mine : public DrawableObject
 {
 public:
+	// Overloaded inherited functions.
 	~Mine(){}
 	Mine(Vector2D position, Score::PLAYER player);
 	// Return the direction the object is facing.

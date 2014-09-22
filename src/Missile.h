@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Missile.h
+
 #ifndef MISSILE_H_
 #define MISSILE_H_
 

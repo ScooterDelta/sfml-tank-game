@@ -1,5 +1,10 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - HUD.cpp
+
 #include "HUD.h"
 
+// Constructor:
 HUD::HUD(RenderWindow * window):
 	_window{window}
 {
@@ -12,6 +17,7 @@ HUD::HUD(RenderWindow * window):
 	_description.setColor(Color::White);
 }
 
+// Draw the UI for a particular player (Display remaining ammo for the tank).
 void HUD::DrawUI(Tank & tank, Score::PLAYER player)
 {
 	int mines = tank.getAllowedMines();
@@ -35,6 +41,7 @@ void HUD::DrawUI(Tank & tank, Score::PLAYER player)
 	}
 }
 
+// Draw the score of the game.
 void HUD::DrawScore(Score & score, bool isPaused)
 {
 	Vector2f windowSize{_window->getSize()};
@@ -45,6 +52,7 @@ void HUD::DrawScore(Score & score, bool isPaused)
 	// Display message:
 	if(isPaused)
 	{
+		// Display this message if the score screen is in the pause menu.
 		tempString = "Press ESC to resume game.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
 		tempString = "Press Q to quit game, or P to restart game.";
@@ -52,11 +60,13 @@ void HUD::DrawScore(Score & score, bool isPaused)
 	}
 	else
 	{
+		// Display this message for end of game score screen.
 		tempString = "Press Q to end game, or press P to play again.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
 	}
 }
 
+// Display the score screen for the game, showing kills and deaths for each player.
 void HUD::displayScore(Score & score)
 {
 	Vector2f windowSize{_window->getSize()};
@@ -79,6 +89,7 @@ void HUD::displayScore(Score & score)
 	displayString(tempString, {windowSize.x/16 + 300, windowSize.y/9 + 180});
 }
 
+// Draw the time remaining on the game screen.
 void HUD::DrawTimer(float remainingTime)
 {
 	Vector2f windowSize{_window->getSize()};
@@ -89,6 +100,7 @@ void HUD::DrawTimer(float remainingTime)
 	displayString(tempString, {180, 10});
 }
 
+// Convert float to string.
 std::string HUD::floatToString(float input)
 {
 	std::ostringstream buffer;
@@ -96,6 +108,7 @@ std::string HUD::floatToString(float input)
 	return buffer.str();
 }
 
+// Convert int to string.
 std::string HUD::intToString(int input)
 {
 	std::ostringstream buffer;
@@ -103,6 +116,7 @@ std::string HUD::intToString(int input)
 	return buffer.str();
 }
 
+// Display a particular string on the screen.
 void HUD::displayString(std::string str, Vector2f location, unsigned int size)
 {
 	_description.setCharacterSize(size);

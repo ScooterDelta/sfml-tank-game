@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Battle.h
+
 #ifndef BATTLE_H_
 #define BATTLE_H_
 
@@ -18,13 +22,18 @@ using namespace sf;
 class Battle
 {
 public:
+	// Constructor.
 	Battle(Vector2D screenDimensions);
 	friend class Display;
+	// Update the battle, updating all locations and collisions of objects
 	void update();
+	// Overloaded move functions, for changing direction and movement of tanks.
 	void moveTank(Score::PLAYER player, Tank::Direction direction);
 	void moveTank(Score::PLAYER player, Tank::Movement movement);
+	// Function for a particular tank (player) to fire a missile or plant a mine.
 	void fireMissile(Score::PLAYER player);
 	void plantMine(Score::PLAYER player);
+	// Restart battle, resets all values to initial conditions.
 	void restartBattle();
 
 	// Getters for display
@@ -38,6 +47,7 @@ public:
 	Score getScore();
 
 private:
+	// Private variables.
 	Vector2D _screenDimensions;
 	Tank _tank1;
 	Tank _tank2;

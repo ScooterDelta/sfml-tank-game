@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - main.cpp
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -7,20 +11,23 @@
 using namespace std;
 using namespace sf;
 
-constexpr int windowWidth{1920}, windowHeight{1080};
+constexpr int windowWidth{1600}, windowHeight{900};
 
+// Function for handling the pause menu and ending game.
 bool endGame(Gameplay & game, RenderWindow & window);
+// Function for handling windows events.
 void eventHandle(RenderWindow & window);
 
 int main()
 {
 	// Add Style::Fullscreen for fullscreen (last command input)
-	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM", Style::Fullscreen};
-	window.setFramerateLimit(120);
+	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
+	window.setFramerateLimit(60);
 	//window.setVerticalSyncEnabled(true);
 
 	Gameplay game(&window);
 
+	// Initialise all game components to 0 before it starts.
 	game.restartGame();
 
 	while (window.isOpen())
@@ -39,6 +46,7 @@ int main()
 				if(endGame(game, window))
 					break;
 		}
+		// If the game is not running and Q is pressed then exit game loop.
 		else if(Keyboard::isKeyPressed(Keyboard::Q))
 			break;
 
@@ -47,12 +55,10 @@ int main()
 	}
 }
 
+// Function for handling the pause menu and ending game.
 bool endGame(Gameplay & game, RenderWindow & window)
 {
 	while(Keyboard::isKeyPressed(Keyboard::Escape));
-
-//	if(game.isGameOver())
-//		return true;
 
 	game.pauseTimer();
 
@@ -61,17 +67,20 @@ bool endGame(Gameplay & game, RenderWindow & window)
 		window.clear(Color::Black);
 
 		game.pauseGame();
+		// Pressing the escape key while in the pause menu will return to the game.
 		if(Keyboard::isKeyPressed(Keyboard::Escape))
 		{
 			while(Keyboard::isKeyPressed(Keyboard::Escape));
 			game.resumeTimer();
 			return false;
 		}
+		// Pressing P while in the pause menu will restart the game
 		else if(Keyboard::isKeyPressed(Keyboard::P))
 		{
 			game.restartGame();
 			return false;
 		}
+		// Pressing Q while in the pause menu will quit the game.
 		else if(Keyboard::isKeyPressed(Keyboard::Q))
 			return true;
 
@@ -81,6 +90,7 @@ bool endGame(Gameplay & game, RenderWindow & window)
 	return false;
 }
 
+// Function for handling windows events.
 void eventHandle(RenderWindow & window)
 {
 	sf::Event event;

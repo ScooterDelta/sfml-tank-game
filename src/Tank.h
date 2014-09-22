@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Tank.h
+
 #ifndef TANK_H_
 #define TANK_H_
 

@@ -1,5 +1,10 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Vector2D.cpp
+
 #include "Vector2D.h"
 
+// Constructors:
 Vector2D::Vector2D():
 	x{0},
 	y{0}
@@ -15,6 +20,7 @@ Vector2D::Vector2D(const Vector2D & inpt):
 	y{inpt.y}
 {}
 
+// Operators:
 Vector2D & Vector2D::operator=(const Vector2D & rhs)
 {
 	this->x = rhs.x;

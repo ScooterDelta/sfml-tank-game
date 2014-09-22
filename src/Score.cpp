@@ -1,5 +1,10 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Score.cpp
+
 #include "Score.h"
 
+// Constructor.
 Score::Score(const Score & score) :
  	 _player1Kills{score._player1Kills},
  	 _player1Deaths{score._player1Deaths},
@@ -14,6 +19,7 @@ Score::Score(int player1Score, int player2Score) :
 	_player2Deaths{player2Score}
 {}
 
+// Copy operator.
 Score & Score::operator=(const Score & rhs)
 {
 	this->_player1Kills = rhs._player1Kills;
@@ -24,6 +30,7 @@ Score & Score::operator=(const Score & rhs)
 	return *this;
 }
 
+// Increase number of kills
 void Score::increaseKills(PLAYER player)
 {
 	if(player == PLAYER1)
@@ -32,6 +39,7 @@ void Score::increaseKills(PLAYER player)
 		_player2Kills++;
 }
 
+// Increase number of deaths.
 void Score::increaseDeaths(PLAYER player)
 {
 	if(player == PLAYER1)
@@ -40,6 +48,7 @@ void Score::increaseDeaths(PLAYER player)
 		_player2Deaths++;
 }
 
+// Get number of kills for player.
 int Score::getKills(PLAYER player)
 {
 	if(player == PLAYER1)
@@ -48,6 +57,7 @@ int Score::getKills(PLAYER player)
 		return _player2Kills;
 }
 
+// Get number of deaths for palyer.
 int Score::getDeaths(PLAYER player)
 {
 	if(player == PLAYER1)

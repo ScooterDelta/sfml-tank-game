@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Mine.cpp
+
 #include "Mine.h"
 
 Mine::Mine(Vector2D position, Score::PLAYER player):
