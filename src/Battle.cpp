@@ -75,14 +75,14 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 				||  isFrontTankCollision(_tank1, _tank2)))
 		{
 			while(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
-				_tank1.setMovement(Tank::BACKWARD, 0.01);
+				_tank1.setMovement(Tank::BACKWARD, 0, 0.01);
 			_tank1.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
 			if(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
 			{
 				_tank1.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
 				_tank1.setMovement(Tank::FORWARDOBSTACLE, !isHorizontal);
 			}
-			_tank1.setMovement(Tank::FORWARD, 0.01);
+			_tank1.setMovement(Tank::FORWARD, 0, 0.01);
 		}
 		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank1, isHorizontal)
 				||  isBackTankCollision(_tank1, _tank2)))
@@ -121,17 +121,27 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 				||  isFrontTankCollision(_tank2, _tank1)))
 		{
 			while(isFrontWallCollision(_tank2, isHorizontal) || isFrontTankCollision(_tank2, _tank1))
-				_tank2.setMovement(Tank::BACKWARD, 0.1);
-			_tank2.setMovement(Tank::FORWARD, 0.1);
+				_tank2.setMovement(Tank::BACKWARD, 0, 0.01);
 			_tank2.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
+			if(isFrontWallCollision(_tank2, isHorizontal) || isFrontTankCollision(_tank2, _tank1))
+			{
+				_tank2.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
+				_tank2.setMovement(Tank::FORWARDOBSTACLE, !isHorizontal);
+			}
+			_tank2.setMovement(Tank::FORWARD, 0, 0.01);
 		}
 		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank2, isHorizontal)
 				||  isBackTankCollision(_tank2, _tank1)))
 		{
 			while(isBackWallCollision(_tank2, isHorizontal) || isBackTankCollision(_tank2, _tank1))
-				_tank2.setMovement(Tank::FORWARD, 0.1);
-			_tank2.setMovement(Tank::BACKWARD, 0.1);
+				_tank2.setMovement(Tank::FORWARD, 0, 0.01);
 			_tank2.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
+			if(isBackWallCollision(_tank2, isHorizontal) || isBackTankCollision(_tank2, _tank1))
+			{
+				_tank2.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
+				_tank2.setMovement(Tank::BACKWARDOBSTACLE, !isHorizontal);
+			}
+			_tank2.setMovement(Tank::BACKWARD, 0, 0.01);
 		}
 		else if(movement == Tank::NONE && (isBackWallCollision(_tank2, isHorizontal)
 				|| isBackTankCollision(_tank2, _tank1)))
