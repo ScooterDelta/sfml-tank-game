@@ -20,7 +20,7 @@ public:
 	enum Movement{NONE = 0, FORWARD, BACKWARD, FORWARDOBSTACLE, BACKWARDOBSTACLE};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
 	// Public access functions.
-	Tank(Vector2f position, Score::PLAYER player);
+	Tank(Vector2f position, Score::PLAYER player, Vector2f ScreenSize = {1600.f, 900.f});
 	// Virtual functions from Drawable
 	virtual float getDirection();
 	virtual Vector2f getPosition();
@@ -28,8 +28,8 @@ public:
 	// Destructor for the tank.
 	virtual ~Tank() {}
 	// Overloaded functions for moving the tank object
-	void setMovement(Movement movement, bool isHorizontal = false, float Magnitude = 3.f);
-	void setMovement(Direction direction, float Magnitude = 2.f);
+	void setMovement(Movement movement, bool isHorizontal = false, float Magnitude = 6.f);
+	void setMovement(Direction direction, float Magnitude = 4.f);
 	// Return number of mines remaining.
 	int getAllowedMines();
 	// Decrement mines since one is planted
@@ -55,6 +55,7 @@ private:
 	float _angleModifier;
 	int _allowedMines;
 	Vector2f _spawnLocation;
+	Vector2f _screenDimensions;
 	Score::PLAYER _player;
 };
 

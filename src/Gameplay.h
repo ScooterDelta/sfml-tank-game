@@ -11,9 +11,8 @@ public:
 	Gameplay(RenderWindow * window);
 	bool isGameOver();
 	Score getScore();
-	// Pause game will return true if the game is paused,
-	// False if ready to resume.
-	void pauseGame();
+	// Pause game, call continuously while game is paused
+	void pauseGame(clock_t pauseTime);
 	void display();
 	void restartGame();
 private:
@@ -22,6 +21,7 @@ private:
 	Score _score;
 	clock_t _timer;
 	clock_t _pauseTime;
+	clock_t _resumeTime;
 
 	// Helper functions
 	void checkControls();
@@ -32,12 +32,14 @@ Gameplay::Gameplay(RenderWindow * window):
 	_display{window},
 	_score{0, 0},
 	_timer{clock()},
-	_pauseTime{0}
+	_pauseTime{0},
+	_resumeTime{0}
 {}
 
 bool Gameplay::isGameOver()
 {
-	if(((clock() - _timer)/(double) CLOCKS_PER_SEC - _pauseTime) < 120)
+	float runTime = ((clock() - _timer - _resumeTime + _pauseTime)/(double) CLOCKS_PER_SEC);
+	if(runTime < 120)
 	{
 		checkControls();
 
@@ -60,12 +62,14 @@ bool Gameplay::isGameOver()
 void Gameplay::display()
 {
 // Draw all objects onto the screen calling the display class.
+	float runTime = ((clock() - _timer - _resumeTime + _pauseTime)/(double) CLOCKS_PER_SEC);
 	_display.draw(_battle.getObstacles());
 	_display.draw(_battle.getMines());
 	_display.draw(_battle.getMissiles());
 	_display.draw(*_battle.getTank1(), Score::PLAYER1);
 	_display.draw(*_battle.getTank2(), Score::PLAYER2);
 	_display.draw(_battle.getExplosions());
+	_display.draw((120 - runTime));
 }
 
 Score Gameplay::getScore()
@@ -73,11 +77,12 @@ Score Gameplay::getScore()
 	return _score;
 }
 
-void Gameplay::pauseGame()
+void Gameplay::pauseGame(clock_t pauseTime)
 {
 	_score = _battle.getScore();
 	_display.draw(_score, true);
-	_pauseTime = (clock() - _timer)/(double) CLOCKS_PER_SEC;
+	_pauseTime = pauseTime;
+	_resumeTime = clock();
 }
 
 void Gameplay::checkControls()

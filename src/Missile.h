@@ -13,7 +13,7 @@ class Missile : public DrawableObject
 {
 public:
 	// Constructor
-	Missile(Vector2f location, float direction, Score::PLAYER player);
+	Missile(Vector2f location, float direction, Score::PLAYER player, Vector2f windowSize = {1600, 900});
 	virtual ~Missile();
 	// Functions inherited from Drawable
 	virtual float getDirection();

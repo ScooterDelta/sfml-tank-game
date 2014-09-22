@@ -2,12 +2,12 @@
 
 Battle::Battle(Vector2f screenDimensions) :
 	_screenDimensions{screenDimensions},
-	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1},
-	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2},
-	_missileTimer1{0},
-	_missileTimer2{0},
-	_mineTimer1{0},
-	_mineTimer2{0},
+	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1, screenDimensions},
+	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2, screenDimensions},
+	_missileTimer1{clock() - 600},
+	_missileTimer2{clock() - 600},
+	_mineTimer1{clock() - 1200},
+	_mineTimer2{clock() - 1200},
 	_score{0, 0}
 {
 	// Make the map for the game.
@@ -76,16 +76,26 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 		{
 			while(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
 				_tank1.setMovement(Tank::BACKWARD, 0.01);
-			_tank1.setMovement(Tank::FORWARD, 0.01);
 			_tank1.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
+			if(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(_tank1, _tank2))
+			{
+				_tank1.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
+				_tank1.setMovement(Tank::FORWARDOBSTACLE, !isHorizontal);
+			}
+			_tank1.setMovement(Tank::FORWARD, 0.01);
 		}
 		else if (movement == Tank::BACKWARD && (isBackWallCollision(_tank1, isHorizontal)
 				||  isBackTankCollision(_tank1, _tank2)))
 		{
 			while(isBackWallCollision(_tank1, isHorizontal) || isBackTankCollision(_tank1, _tank2))
-				_tank1.setMovement(Tank::FORWARD, 0.01);
-			_tank1.setMovement(Tank::BACKWARD, 0.01);
+				_tank1.setMovement(Tank::FORWARD, 0, 0.01);
 			_tank1.setMovement(Tank::BACKWARDOBSTACLE, isHorizontal);
+			if(isBackWallCollision(_tank1, isHorizontal) || isBackTankCollision(_tank1, _tank2))
+			{
+				_tank1.setMovement(Tank::FORWARDOBSTACLE, isHorizontal);
+				_tank1.setMovement(Tank::BACKWARDOBSTACLE, !isHorizontal);
+			}
+			_tank1.setMovement(Tank::BACKWARD, 0, 0.01);
 		}
 		else if(movement == Tank::NONE && (isBackWallCollision(_tank1, isHorizontal)
 				|| isBackTankCollision(_tank1, _tank2)))
@@ -403,9 +413,15 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 	Vector2f tempObstacleTL, tempObstacleBR;
 
 	if (tempContainerBL.x < 0 || tempContainerBL.y < 0 || tempContainerBL.x > _screenDimensions.x || tempContainerBL.y > _screenDimensions.y)
+	{
+		isHorizontal = checkIsHorizontal(tempContainerBL);
 		return true;
+	}
 	else if (tempContainerBR.x < 0 || tempContainerBR.y < 0 || tempContainerBR.x > _screenDimensions.x || tempContainerBR.y > _screenDimensions.y)
+	{
+		isHorizontal = checkIsHorizontal(tempContainerBR);
 		return true;
+	}
 	else
 	{
 		auto _obstacleIter = _obstacles.begin();
@@ -415,13 +431,22 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 			tempObstacleBR = (*_obstacleIter)->bottomRight();
 			if(tempContainerBL.x > tempObstacleTL.x && tempContainerBL.x < tempObstacleBR.x
 					&& tempContainerBL.y < tempObstacleBR.y && tempContainerBL.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerBL, **_obstacleIter);
 				return true;
+			}
 			else if (tempContainerBR.x > tempObstacleTL.x && tempContainerBR.x < tempObstacleBR.x
 					&& tempContainerBR.y < tempObstacleBR.y && tempContainerBR.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerBR, **_obstacleIter);
 				return true;
+			}
 			else if (tempContainerBM.x > tempObstacleTL.x && tempContainerBM.x < tempObstacleBR.x
 					&& tempContainerBM.y < tempObstacleBR.y && tempContainerBM.y > tempObstacleTL.y)
+			{
+				isHorizontal = checkIsHorizontal(tempContainerBM, **_obstacleIter);
 				return true;
+			}
 
 			++_obstacleIter;
 		}
@@ -476,6 +501,10 @@ void Battle::missileHit(Tank & tank)
 
 			_tank1.respawn();
 			_tank2.respawn();
+
+			_missiles.clear();
+			_mines.clear();
+			break;
 		}
 		else
 			++_missileIterator;
@@ -537,6 +566,10 @@ void Battle::mineHit(Tank & tank)
 
 			_tank1.respawn();
 			_tank2.respawn();
+
+			_missiles.clear();
+			_mines.clear();
+			break;
 		}
 		else
 			++_mineIterator;

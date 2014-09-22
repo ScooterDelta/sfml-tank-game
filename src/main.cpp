@@ -16,10 +16,12 @@ int main()
 {
 	// Add Style::Fullscreen for fullscreen (last command input)
 	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
-	window.setFramerateLimit(120);
+	window.setFramerateLimit(60);
 	//window.setVerticalSyncEnabled(true);
 
 	Gameplay game(&window);
+
+	game.restartGame();
 
 	while (window.isOpen())
 	{
@@ -27,10 +29,13 @@ int main()
 
 		window.clear(Color::Black);
 
+		// Load the pause menu for the game, if pressed again then break.
 		if(Keyboard::isKeyPressed(Keyboard::Escape))
 			if(endGame(game, window))
 				break;
 
+		// Continuously checks if the game is running, if it is then display it.
+		// If the game stops running then end game screen is displayed.
 		if(!game.isGameOver())
 			game.display();
 
@@ -46,11 +51,13 @@ bool endGame(Gameplay & game, RenderWindow & window)
 	if(game.isGameOver())
 		return true;
 
+	clock_t pauseTime = clock();
+
 	while(1)
 	{
 		window.clear(Color::Black);
 
-		game.pauseGame();
+		game.pauseGame(pauseTime);
 		if(Keyboard::isKeyPressed(Keyboard::R))
 			return false;
 		else if(Keyboard::isKeyPressed(Keyboard::P))

@@ -27,6 +27,7 @@ public:
 	void draw(std::list<std::unique_ptr<Explosion>> * explosion);
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle);
 	void draw(std::list<std::unique_ptr<Mine>> * mine);
+	void draw(float remainingTime);
 	void draw(Score & _score, bool isPaused = false);
 
 private:

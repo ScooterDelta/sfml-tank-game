@@ -79,6 +79,16 @@ void HUD::displayScore(Score & score)
 	displayString(tempString, {windowSize.x/16 + 300, windowSize.y/9 + 180});
 }
 
+void HUD::DrawTimer(float remainingTime)
+{
+	Vector2f windowSize{_window->getSize()};
+	std::string tempString;
+
+	displayString("Time Remaining: ", {10, 10});
+	tempString = floatToString(remainingTime);
+	displayString(tempString, {180, 10});
+}
+
 std::string HUD::floatToString(float input)
 {
 	std::ostringstream buffer;
