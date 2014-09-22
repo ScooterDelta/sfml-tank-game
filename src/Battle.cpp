@@ -2,12 +2,12 @@
 
 Battle::Battle(Vector2f screenDimensions) :
 	_screenDimensions{screenDimensions},
-	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1},
-	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2},
+	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1, screenDimensions},
+	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2, screenDimensions},
 	_missileTimer1{0},
 	_missileTimer2{0},
-	_mineTimer1{0},
-	_mineTimer2{0},
+	_mineTimer1{clock() - 1200},
+	_mineTimer2{clock() - 1200},
 	_score{0, 0}
 {
 	// Make the map for the game.

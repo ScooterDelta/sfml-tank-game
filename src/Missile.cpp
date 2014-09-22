@@ -1,16 +1,16 @@
 #include "Missile.h"
 
-Missile::Missile(Vector2f location, float direction, Score::PLAYER player) :
+Missile::Missile(Vector2f location, float direction, Score::PLAYER player, Vector2f windowSize) :
 	_position{location},
 	_direction{direction},
 	_pi{atan(1) * 4},
 	_collisions{1},
-	_velocityModifier{-6.f},
+	_velocityModifier{-12.f},
 	_player{player}
 {
 	// Configure the missile object
-	_size.Height = 9.225;
-	_size.Width = 16.125;
+	_size.Height = 9.225 * windowSize.y / 900;
+	_size.Width = 16.125 * windowSize.x / 1600;
 
 	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
 	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);

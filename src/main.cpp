@@ -7,7 +7,7 @@
 using namespace std;
 using namespace sf;
 
-constexpr int windowWidth{1600}, windowHeight{900};
+constexpr int windowWidth{1920}, windowHeight{1080};
 
 bool endGame(Gameplay & game, RenderWindow & window);
 void eventHandle(RenderWindow & window);
@@ -15,7 +15,7 @@ void eventHandle(RenderWindow & window);
 int main()
 {
 	// Add Style::Fullscreen for fullscreen (last command input)
-	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
+	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM", Style::Fullscreen};
 	window.setFramerateLimit(120);
 	//window.setVerticalSyncEnabled(true);
 

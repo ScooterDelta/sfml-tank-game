@@ -110,9 +110,9 @@ void Display::initializeTank()
 	_drawPlayer2Tank.setOrigin(760.f, _drawPlayer2Tank.getGlobalBounds().height/2);
 
 	//_drawPlayer1Tank.setOrigin(_drawPlayer1Tank.getGlobalBounds().width/2, _drawPlayer1Tank.getGlobalBounds().height/2);
-	_drawPlayer1Tank.setScale(0.05, 0.05);
-	_drawPlayer2Tank.setOrigin(_drawPlayer2Tank.getGlobalBounds().width/2, _drawPlayer2Tank.getGlobalBounds().height/2);
-	_drawPlayer2Tank.setScale(0.05, 0.05);
+	_drawPlayer1Tank.setScale(0.05 * (_window)->getSize().x/1600, 0.05 * (_window)->getSize().y/900);
+	//_drawPlayer2Tank.setOrigin(_drawPlayer2Tank.getGlobalBounds().width/2, _drawPlayer2Tank.getGlobalBounds().height/2);
+	_drawPlayer2Tank.setScale(0.05 * (_window)->getSize().x/1600, 0.05 * (_window)->getSize().y/900);
 }
 
 void Display::initializeMissile()
@@ -120,7 +120,7 @@ void Display::initializeMissile()
 	_missileTexture.loadFromFile("assets/projectile1.png");
 	_drawMissile.setTexture(_missileTexture, true);
 	_drawMissile.setOrigin(_drawMissile.getGlobalBounds().width/2, _drawMissile.getGlobalBounds().height/2);
-	_drawMissile.setScale(0.025,0.025);
+	_drawMissile.setScale(0.025 * (_window)->getSize().x/1600, 0.025 * (_window)->getSize().y/900);
 }
 
 void Display::initializeExplosion()
