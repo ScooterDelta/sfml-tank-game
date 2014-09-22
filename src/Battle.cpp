@@ -4,8 +4,8 @@ Battle::Battle(Vector2f screenDimensions) :
 	_screenDimensions{screenDimensions},
 	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1, screenDimensions},
 	_tank2{{screenDimensions.x - 200, screenDimensions.y/2}, Score::PLAYER2, screenDimensions},
-	_missileTimer1{0},
-	_missileTimer2{0},
+	_missileTimer1{clock() - 600},
+	_missileTimer2{clock() - 600},
 	_mineTimer1{clock() - 1200},
 	_mineTimer2{clock() - 1200},
 	_score{0, 0}
@@ -476,6 +476,10 @@ void Battle::missileHit(Tank & tank)
 
 			_tank1.respawn();
 			_tank2.respawn();
+
+			_missiles.clear();
+			_mines.clear();
+			break;
 		}
 		else
 			++_missileIterator;
@@ -537,6 +541,10 @@ void Battle::mineHit(Tank & tank)
 
 			_tank1.respawn();
 			_tank2.respawn();
+
+			_missiles.clear();
+			_mines.clear();
+			break;
 		}
 		else
 			++_mineIterator;
