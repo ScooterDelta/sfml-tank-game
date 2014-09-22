@@ -1,9 +1,10 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(Vector2f position, Vector2f windowSize) :
+Obstacle::Obstacle(Vector2D position, Vector2D windowSize, TEXTURE texture) :
 	_direction{0},
 	_position{position},
-	_remainingHits{3}
+	_remainingHits{3},
+	_texture{texture}
 {
 	_size.Width = windowSize.x/32;
 	_size.Height = windowSize.y/18;
@@ -14,7 +15,7 @@ float Obstacle::getDirection()
 	return _direction;
 }
 
-Vector2f Obstacle::getPosition()
+Vector2D Obstacle::getPosition()
 {
 	return _position;
 }
@@ -24,22 +25,22 @@ RectSize Obstacle::getSize()
 	return _size;
 }
 
-Vector2f Obstacle::topLeft()
+Vector2D Obstacle::topLeft()
 {
 	return _position;
 }
 
-Vector2f Obstacle::topRight()
+Vector2D Obstacle::topRight()
 {
-	return Vector2f{_position.x + _size.Width, _position.y};
+	return Vector2D{_position.x + _size.Width, _position.y};
 }
-Vector2f Obstacle::bottomLeft()
+Vector2D Obstacle::bottomLeft()
 {
-	return Vector2f{_position.x, _position.y + _size.Height};
+	return Vector2D{_position.x, _position.y + _size.Height};
 }
-Vector2f Obstacle::bottomRight()
+Vector2D Obstacle::bottomRight()
 {
-	return Vector2f{_position.x + _size.Width, _position.y + _size.Height};
+	return Vector2D{_position.x + _size.Width, _position.y + _size.Height};
 }
 
 int Obstacle::remainingHits()
@@ -51,4 +52,9 @@ bool Obstacle::isDestroyable()
 {
 	_remainingHits--;
 	return _remainingHits < 0;
+}
+
+Obstacle::TEXTURE Obstacle::getTexture()
+{
+	return _texture;
 }

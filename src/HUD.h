@@ -17,6 +17,7 @@ public:
 	// DrawUI for a tank.
 	void DrawUI(Tank & tank, Score::PLAYER player);
 	void DrawScore(Score & score, bool isPaused);
+	void DrawTimer(float remainingTime);
 
 private:
 	RenderWindow * _window;

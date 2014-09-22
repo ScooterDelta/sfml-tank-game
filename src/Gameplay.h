@@ -11,9 +11,10 @@ public:
 	Gameplay(RenderWindow * window);
 	bool isGameOver();
 	Score getScore();
-	// Pause game will return true if the game is paused,
-	// False if ready to resume.
+	// Pause game, call continuously while game is paused
 	void pauseGame();
+	void pauseTimer();
+	void resumeTimer();
 	void display();
 	void restartGame();
 private:
@@ -22,22 +23,25 @@ private:
 	Score _score;
 	clock_t _timer;
 	clock_t _pauseTime;
+	float _pausedTime;
 
 	// Helper functions
 	void checkControls();
 };
 
 Gameplay::Gameplay(RenderWindow * window):
-	_battle{Vector2f{(float)window->getSize().x, (float)window->getSize().y}},
+	_battle{Vector2D{(float)window->getSize().x, (float)window->getSize().y}},
 	_display{window},
 	_score{0, 0},
 	_timer{clock()},
-	_pauseTime{0}
+	_pauseTime{0},
+	_pausedTime{0}
 {}
 
 bool Gameplay::isGameOver()
 {
-	if(((clock() - _timer)/(double) CLOCKS_PER_SEC - _pauseTime) < 120)
+	float runTime = ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
+	if(runTime < 120)
 	{
 		checkControls();
 
@@ -60,12 +64,15 @@ bool Gameplay::isGameOver()
 void Gameplay::display()
 {
 // Draw all objects onto the screen calling the display class.
+	float runTime = ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
+	_display.drawBackGround();
 	_display.draw(_battle.getObstacles());
 	_display.draw(_battle.getMines());
 	_display.draw(_battle.getMissiles());
 	_display.draw(*_battle.getTank1(), Score::PLAYER1);
 	_display.draw(*_battle.getTank2(), Score::PLAYER2);
 	_display.draw(_battle.getExplosions());
+	_display.draw((120 - runTime));
 }
 
 Score Gameplay::getScore()
@@ -77,7 +84,6 @@ void Gameplay::pauseGame()
 {
 	_score = _battle.getScore();
 	_display.draw(_score, true);
-	_pauseTime = (clock() - _timer)/(double) CLOCKS_PER_SEC;
 }
 
 void Gameplay::checkControls()
@@ -130,6 +136,18 @@ void Gameplay::restartGame()
 	_score = Score{0,0};
 	_timer = clock();
 	_battle.restartBattle();
+	_pauseTime = 0;
+	_pausedTime = 0;
+}
+
+void Gameplay::pauseTimer()
+{
+	_pauseTime = clock();
+}
+
+void Gameplay::resumeTimer()
+{
+	_pausedTime += (clock() - _pauseTime) / (double) CLOCKS_PER_SEC;
 }
 
 #endif /* GAMEPLAY_H_ */

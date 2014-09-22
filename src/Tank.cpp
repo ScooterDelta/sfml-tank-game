@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(Vector2f position, Score::PLAYER player, Vector2f ScreenSize) :
+Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
 	_position{position},
 	_direction{90},
 	_pi{atan(1) * 4},
@@ -12,8 +12,8 @@ Tank::Tank(Vector2f position, Score::PLAYER player, Vector2f ScreenSize) :
 	_player{player}
 {
 	// Configure the tank object
-	_size.Height = 41.65 * ScreenSize.y / 900.f;
-	_size.Width = 41.65 * ScreenSize.x / 1600.f;
+	_size.Height = 30 * ScreenSize.y / 900.f;
+	_size.Width = 30 * ScreenSize.x / 1600.f;
 
 	_cornerDistance = sqrt(pow(_size.Height/2,2) + pow(_size.Width/2,2));
 	_cornerAngle = atan(_size.Height/_size.Width) * 180 / _pi;
@@ -73,12 +73,14 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 		}
 		break;
 	case FORWARDOBSTACLE:
+		_velocityModifier = Magnitude / 2;
 		if(isHorizontal == false)
 			_position.y += -Magnitude / 2 * sin(_direction.getAngle() * _pi / 180);
 		else
 			_position.x += -Magnitude / 2 * cos(_direction.getAngle() * _pi / 180);
 		break;
 	case BACKWARDOBSTACLE:
+		_velocityModifier = -Magnitude / 2;
 		if(isHorizontal == false)
 			_position.y += Magnitude / 2 * sin(_direction.getAngle() * _pi / 180);
 		else
@@ -116,47 +118,47 @@ void Tank::setMovement(Direction direction, float Magnitude)
 	}
 }
 
-Vector2f Tank::frontLeft()
+Vector2D Tank::frontLeft()
 {
 	// Calculate the location of the front left corner of the tank
 	float xLocation = _position.x -
 			_cornerDistance * cos((_direction.getAngle() - _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
 			_cornerDistance * sin((_direction.getAngle() - _cornerAngle) * _pi / 180);
-	return Vector2f{xLocation, yLocation};
+	return Vector2D{xLocation, yLocation};
 }
 
-Vector2f Tank::frontRight()
+Vector2D Tank::frontRight()
 {
 	// Calculate the location of the front right corner of the tank
 	float xLocation = _position.x -
 			_cornerDistance * cos((_direction.getAngle() + _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
 			_cornerDistance * sin((_direction.getAngle() + _cornerAngle) * _pi / 180);
-	return Vector2f{xLocation, yLocation};
+	return Vector2D{xLocation, yLocation};
 }
 
-Vector2f Tank::backLeft()
+Vector2D Tank::backLeft()
 {
 	// Calculate the location of the back left corner of the tank
 	float xLocation = _position.x -
 			_cornerDistance * cos((180 + _direction.getAngle() + _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
 			_cornerDistance * sin((180 + _direction.getAngle() + _cornerAngle) * _pi / 180);
-	return Vector2f{xLocation, yLocation};
+	return Vector2D{xLocation, yLocation};
 }
 
-Vector2f Tank::backRight()
+Vector2D Tank::backRight()
 {
 	// Calculate the location of the back right corner of the tank
 	float xLocation = _position.x -
 			_cornerDistance * cos((180 + _direction.getAngle() - _cornerAngle) * _pi / 180);
 	float yLocation = _position.y -
 			_cornerDistance * sin((180 + _direction.getAngle() - _cornerAngle) * _pi / 180);
-	return Vector2f{xLocation, yLocation};
+	return Vector2D{xLocation, yLocation};
 }
 
-Vector2f Tank::getPosition()
+Vector2D Tank::getPosition()
 {
 	// Return the center of the tank.
 	return _position;

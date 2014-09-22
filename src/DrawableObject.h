@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "Vector2D.h"
 #include "Angle.h"
 
 using namespace sf;
@@ -37,7 +38,7 @@ public:
 		return _direction.getAngle();
 	}
 	// Return the position of the object.
-	virtual Vector2f getPosition(){
+	virtual Vector2D getPosition(){
 		return _position;
 	}
 	// Return the size of the object
@@ -49,7 +50,7 @@ public:
 private:
 	// Private member variables
 	Angle _direction;
-	Vector2f _position;
+	Vector2D _position;
 	RectSize _size;
 };
 

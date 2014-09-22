@@ -21,18 +21,26 @@ int main()
 
 	Gameplay game(&window);
 
+	game.restartGame();
+
 	while (window.isOpen())
 	{
 		eventHandle(window);
 
 		window.clear(Color::Black);
 
-		if(Keyboard::isKeyPressed(Keyboard::Escape))
-			if(endGame(game, window))
-				break;
-
+		// Continuously checks if the game is running, if it is then display it.
+		// If the game stops running then end game screen is displayed.
 		if(!game.isGameOver())
+		{
 			game.display();
+			// Load the pause menu for the game, if pressed again then break.
+			if(Keyboard::isKeyPressed(Keyboard::Escape))
+				if(endGame(game, window))
+					break;
+		}
+		else if(Keyboard::isKeyPressed(Keyboard::Q))
+			break;
 
 		// Display the window:
 		window.display();
@@ -43,22 +51,28 @@ bool endGame(Gameplay & game, RenderWindow & window)
 {
 	while(Keyboard::isKeyPressed(Keyboard::Escape));
 
-	if(game.isGameOver())
-		return true;
+//	if(game.isGameOver())
+//		return true;
+
+	game.pauseTimer();
 
 	while(1)
 	{
 		window.clear(Color::Black);
 
 		game.pauseGame();
-		if(Keyboard::isKeyPressed(Keyboard::R))
+		if(Keyboard::isKeyPressed(Keyboard::Escape))
+		{
+			while(Keyboard::isKeyPressed(Keyboard::Escape));
+			game.resumeTimer();
 			return false;
+		}
 		else if(Keyboard::isKeyPressed(Keyboard::P))
 		{
 			game.restartGame();
 			return false;
 		}
-		else if(Keyboard::isKeyPressed(Keyboard::Escape))
+		else if(Keyboard::isKeyPressed(Keyboard::Q))
 			return true;
 
 		// Display the window:

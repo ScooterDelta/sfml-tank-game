@@ -1,6 +1,6 @@
 #include "Missile.h"
 
-Missile::Missile(Vector2f location, float direction, Score::PLAYER player, Vector2f windowSize) :
+Missile::Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize) :
 	_position{location},
 	_direction{direction},
 	_pi{atan(1) * 4},
@@ -26,7 +26,7 @@ float Missile::getDirection()
 	return _direction.getAngle();
 }
 
-Vector2f Missile::getPosition()
+Vector2D Missile::getPosition()
 {
 	return _position;
 }

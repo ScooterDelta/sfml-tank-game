@@ -9,11 +9,11 @@ class Mine : public DrawableObject
 {
 public:
 	~Mine(){}
-	Mine(Vector2f position, Score::PLAYER player);
+	Mine(Vector2D position, Score::PLAYER player);
 	// Return the direction the object is facing.
 	virtual float getDirection();
 	// Return the position of the object.
-	virtual Vector2f getPosition();
+	virtual Vector2D getPosition();
 	// Return the size of the object
 	virtual RectSize getSize();
 	// Check is the mine activated
@@ -25,7 +25,7 @@ public:
 private:
 	// Private member variables
 	Angle _direction;
-	Vector2f _position;
+	Vector2D _position;
 	RectSize _size;
 	bool _isActive;
 	Score::PLAYER _player;

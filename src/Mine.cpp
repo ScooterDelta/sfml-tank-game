@@ -1,6 +1,6 @@
 #include "Mine.h"
 
-Mine::Mine(Vector2f position, Score::PLAYER player):
+Mine::Mine(Vector2D position, Score::PLAYER player):
 	_position{position},
 	_isActive{false},
 	_player{player}
@@ -13,7 +13,7 @@ float Mine::getDirection()
 }
 
 // Return the position of the object.
-Vector2f Mine::getPosition()
+Vector2D Mine::getPosition()
 {
 	return _position;
 }

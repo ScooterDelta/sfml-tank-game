@@ -10,6 +10,7 @@
 #include "DrawableObject.h"
 #include "Score.h"
 #include "Angle.h"
+#include "Vector2D.h"
 
 using namespace sf;
 
@@ -20,10 +21,10 @@ public:
 	enum Movement{NONE = 0, FORWARD, BACKWARD, FORWARDOBSTACLE, BACKWARDOBSTACLE};
 	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
 	// Public access functions.
-	Tank(Vector2f position, Score::PLAYER player, Vector2f ScreenSize = {1600.f, 900.f});
+	Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize = {1600.f, 900.f});
 	// Virtual functions from Drawable
 	virtual float getDirection();
-	virtual Vector2f getPosition();
+	virtual Vector2D getPosition();
 	virtual RectSize getSize();
 	// Destructor for the tank.
 	virtual ~Tank() {}
@@ -35,17 +36,17 @@ public:
 	// Decrement mines since one is planted
 	void plantMine();
 	// Vertexes of tank.
-	Vector2f frontLeft();
-	Vector2f frontRight();
-	Vector2f backLeft();
-	Vector2f backRight();
+	Vector2D frontLeft();
+	Vector2D frontRight();
+	Vector2D backLeft();
+	Vector2D backRight();
 	// Respawn the tank in the starting location
 	void respawn();
 	// Return the player of the tank.
 	Score::PLAYER getPlayer();
 private:
 	// Private member variables.
-	Vector2f _position;
+	Vector2D _position;
 	RectSize _size;
 	Angle _direction;
 	float _pi;
@@ -54,8 +55,8 @@ private:
 	float _velocityModifier;
 	float _angleModifier;
 	int _allowedMines;
-	Vector2f _spawnLocation;
-	Vector2f _screenDimensions;
+	Vector2D _spawnLocation;
+	Vector2D _screenDimensions;
 	Score::PLAYER _player;
 };
 

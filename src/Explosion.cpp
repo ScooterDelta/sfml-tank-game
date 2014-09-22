@@ -1,6 +1,6 @@
 #include "Explosion.h"
 
-Explosion::Explosion(Vector2f position):
+Explosion::Explosion(Vector2D position):
 _position{position},
 _explosionTimer{clock()}
 {
@@ -8,7 +8,7 @@ _explosionTimer{clock()}
 	_size.Height = 0;
 }
 
-Vector2f Explosion::getPosition(){
+Vector2D Explosion::getPosition(){
 	return _position;
 }
 

@@ -18,7 +18,7 @@ using namespace sf;
 class Battle
 {
 public:
-	Battle(Vector2f screenDimensions);
+	Battle(Vector2D screenDimensions);
 	friend class Display;
 	void update();
 	void moveTank(Score::PLAYER player, Tank::Direction direction);
@@ -38,7 +38,7 @@ public:
 	Score getScore();
 
 private:
-	Vector2f _screenDimensions;
+	Vector2D _screenDimensions;
 	Tank _tank1;
 	Tank _tank2;
 	std::list<std::unique_ptr<Missile>> _missiles;
@@ -62,9 +62,9 @@ private:
 	bool isFrontWallCollision(Tank & tank, bool & isHorizontal);
 	bool isBackWallCollision(Tank & tank, bool & isHorizontal);
 	// Test missile collision with wall
-	bool isMissileWallCollision(Vector2f & _missilePos, bool & isHorizontal);
+	bool isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal);
 	// Generic collision function, tests for collision between two polygons.
-	bool isPolyCollision(std::vector<Vector2f> & aVertex, std::vector<Vector2f> & bVertex);
+	bool isPolyCollision(std::vector<Vector2D> & aVertex, std::vector<Vector2D> & bVertex);
 	// Test if missile has hit a tank.
 	void missileHit(Tank & tank);
 	// Test if a tank has driven over a mine.
@@ -74,10 +74,10 @@ private:
 	// Make map
 	void makeMap();
 	// Fill group
-	void fillObstacle(Vector2f location, Vector2f size);
+	void fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE texture);
 	// Check which side a collision happened
-	bool checkIsHorizontal(Vector2f & point, Obstacle & obstacle);
-	bool checkIsHorizontal(Vector2f & point);
+	bool checkIsHorizontal(Vector2D & point, Obstacle & obstacle);
+	bool checkIsHorizontal(Vector2D & point);
 };
 
 #endif /* BATTLE_H_ */

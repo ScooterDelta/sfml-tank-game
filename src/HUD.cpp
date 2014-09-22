@@ -3,7 +3,7 @@
 HUD::HUD(RenderWindow * window):
 	_window{window}
 {
-	_font.loadFromFile("assets/cmunit.ttf");
+	_font.loadFromFile("assets/CRYSTAL-Regular.ttf");
 
 	_description.setFont(_font);
 	_description.setOrigin({0.f, 0.f});
@@ -19,18 +19,18 @@ void HUD::DrawUI(Tank & tank, Score::PLAYER player)
 	Vector2f tempLocation;
 	if(player == Score::PLAYER1)
 	{
-		tempLocation = Vector2f{50.f, (float)_window->getSize().y - 26.f};
+		tempLocation = Vector2f{10.f, (float)_window->getSize().y - 30.f};
 		displayString("Tank 1 Mines: ", tempLocation);
 		tempString = intToString(mines);
-		tempLocation = Vector2f{220.f, (float)_window->getSize().y - 26.f};
+		tempLocation = Vector2f{160.f, (float)_window->getSize().y - 30.f};
 		displayString(tempString, tempLocation);
 	}
 	else
 	{
-		tempLocation = Vector2f{(float)_window->getSize().x/2 + 50.f, (float)_window->getSize().y - 26.f};
+		tempLocation = Vector2f{(float)_window->getSize().x - 180.f, (float)_window->getSize().y - 30.f};
 		displayString("Tank 2 Mines: ", tempLocation);
 		tempString = intToString(mines);
-		tempLocation = Vector2f{(float)_window->getSize().x/2 + 220.f, (float)_window->getSize().y - 26.f};
+		tempLocation = Vector2f{(float)_window->getSize().x - 20.f, (float)_window->getSize().y - 30.f};
 		displayString(tempString, tempLocation);
 	}
 }
@@ -45,14 +45,14 @@ void HUD::DrawScore(Score & score, bool isPaused)
 	// Display message:
 	if(isPaused)
 	{
-		tempString = "Press ESC to end game.";
+		tempString = "Press ESC to resume game.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
-		tempString = "Press R to resume game, or P to restart game.";
+		tempString = "Press Q to quit game, or P to restart game.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9 + 30});
 	}
 	else
 	{
-		tempString = "Press ESC to end game, or press P to play again.";
+		tempString = "Press Q to end game, or press P to play again.";
 		displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
 	}
 }
@@ -77,6 +77,16 @@ void HUD::displayScore(Score & score)
 	displayString(tempString, {windowSize.x/16 + 200, windowSize.y/9 + 180});
 	tempString = intToString(score.getDeaths(Score::PLAYER2));
 	displayString(tempString, {windowSize.x/16 + 300, windowSize.y/9 + 180});
+}
+
+void HUD::DrawTimer(float remainingTime)
+{
+	Vector2f windowSize{_window->getSize()};
+	std::string tempString;
+
+	displayString("Time Remaining: ", {10, 10});
+	tempString = floatToString(remainingTime);
+	displayString(tempString, {180, 10});
 }
 
 std::string HUD::floatToString(float input)

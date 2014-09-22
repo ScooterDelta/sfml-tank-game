@@ -8,15 +8,15 @@ class Explosion : public DrawableObject
 {
 public:
 	virtual ~Explosion() {}
-	Explosion(Vector2f position);
+	Explosion(Vector2D position);
 
-	virtual Vector2f getPosition();
+	virtual Vector2D getPosition();
 	virtual RectSize getSize();
 	//
 	clock_t getExplosionTime();
 private:
 	// Private member variables
-	Vector2f _position;
+	Vector2D _position;
 	RectSize _size;
 	clock_t _explosionTimer;
 };

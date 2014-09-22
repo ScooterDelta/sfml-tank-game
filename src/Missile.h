@@ -13,11 +13,11 @@ class Missile : public DrawableObject
 {
 public:
 	// Constructor
-	Missile(Vector2f location, float direction, Score::PLAYER player, Vector2f windowSize = {1600, 900});
+	Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize = {1600, 900});
 	virtual ~Missile();
 	// Functions inherited from Drawable
 	virtual float getDirection();
-	virtual Vector2f getPosition();
+	virtual Vector2D getPosition();
 	virtual RectSize getSize();
 	// Update missile object
 	void update();
@@ -28,8 +28,8 @@ public:
 private:
 	// Private member variables
 	// Private member variables.
-	Vector2f _velocity;
-	Vector2f _position;
+	Vector2D _velocity;
+	Vector2D _position;
 	RectSize _size;
 	Angle _direction;
 	float _pi;
