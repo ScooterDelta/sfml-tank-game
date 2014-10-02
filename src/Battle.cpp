@@ -16,6 +16,8 @@ Battle::Battle(Vector2D screenDimensions) :
 {
 	// Make the map for the game.
 	makeMap();
+
+	placeTurrets();
 }
 
 void Battle::moveTank(Score::PLAYER player, Tank::Direction direction)
@@ -166,6 +168,34 @@ void Battle::moveTank(Score::PLAYER player, Tank::Movement movement)
 
 void Battle::update()
 {
+	auto turretIter = _turrets.begin();
+	auto turretTime = _turretTimers.begin();
+	while(turretIter != _turrets.end())
+	{
+		if((*turretIter)->canFollowTarget(_tank1) && clock() - (*turretTime) > 400)
+		{
+			std::unique_ptr<Missile> newMissile(new Missile{(*turretIter)->getFirePosition(), (*turretIter)->getDirection(), Score::NONPLAYER});
+			_missiles.push_back(std::move(newMissile));
+
+			(*turretTime) = clock();
+		}
+		else if ((*turretIter)->canFollowTarget(_tank2) && clock() - (*turretTime) > 400)
+		{
+			std::unique_ptr<Missile> newMissile(new Missile{(*turretIter)->getFirePosition(), (*turretIter)->getDirection(), Score::NONPLAYER});
+			_missiles.push_back(std::move(newMissile));
+
+			(*turretTime) = clock();
+		}
+		else
+			(*turretIter)->update();
+
+		++turretIter;
+		++turretTime;
+	}
+
+	missileHitTurret();
+
+
 	// Check that missiles are not colliding, if they are either bounce them or
 	// display an explosion.
 	checkMissiles();
@@ -353,6 +383,11 @@ Tank * Battle::getTank2()
 	return & _tank2;
 }
 
+std::list<std::unique_ptr<Turret>> * Battle::getTurrets()
+{
+	return & _turrets;
+}
+
 std::list<std::unique_ptr<Missile>> * Battle::getMissiles()
 {
 	// Return a pointer to list of missiles.
@@ -535,9 +570,11 @@ void Battle::missileHit(Tank & tank)
 
 			// Check who the owner of the missile is in order to count kill toward a particular
 			// character.
-			if(tempTankPlayer == Score::PLAYER1 && tempMissilePlayer == Score::PLAYER1)
+			if(tempTankPlayer == Score::PLAYER1 && (tempMissilePlayer == Score::PLAYER1
+					|| tempMissilePlayer == Score::NONPLAYER))
 				_score.increaseDeaths(Score::PLAYER1);
-			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER2)
+			else if(tempTankPlayer == Score::PLAYER2 && (tempMissilePlayer == Score::PLAYER2
+					|| tempMissilePlayer == Score::NONPLAYER))
 				_score.increaseDeaths(Score::PLAYER2);
 			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER1)
 			{
@@ -554,6 +591,9 @@ void Battle::missileHit(Tank & tank)
 			_tank1.respawn();
 			_tank2.respawn();
 
+			// Replace turrets.
+			placeTurrets();
+
 			// Clear the missiles and mines from the screen to prevent accidental deaths from respawning.
 			_missiles.clear();
 			_mines.clear();
@@ -561,6 +601,40 @@ void Battle::missileHit(Tank & tank)
 		}
 		else
 			++_missileIterator;
+	}
+}
+
+void Battle::missileHitTurret()
+{
+	// Check the particular missile against all obstacles.
+	auto _missileIter = _missiles.begin();
+	auto _turretIter = _turrets.begin();
+	Vector2D tempTurretTL, tempTurretBR, _missilePos;
+
+	while(_turretIter != _turrets.end())
+	{
+		_missileIter = _missiles.begin();
+		while(_missileIter != _missiles.end())
+		{
+			_missilePos = (*_missileIter)->getPosition();
+			tempTurretTL = (*_turretIter)->getTopLeft();
+			tempTurretBR = (*_turretIter)->getBottomRight();
+			// See if missile is inside the bounds of this object.
+			if(_missilePos.x >= tempTurretTL.x && _missilePos.x <= tempTurretBR.x
+					&& _missilePos.y <= tempTurretBR.y && _missilePos.y >= tempTurretTL.y)
+			{
+				// If the missile hits a turret then display an explosion.
+				std::unique_ptr<Explosion> newExplosion(new Explosion{(*_missileIter)->getPosition()});
+				_explosions.push_back(std::move(newExplosion));
+				_missileIter = _missiles.erase(_missileIter);
+
+				// Delete the turret that it hit.
+
+				_turretIter = _turrets.erase(_turretIter);
+			}
+			++_missileIter;
+		}
+		++_turretIter;
 	}
 }
 
@@ -628,6 +702,9 @@ void Battle::mineHit(Tank & tank)
 			// Reset the locations of the tanks to prevent unfair advantage.
 			_tank1.respawn();
 			_tank2.respawn();
+
+			// Replace turrets.
+			placeTurrets();
 
 			// Clear list of missiles and mines to prevent accidental detonation.
 			_missiles.clear();
@@ -814,6 +891,24 @@ void Battle::makeMap()
 	fillObstacle({11.f, 13.f},{10.f, 1.f}, Obstacle::BRICK);
 }
 
+void Battle::placeTurrets()
+{
+	_turrets.clear();
+	_turretTimers.clear();
+
+	std::unique_ptr<Turret> newTurret(new Turret{{_screenDimensions.x/2,
+			_screenDimensions.y * 13/18 - 20}, {10, 170}});
+	_turrets.push_back(std::move(newTurret));
+
+	_turretTimers.push_back(clock() - 400);
+
+	newTurret = std::unique_ptr<Turret>(new Turret{{_screenDimensions.x/2,
+			_screenDimensions.y * 5/18 + 20}, {190, 350}});
+	_turrets.push_back(std::move(newTurret));
+
+	_turretTimers.push_back(clock() - 400);
+}
+
 void Battle::fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE texture)
 {
 	// Fill up an area starting from top left (location) for the size.
@@ -845,4 +940,5 @@ void Battle::restartBattle()
 	_mines.clear();
 	_score = Score{0,0};
 	makeMap();
+	placeTurrets();
 }

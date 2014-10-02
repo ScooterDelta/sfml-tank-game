@@ -30,6 +30,7 @@ public:
 	// Draw functions for various objects in the game.
 	void drawBackGround();
 	void draw(Tank & tank, Score::PLAYER player);
+	void draw(std::list<std::unique_ptr<Turret>> * turret);
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
 	void draw(std::list<std::unique_ptr<Explosion>> * explosion);
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle);
@@ -56,6 +57,7 @@ private:
 	Texture _mineTexture1;
 	Texture _mineTexture2;
 	Texture _backGroundTexture;
+	Texture _turretTexture;
 
 	// Sprites for objects on screen.
 	Sprite _drawPlayer1Tank;
@@ -66,6 +68,7 @@ private:
 	Sprite _drawMine1;
 	Sprite _drawMine2;
 	Sprite _drawBackGround;
+	Sprite _drawTurret;
 
 	// Private member variables.
 	HUD _hud;
@@ -79,6 +82,7 @@ private:
 	void initializeObstacle();
 	void initializeMine();
 	void initializeBackGround();
+	void initializeTurret();
 };
 
 #endif /* DISPLAY_H_ */

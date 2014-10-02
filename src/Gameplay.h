@@ -82,6 +82,7 @@ void Gameplay::display()
 // Draw all objects onto the screen calling the display class.
 	float runTime = ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
 	_display.drawBackGround();
+	_display.draw(_battle.getTurrets());
 	_display.draw(_battle.getObstacles());
 	_display.draw(_battle.getMines());
 	_display.draw(_battle.getMissiles());
@@ -105,7 +106,6 @@ void Gameplay::pauseGame()
 
 void Gameplay::checkControls()
 {
-	// Player 1 Controls.
 	if(Keyboard::isKeyPressed(Keyboard::W))
 		_battle.moveTank(Score::PLAYER1, Tank::FORWARD);
 	else if (Keyboard::isKeyPressed(Keyboard::S))

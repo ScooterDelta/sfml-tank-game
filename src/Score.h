@@ -9,7 +9,7 @@ class Score
 {
 public:
 	// Which player the score is for.
-	enum PLAYER{PLAYER1 = 1, PLAYER2};
+	enum PLAYER{PLAYER1 = 1, PLAYER2, NONPLAYER};
 	Score(const Score & score);
 	Score(int player1Score = 0, int player2Score = 0);
 	// Return the score for a certain player.

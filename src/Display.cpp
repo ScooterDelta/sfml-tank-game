@@ -16,6 +16,7 @@ Display::Display(RenderWindow * window) :
 	initializeObstacle();
 	initializeMine();
 	initializeBackGround();
+	initializeTurret();
 }
 
 // Draw functions for various objects.
@@ -30,6 +31,7 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 {
 	if (player == Score::PLAYER1)
 	{
+		_drawPlayer1Tank.setColor(Color{255,255,255,100});
 		_drawPlayer1Tank.setPosition({tank.getPosition().x, tank.getPosition().y});
 		_drawPlayer1Tank.setRotation(tank.getDirection());
 
@@ -44,6 +46,25 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 	}
 	// Draw the UI for the particular tank.
 	_hud.DrawUI(tank, player);
+}
+
+// Draw the turrets on the screen.
+void Display::draw(std::list<std::unique_ptr<Turret>> * turret)
+{
+	Vector2f tempVect;
+	auto _turretIterator = turret->begin();
+	// Iterate the list of turrets displaying them.
+	while(_turretIterator != turret->end())
+	{
+		tempVect = {(*_turretIterator)->getPosition().x, (*_turretIterator)->getPosition().y};
+		_drawTurret.setPosition(tempVect);
+		_drawTurret.setRotation((*_turretIterator)->getDirection());
+
+		_window->draw(_drawTurret);
+
+		++_turretIterator;
+	}
+
 }
 
 // Draw the missiles on the screen in their positions
@@ -247,4 +268,16 @@ void Display::initializeBackGround()
 	_drawBackGround.setOrigin(0,0);
 	_drawBackGround.setScale(windowSize.x/3200, windowSize.y/1800);
 	_drawBackGround.setPosition(0,0);
+}
+
+// Initialize the explosion sprite and texture.
+void Display::initializeTurret()
+{
+	// Initialize mine texture.
+	Vector2f windowSize{_window->getSize()};
+
+	_turretTexture.loadFromFile("assets/turret.png");
+	_drawTurret.setTexture(_turretTexture, true);
+	_drawTurret.setOrigin(9604, 832);
+	_drawTurret.setScale(0.05 * windowSize.x / 1600, 0.05 * windowSize.y / 900);
 }

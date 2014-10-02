@@ -35,7 +35,7 @@ void Score::increaseKills(PLAYER player)
 {
 	if(player == PLAYER1)
 		_player1Kills++;
-	else
+	else if (player == PLAYER2)
 		_player2Kills++;
 }
 
@@ -44,7 +44,7 @@ void Score::increaseDeaths(PLAYER player)
 {
 	if(player == PLAYER1)
 		_player1Deaths++;
-	else
+	else if (player == PLAYER2)
 		_player2Deaths++;
 }
 
@@ -53,8 +53,9 @@ int Score::getKills(PLAYER player)
 {
 	if(player == PLAYER1)
 		return _player1Kills;
-	else
+	else if (player == PLAYER2)
 		return _player2Kills;
+	else return 0;
 }
 
 // Get number of deaths for palyer.
@@ -62,6 +63,7 @@ int Score::getDeaths(PLAYER player)
 {
 	if(player == PLAYER1)
 		return _player1Deaths;
-	else
+	else if (player == PLAYER2)
 		return _player2Deaths;
+	else return 0;
 }

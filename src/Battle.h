@@ -15,6 +15,7 @@
 #include "Explosion.h"
 #include "Angle.h"
 #include "Mine.h"
+#include "Turret.h"
 #include "Score.h"
 
 using namespace sf;
@@ -39,6 +40,7 @@ public:
 	// Getters for display
 	Tank * getTank1();
 	Tank * getTank2();
+	std::list<std::unique_ptr<Turret>> * getTurrets();
 	std::list<std::unique_ptr<Missile>> * getMissiles();
 	std::list<std::unique_ptr<Explosion>> * getExplosions();
 	std::list<std::unique_ptr<Obstacle>> * getObstacles();
@@ -51,6 +53,7 @@ private:
 	Vector2D _screenDimensions;
 	Tank _tank1;
 	Tank _tank2;
+	std::list<std::unique_ptr<Turret>> _turrets;
 	std::list<std::unique_ptr<Missile>> _missiles;
 	std::list<std::unique_ptr<Explosion>> _explosions;
 	std::list<std::unique_ptr<Obstacle>> _obstacles;
@@ -59,6 +62,7 @@ private:
 	clock_t _missileTimer2;
 	clock_t _mineTimer1;
 	clock_t _mineTimer2;
+	std::list<clock_t> _turretTimers;
 	Score _score;
 
 	// Private helper functions
@@ -77,12 +81,16 @@ private:
 	bool isPolyCollision(std::vector<Vector2D> & aVertex, std::vector<Vector2D> & bVertex);
 	// Test if missile has hit a tank.
 	void missileHit(Tank & tank);
+	// Test if a missile has hit a turret.
+	void missileHitTurret();
 	// Test if a tank has driven over a mine.
 	void mineHit(Tank & tank);
 	// Check missile obstacle collisions;
 	void checkMissiles();
 	// Make map
 	void makeMap();
+	// Place turrets on the map.
+	void placeTurrets();
 	// Fill group
 	void fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE texture);
 	// Check which side a collision happened
