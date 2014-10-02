@@ -5,17 +5,12 @@
 #include "Missile.h"
 
 Missile::Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize) :
-	_position{location},
-	_direction{direction},
+	DrawableObject{location, direction, {0,0}},
 	_pi{atan(1) * 4},
 	_collisions{1},
 	_velocityModifier{-12.f},
 	_player{player}
 {
-	// Configure the missile object
-	_size.Height = 9.225 * windowSize.y / 900;
-	_size.Width = 16.125 * windowSize.x / 1600;
-
 	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
 	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);
 }
@@ -25,25 +20,10 @@ Missile::~Missile()
 	// Destructor
 }
 
-float Missile::getDirection()
-{
-	return _direction.getAngle();
-}
-
-Vector2D Missile::getPosition()
-{
-	return _position;
-}
-
-RectSize Missile::getSize()
-{
-	return _size;
-}
-
 void Missile::update()
 {
-	_position.x += _velocity.x;
-	_position.y += _velocity.y;
+	DrawableObject::_position.x += _velocity.x;
+	DrawableObject::_position.y += _velocity.y;
 }
 
 bool Missile::isDestroyable(bool isHorizontal)
@@ -58,19 +38,19 @@ bool Missile::isDestroyable(bool isHorizontal)
 		{
 			_velocity.y *= -1;
 
-			if(_direction.getAngle() >= 90 && _direction.getAngle() < 270)
-				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
+			if(DrawableObject::_direction.getAngle() >= 90 && DrawableObject::_direction.getAngle() < 270)
+				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
 			else
-				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
+				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
 		}
 		else
 		{
 			_velocity.x *= -1;
 
-			if(_direction.getAngle() > 90 && _direction.getAngle() <= 270)
-				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
+			if(DrawableObject::_direction.getAngle() > 90 && DrawableObject::_direction.getAngle() <= 270)
+				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
 			else
-				_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
+				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
 		}
 
 		return false;
@@ -81,14 +61,14 @@ bool Missile::isDestroyable(bool isHorizontal)
 // if so the missile can be destroyed.
 bool Missile::isDestroyCone(float cone)
 {
-	if (_direction.getAngle() < (90 + cone) && _direction.getAngle() > (90 - cone))
+	if (DrawableObject::_direction.getAngle() < (90 + cone) && DrawableObject::_direction.getAngle() > (90 - cone))
 		return true;
-	else if ((_direction.getAngle() < cone && _direction.getAngle() >= 0) ||
-			(_direction.getAngle() > (360 - cone) && _direction.getAngle() < 360))
+	else if ((DrawableObject::_direction.getAngle() < cone && DrawableObject::_direction.getAngle() >= 0) ||
+			(DrawableObject::_direction.getAngle() > (360 - cone) && DrawableObject::_direction.getAngle() < 360))
 		return true;
-	else if (_direction.getAngle() < (180 + cone) && _direction.getAngle() > (180 - cone))
+	else if (DrawableObject::_direction.getAngle() < (180 + cone) && DrawableObject::_direction.getAngle() > (180 - cone))
 		return true;
-	else if (_direction.getAngle() < (270 + cone) && _direction.getAngle() > (270 - cone))
+	else if (DrawableObject::_direction.getAngle() < (270 + cone) && DrawableObject::_direction.getAngle() > (270 - cone))
 		return true;
 	else return false;
 }

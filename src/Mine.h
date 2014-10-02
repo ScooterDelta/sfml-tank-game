@@ -15,12 +15,6 @@ public:
 	// Overloaded inherited functions.
 	~Mine(){}
 	Mine(Vector2D position, Score::PLAYER player);
-	// Return the direction the object is facing.
-	virtual float getDirection();
-	// Return the position of the object.
-	virtual Vector2D getPosition();
-	// Return the size of the object
-	virtual RectSize getSize();
 	// Check is the mine activated
 	bool checkIsActive();
 	// Activate the mine.
@@ -29,9 +23,6 @@ public:
 	Score::PLAYER getPlayer();
 private:
 	// Private member variables
-	Angle _direction;
-	Vector2D _position;
-	RectSize _size;
 	bool _isActive;
 	Score::PLAYER _player;
 };

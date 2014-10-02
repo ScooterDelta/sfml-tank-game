@@ -15,14 +15,10 @@ public:
 	virtual ~Explosion() {}
 	Explosion(Vector2D position);
 
-	virtual Vector2D getPosition();
-	virtual RectSize getSize();
 	// get the explosion time, allowing for the explosions to be persistant.
 	clock_t getExplosionTime();
 private:
 	// Private member variables
-	Vector2D _position;
-	RectSize _size;
 	clock_t _explosionTimer;
 };
 

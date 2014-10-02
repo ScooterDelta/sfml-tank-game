@@ -9,6 +9,7 @@
 #include <SFML/System.hpp>
 #include "Vector2D.h"
 #include "Angle.h"
+#include <cmath>
 
 using namespace sf;
 
@@ -22,6 +23,11 @@ struct RectSize{
 		Height = 0;
 	}
 	// Overloaded initializer.
+	RectSize(const RectSize & inpt){
+		Width = inpt.Width;
+		Height = inpt.Height;
+	}
+
 	RectSize(float width, float height){
 		Width = width;
 		Height = height;
@@ -37,6 +43,12 @@ struct RectSize{
 class DrawableObject
 {
 public:
+	DrawableObject(Vector2D position, float direction, RectSize size) :
+		_direction{direction},
+		_position{position},
+		_size{size}
+	{}
+
 	// Return the direction the object is facing.
 	virtual float getDirection(){
 		return _direction.getAngle();
@@ -51,7 +63,7 @@ public:
 	}
 	// Destructor.
 	virtual ~DrawableObject() {}
-private:
+protected:
 	// Private member variables
 	Angle _direction;
 	Vector2D _position;

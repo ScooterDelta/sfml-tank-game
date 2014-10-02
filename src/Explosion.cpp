@@ -6,20 +6,11 @@
 
 // Constructor:
 Explosion::Explosion(Vector2D position):
-_position{position},
-_explosionTimer{clock()}
+	DrawableObject{position, 0, {0,0}},
+	_explosionTimer{clock()}
 {
 	_size.Width = 0;
 	_size.Height = 0;
-}
-
-// Return the position of the explostion.
-Vector2D Explosion::getPosition(){
-	return _position;
-}
-
-RectSize Explosion::getSize(){
-	return _size;
 }
 
 // Return the time of the explosion.

@@ -5,28 +5,10 @@
 #include "Mine.h"
 
 Mine::Mine(Vector2D position, Score::PLAYER player):
-	_position{position},
+	DrawableObject{position, 0, {0,0}},
 	_isActive{false},
 	_player{player}
 {}
-
-// Return the direction the object is facing.
-float Mine::getDirection()
-{
-	return _direction.getAngle();
-}
-
-// Return the position of the object.
-Vector2D Mine::getPosition()
-{
-	return _position;
-}
-
-// Return the size of the object
-RectSize Mine::getSize()
-{
-	return _size;
-}
 
 bool Mine::checkIsActive()
 {

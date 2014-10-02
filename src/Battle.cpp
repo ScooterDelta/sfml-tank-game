@@ -255,8 +255,8 @@ bool Battle::isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal)
 	Vector2D tempObstacleTL, tempObstacleBR;
 	while(_obstacleIter != _obstacles.end())
 	{
-		tempObstacleTL = (*_obstacleIter)->topLeft();
-		tempObstacleBR = (*_obstacleIter)->bottomRight();
+		tempObstacleTL = (*_obstacleIter)->getTopLeft();
+		tempObstacleBR = (*_obstacleIter)->getBottomRight();
 		// See if missile is inside the bounds of this object.
 		if(_missilePos.x >= tempObstacleTL.x && _missilePos.x <= tempObstacleBR.x
 				&& _missilePos.y <= tempObstacleBR.y && _missilePos.y >= tempObstacleTL.y)
@@ -286,11 +286,11 @@ bool Battle::isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal)
 		return false;
 }
 
-bool Battle::checkIsHorizontal(Vector2D & point, Obstacle & obstacle)
+bool Battle::checkIsHorizontal(Vector2D & point, AxisAligned & obstacle)
 {
 	// Check if the collision with the obstacle is horizontal or not
-	Vector2D tempObstacleTL{obstacle.topLeft()};
-	Vector2D tempObstacleBR{obstacle.bottomRight()};
+	Vector2D tempObstacleTL{obstacle.getTopLeft()};
+	Vector2D tempObstacleBR{obstacle.getBottomRight()};
 	// Calculate the distance of each point from the wall.
 	float leftDistance = abs(point.x - tempObstacleTL.x);
 	float rightDistance = abs(point.x - tempObstacleBR.x);
@@ -320,8 +320,8 @@ void Battle::fireMissile(Score::PLAYER player)
 	Vector2D turret;
 	if(player == Score::PLAYER1 && (clock() - _missileTimer1) > 500)
 	{
-		turret.x = (_tank1.frontLeft().x + _tank1.frontRight().x)/2;
-		turret.y = (_tank1.frontRight().y + _tank1.frontLeft().y)/2;
+		turret.x = (_tank1.getFrontLeft().x + _tank1.getFrontRight().x)/2;
+		turret.y = (_tank1.getFrontRight().y + _tank1.getFrontLeft().y)/2;
 
 		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank1.getDirection(), player});
 		_missiles.push_back(std::move(newMissile));
@@ -330,8 +330,8 @@ void Battle::fireMissile(Score::PLAYER player)
 	}
 	else if (player == Score::PLAYER2 && (clock() - _missileTimer2) > 500)
 	{
-		turret.x = (_tank2.frontLeft().x + _tank2.frontRight().x)/2;
-		turret.y = (_tank2.frontRight().y + _tank2.frontLeft().y)/2;
+		turret.x = (_tank2.getFrontLeft().x + _tank2.getFrontRight().x)/2;
+		turret.y = (_tank2.getFrontRight().y + _tank2.getFrontLeft().y)/2;
 
 		std::unique_ptr<Missile> newMissile(new Missile{turret, _tank2.getDirection(), player});
 		_missiles.push_back(std::move(newMissile));
@@ -347,8 +347,8 @@ void Battle::plantMine(Score::PLAYER player)
 	Vector2D turret;
 	if(player == Score::PLAYER1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
 	{
-		turret.x = (_tank1.backLeft().x + _tank1.backRight().x)/2;
-		turret.y = (_tank1.backRight().y + _tank1.backLeft().y)/2;
+		turret.x = (_tank1.getBackLeft().x + _tank1.getBackRight().x)/2;
+		turret.y = (_tank1.getBackRight().y + _tank1.getBackLeft().y)/2;
 
 		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER1});
 		_mines.push_back(std::move(newMine));
@@ -359,8 +359,8 @@ void Battle::plantMine(Score::PLAYER player)
 	}
 	else if (player == Score::PLAYER2 && (clock() - _mineTimer2) > 1000 &&  _tank2.getAllowedMines() != 0)
 	{
-		turret.x = (_tank2.backLeft().x + _tank2.backRight().x)/2;
-		turret.y = (_tank2.backRight().y + _tank2.backLeft().y)/2;
+		turret.x = (_tank2.getBackLeft().x + _tank2.getBackRight().x)/2;
+		turret.y = (_tank2.getBackRight().y + _tank2.getBackLeft().y)/2;
 
 		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER2});
 		_mines.push_back(std::move(newMine));
@@ -421,13 +421,13 @@ Score Battle::getScore()
 bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 {
 	// Check for a collision with a wall infront of the tank.
-	Vector2D tempContainerFL = tank.frontLeft();
-	Vector2D tempContainerFR = tank.frontRight();
+	Vector2D tempContainerFL = tank.getFrontLeft();
+	Vector2D tempContainerFR = tank.getFrontRight();
 	Vector2D tempContainerFM;
 
 	// Get the front middle of the tank for more accurate collision detection.
-	tempContainerFM.x = (tank.frontLeft().x + tank.frontRight().x)/2;
-	tempContainerFM.y = (tank.frontLeft().y + tank.frontRight().y)/2;
+	tempContainerFM.x = (tank.getFrontLeft().x + tank.getFrontRight().x)/2;
+	tempContainerFM.y = (tank.getFrontLeft().y + tank.getFrontRight().y)/2;
 
 	Vector2D tempObstacleTL, tempObstacleBR;
 
@@ -450,8 +450,8 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 		{
 			// For each obstacle check if a collision has occurred.
 			// If it does then check if it is a vertical or horizontal collision.
-			tempObstacleTL = (*_obstacleIter)->topLeft();
-			tempObstacleBR = (*_obstacleIter)->bottomRight();
+			tempObstacleTL = (*_obstacleIter)->getTopLeft();
+			tempObstacleBR = (*_obstacleIter)->getBottomRight();
 			if(tempContainerFL.x > tempObstacleTL.x && tempContainerFL.x < tempObstacleBR.x
 					&& tempContainerFL.y < tempObstacleBR.y && tempContainerFL.y > tempObstacleTL.y)
 			{
@@ -480,13 +480,13 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 {
 	// Check for a collision with a wall behind the tank.
-	Vector2D tempContainerBL = tank.backLeft();
-	Vector2D tempContainerBR = tank.backRight();
+	Vector2D tempContainerBL = tank.getBackLeft();
+	Vector2D tempContainerBR = tank.getBackRight();
 	Vector2D tempContainerBM;
 
 	// Get the front middle of the tank for more accurate collision detection.
-	tempContainerBM.x = (tank.backLeft().x + tank.backRight().x)/2;
-	tempContainerBM.y = (tank.backLeft().y + tank.backRight().y)/2;
+	tempContainerBM.x = (tank.getBackLeft().x + tank.getBackRight().x)/2;
+	tempContainerBM.y = (tank.getBackLeft().y + tank.getBackRight().y)/2;
 
 	Vector2D tempObstacleTL, tempObstacleBR;
 
@@ -508,8 +508,8 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 		auto _obstacleIter = _obstacles.begin();
 		while(_obstacleIter != _obstacles.end())
 		{
-			tempObstacleTL = (*_obstacleIter)->topLeft();
-			tempObstacleBR = (*_obstacleIter)->bottomRight();
+			tempObstacleTL = (*_obstacleIter)->getTopLeft();
+			tempObstacleBR = (*_obstacleIter)->getBottomRight();
 			if(tempContainerBL.x > tempObstacleTL.x && tempContainerBL.x < tempObstacleBR.x
 					&& tempContainerBL.y < tempObstacleBR.y && tempContainerBL.y > tempObstacleTL.y)
 			{
@@ -539,10 +539,10 @@ void Battle::missileHit(Tank & tank)
 {
 	// Check if any missiles have hit any tanks. If they have the tank takes damage.
 	std::vector<Vector2D> tankVertex;
-	tankVertex.push_back(tank.frontLeft());	// 0 - Front Left
-	tankVertex.push_back(tank.frontRight()); // 1 - Front Right
-	tankVertex.push_back(tank.backRight()); // 2 - back Right
-	tankVertex.push_back(tank.backLeft()); // 3 - back left
+	tankVertex.push_back(tank.getFrontLeft());	// 0 - Front Left
+	tankVertex.push_back(tank.getFrontRight()); // 1 - Front Right
+	tankVertex.push_back(tank.getBackRight()); // 2 - back Right
+	tankVertex.push_back(tank.getBackLeft()); // 3 - back left
 
 	// Helper variables.
 	Score::PLAYER tempTankPlayer, tempMissilePlayer;
@@ -644,10 +644,10 @@ void Battle::mineHit(Tank & tank)
 	Vector2D _mineCenter;
 	bool isCollision;
 	std::vector<Vector2D> _mineVertex, tankVertex;
-	tankVertex.push_back(tank.frontLeft());	// 0 - Front Left
-	tankVertex.push_back(tank.frontRight()); // 1 - Front Right
-	tankVertex.push_back(tank.backRight()); // 2 - back Right
-	tankVertex.push_back(tank.backLeft()); // 3 - back left
+	tankVertex.push_back(tank.getFrontLeft());	// 0 - Front Left
+	tankVertex.push_back(tank.getFrontRight()); // 1 - Front Right
+	tankVertex.push_back(tank.getBackRight()); // 2 - back Right
+	tankVertex.push_back(tank.getBackLeft()); // 3 - back left
 
 	// Helper variables.
 	Score::PLAYER tempTankPlayer, tempMinePlayer;
@@ -720,15 +720,15 @@ bool Battle::isFrontTankCollision(Tank & aTank, Tank & bTank)
 {
 	// Check if any tanks are touching any other tanks in front .
 	std::vector<Vector2D> aTankVertex, bTankVertex;
-	aTankVertex.push_back(aTank.frontLeft());	// 0 - Front Left
-	aTankVertex.push_back(aTank.frontRight()); // 1 - Front Right
-	aTankVertex.push_back(aTank.backRight()); // 2 - back Right
-	aTankVertex.push_back(aTank.backLeft()); // 3 - back left
+	aTankVertex.push_back(aTank.getFrontLeft());	// 0 - Front Left
+	aTankVertex.push_back(aTank.getFrontRight()); // 1 - Front Right
+	aTankVertex.push_back(aTank.getBackRight()); // 2 - back Right
+	aTankVertex.push_back(aTank.getBackLeft()); // 3 - back left
 
-	bTankVertex.push_back(bTank.frontLeft());	// 0 - Front Left
-	bTankVertex.push_back(bTank.frontRight()); // 1 - Front Right
-	bTankVertex.push_back(bTank.backRight()); // 2 - back Right
-	bTankVertex.push_back(bTank.backLeft()); // 3 - back left
+	bTankVertex.push_back(bTank.getFrontLeft());	// 0 - Front Left
+	bTankVertex.push_back(bTank.getFrontRight()); // 1 - Front Right
+	bTankVertex.push_back(bTank.getBackRight()); // 2 - back Right
+	bTankVertex.push_back(bTank.getBackLeft()); // 3 - back left
 
 	// Check if a collision has happened between two objects.
 	if(isPolyCollision(aTankVertex, bTankVertex))
@@ -753,15 +753,15 @@ bool Battle::isBackTankCollision(Tank & aTank, Tank & bTank)
 {
 	// Check if any tanks are touching any other tanks in the back.
 	std::vector<Vector2D> aTankVertex, bTankVertex;
-	aTankVertex.push_back(aTank.frontLeft());	// 0 - Front Left
-	aTankVertex.push_back(aTank.frontRight()); // 1 - Front Right
-	aTankVertex.push_back(aTank.backRight()); // 2 - back Right
-	aTankVertex.push_back(aTank.backLeft()); // 3 - back left
+	aTankVertex.push_back(aTank.getFrontLeft());	// 0 - Front Left
+	aTankVertex.push_back(aTank.getFrontRight()); // 1 - Front Right
+	aTankVertex.push_back(aTank.getBackRight()); // 2 - back Right
+	aTankVertex.push_back(aTank.getBackLeft()); // 3 - back left
 
-	bTankVertex.push_back(bTank.frontLeft());	// 0 - Front Left
-	bTankVertex.push_back(bTank.frontRight()); // 1 - Front Right
-	bTankVertex.push_back(bTank.backRight()); // 2 - back Right
-	bTankVertex.push_back(bTank.backLeft()); // 3 - back left
+	bTankVertex.push_back(bTank.getFrontLeft());	// 0 - Front Left
+	bTankVertex.push_back(bTank.getFrontRight()); // 1 - Front Right
+	bTankVertex.push_back(bTank.getBackRight()); // 2 - back Right
+	bTankVertex.push_back(bTank.getBackLeft()); // 3 - back left
 
 	// Check if a collision has happened between two objects.
 	if(isPolyCollision(aTankVertex, bTankVertex))

@@ -19,10 +19,6 @@ public:
 	// Constructor
 	Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize = {1600, 900});
 	virtual ~Missile();
-	// Functions inherited from Drawable
-	virtual float getDirection();
-	virtual Vector2D getPosition();
-	virtual RectSize getSize();
 	// Update missile object
 	void update();
 	// Check if missile is Destroyable.
@@ -31,12 +27,8 @@ public:
 	Score::PLAYER getPlayer();
 private:
 	// Private member variables
-	// Private member variables.
 	Vector2D _velocity;
-	Vector2D _position;
-	RectSize _size;
-	Angle _direction;
-	float _pi;
+	const float _pi;
 	float _collisions;
 	float _velocityModifier;
 	Score::PLAYER _player;

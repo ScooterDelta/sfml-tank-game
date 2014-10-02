@@ -94,7 +94,7 @@ private:
 	// Fill group
 	void fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE texture);
 	// Check which side a collision happened
-	bool checkIsHorizontal(Vector2D & point, Obstacle & obstacle);
+	bool checkIsHorizontal(Vector2D & point, AxisAligned & obstacle);
 	bool checkIsHorizontal(Vector2D & point);
 };
 
