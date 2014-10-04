@@ -10,7 +10,7 @@ class Turret : public AxisAligned
 {
 public:
 	~Turret() {}
-	Turret(Vector2D position, Vector2D range);
+	Turret(Vector2D position, Vector2D range, Vector2D screenSize);
 	bool canFollowTarget(DrawableObject & target, bool TargetInvisible = false);
 	void update();
 

@@ -11,6 +11,7 @@ Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
 	_angleModifier{0},
 	_allowedMines{3},
 	_allowedInvis{1},
+	_spawnDirection{90},
 	_spawnLocation{position},
 	_screenDimensions{ScreenSize},
 	_player{player},
@@ -90,6 +91,12 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 	}
 }
 
+void Tank::setSpawn(Vector2D location, float direction)
+{
+	_spawnLocation = location;
+	_spawnDirection = direction;
+}
+
 void Tank::setMovement(Direction direction, float Magnitude)
 {
 	switch (direction)
@@ -134,7 +141,7 @@ Score::PLAYER Tank::getPlayer()
 void Tank::respawn()
 {
 	DrawableObject::_position = _spawnLocation;
-	DrawableObject::_direction = 90;
+	DrawableObject::_direction = _spawnDirection;
 	_allowedMines = 3;
 	_allowedInvis = 1;
 }

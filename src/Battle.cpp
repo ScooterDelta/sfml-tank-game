@@ -294,13 +294,9 @@ void Battle::fireMissile(Score::PLAYER player)
 void Battle::plantMine(Score::PLAYER player)
 {
 	// Plant a mine from the location of the tank related to player.
-	Vector2D turret;
 	if(player == Score::PLAYER1 && (clock() - _mineTimer1) > 1000 &&  _tank1.getAllowedMines() != 0)
 	{
-		turret.x = (_tank1.getBackLeft().x + _tank1.getBackRight().x)/2;
-		turret.y = (_tank1.getBackRight().y + _tank1.getBackLeft().y)/2;
-
-		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER1});
+		std::unique_ptr<Mine> newMine(new Mine{_tank1.getPosition(), Score::PLAYER1});
 		_mines.push_back(std::move(newMine));
 
 		_tank1.plantMine();
@@ -309,10 +305,7 @@ void Battle::plantMine(Score::PLAYER player)
 	}
 	else if (player == Score::PLAYER2 && (clock() - _mineTimer2) > 1000 &&  _tank2.getAllowedMines() != 0)
 	{
-		turret.x = (_tank2.getBackLeft().x + _tank2.getBackRight().x)/2;
-		turret.y = (_tank2.getBackRight().y + _tank2.getBackLeft().y)/2;
-
-		std::unique_ptr<Mine> newMine(new Mine{turret, Score::PLAYER2});
+		std::unique_ptr<Mine> newMine(new Mine{_tank2.getPosition(), Score::PLAYER2});
 		_mines.push_back(std::move(newMine));
 
 		_tank2.plantMine();
@@ -911,11 +904,11 @@ void Battle::placeTurrets()
 	_turrets.clear();
 
 	std::unique_ptr<Turret> newTurret(new Turret{{_screenDimensions.x/2,
-			_screenDimensions.y * 13/18 - 20}, {10, 170}});
+			_screenDimensions.y * 13/18 - 20}, {10, 170}, _screenDimensions});
 	_turrets.push_back(std::move(newTurret));
 
 	newTurret = std::unique_ptr<Turret>(new Turret{{_screenDimensions.x/2,
-			_screenDimensions.y * 5/18 + 20}, {190, 350}});
+			_screenDimensions.y * 5/18 + 20}, {190, 350}, _screenDimensions});
 	_turrets.push_back(std::move(newTurret));
 }
 

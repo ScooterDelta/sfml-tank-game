@@ -18,6 +18,8 @@ public:
 	bool isGameOver();
 	// Get score of current game.
 	Score getScore();
+	// Get the remaining time for the game.
+	clock_t getRemainingTime();
 	// Pause game, call continuously while game is paused
 	void pauseGame();
 	// Pause timer, call when pause game is initially called.
@@ -84,6 +86,11 @@ void Gameplay::drawSplash()
 	_display.DrawSplash();
 	// While splash is being displayed stop game from starting by constantly restarting it.
 	restartGame();
+}
+
+clock_t Gameplay::getRemainingTime()
+{
+	return ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
 }
 
 void Gameplay::display()

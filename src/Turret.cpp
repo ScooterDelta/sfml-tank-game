@@ -1,7 +1,7 @@
 #include "Turret.h"
 
-Turret::Turret(Vector2D position, Vector2D range) :
-	AxisAligned{position, (range.x + range.y) / 2, {40.f, 40.f}},
+Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :
+	AxisAligned{position, (range.x + range.y) / 2, {40.f * screenSize.x/1600.f, 40.f * screenSize.y/900.f}},
 	_range{range},
 	_pi{atan(1) * 4},
 	_isClockwise{true},
