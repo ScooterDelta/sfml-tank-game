@@ -380,81 +380,10 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 	tempContainerFM.x = (tank.getFrontLeft().x + tank.getFrontRight().x)/2;
 	tempContainerFM.y = (tank.getFrontLeft().y + tank.getFrontRight().y)/2;
 
-	Vector2D tempObstacleTL, tempObstacleBR;
-
-	// Check collisions with the bounds of the screen.
-	if (tempContainerFL.x < 0 || tempContainerFL.y < 0 || tempContainerFL.x > _screenDimensions.x || tempContainerFL.y > _screenDimensions.y)
-	{
-		isHorizontal = checkIsHorizontal(tempContainerFL);
+	if(isWallCollision(tempContainerFL, isHorizontal) || isWallCollision(tempContainerFR, isHorizontal)
+			|| isWallCollision(tempContainerFM, isHorizontal))
 		return true;
-	}
-	else if (tempContainerFR.x < 0 || tempContainerFR.y < 0 || tempContainerFR.x > _screenDimensions.x || tempContainerFR.y > _screenDimensions.y)
-	{
-		isHorizontal = checkIsHorizontal(tempContainerFR);
-		return true;
-	}
-	// Check collisions with obstacles of the screen.
-	else
-	{
-		auto _obstacleIter = _obstacles.begin();
-		while(_obstacleIter != _obstacles.end())
-		{
-			// For each obstacle check if a collision has occurred.
-			// If it does then check if it is a vertical or horizontal collision.
-			tempObstacleTL = (*_obstacleIter)->getTopLeft();
-			tempObstacleBR = (*_obstacleIter)->getBottomRight();
-			if(tempContainerFL.x > tempObstacleTL.x && tempContainerFL.x < tempObstacleBR.x
-					&& tempContainerFL.y < tempObstacleBR.y && tempContainerFL.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFL, **_obstacleIter);
-				return true;
-			}
-			else if (tempContainerFR.x > tempObstacleTL.x && tempContainerFR.x < tempObstacleBR.x
-					&& tempContainerFR.y < tempObstacleBR.y && tempContainerFR.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFR, **_obstacleIter);
-				return true;
-			}
-			if(tempContainerFM.x > tempObstacleTL.x && tempContainerFM.x < tempObstacleBR.x
-					&& tempContainerFM.y < tempObstacleBR.y && tempContainerFM.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFM, **_obstacleIter);
-				return true;
-			}
-
-			++_obstacleIter;
-		}
-		// Check for vehicle collision with turrets.
-		auto _turretIter = _turrets.begin();
-		while(_turretIter != _turrets.end())
-		{
-			// For each obstacle check if a collision has occurred.
-			// If it does then check if it is a vertical or horizontal collision.
-			tempObstacleTL = (*_turretIter)->getTopLeft();
-			tempObstacleBR = (*_turretIter)->getBottomRight();
-			if(tempContainerFL.x > tempObstacleTL.x && tempContainerFL.x < tempObstacleBR.x
-					&& tempContainerFL.y < tempObstacleBR.y && tempContainerFL.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFL, **_turretIter);
-				return true;
-			}
-			else if (tempContainerFR.x > tempObstacleTL.x && tempContainerFR.x < tempObstacleBR.x
-					&& tempContainerFR.y < tempObstacleBR.y && tempContainerFR.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFR, **_turretIter);
-				return true;
-			}
-			if(tempContainerFM.x > tempObstacleTL.x && tempContainerFM.x < tempObstacleBR.x
-					&& tempContainerFM.y < tempObstacleBR.y && tempContainerFM.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerFM, **_turretIter);
-				return true;
-			}
-
-			++_turretIter;
-		}
-		return false;
-	}
+	else return false;
 }
 
 bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
@@ -468,20 +397,22 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 	tempContainerBM.x = (tank.getBackLeft().x + tank.getBackRight().x)/2;
 	tempContainerBM.y = (tank.getBackLeft().y + tank.getBackRight().y)/2;
 
-	Vector2D tempObstacleTL, tempObstacleBR;
+	if(isWallCollision(tempContainerBL, isHorizontal) || isWallCollision(tempContainerBR, isHorizontal)
+			|| isWallCollision(tempContainerBM, isHorizontal))
+		return true;
+	else return false;
+}
 
+bool Battle::isWallCollision(Vector2D position, bool & isHorizontal)
+{
+	Vector2D tempObstacleTL, tempObstacleBR;
 	// Check collisions with the bounds of the screen.
-	if (tempContainerBL.x < 0 || tempContainerBL.y < 0 || tempContainerBL.x > _screenDimensions.x || tempContainerBL.y > _screenDimensions.y)
+	if (position.x < 0 || position.y < 0 || position.x > _screenDimensions.x || position.y > _screenDimensions.y)
 	{
-		isHorizontal = checkIsHorizontal(tempContainerBL);
+		isHorizontal = checkIsHorizontal(position);
 		return true;
 	}
-	else if (tempContainerBR.x < 0 || tempContainerBR.y < 0 || tempContainerBR.x > _screenDimensions.x || tempContainerBR.y > _screenDimensions.y)
-	{
-		isHorizontal = checkIsHorizontal(tempContainerBR);
-		return true;
-	}
-	// Check for a collision with the back of the tank against each obstacle.
+	// Check for a collision with the point against each obstacle.
 	// if a collision occurs then check if it is vertical or horizontal collision.
 	else
 	{
@@ -490,26 +421,14 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 		{
 			tempObstacleTL = (*_obstacleIter)->getTopLeft();
 			tempObstacleBR = (*_obstacleIter)->getBottomRight();
-			if(tempContainerBL.x > tempObstacleTL.x && tempContainerBL.x < tempObstacleBR.x
-					&& tempContainerBL.y < tempObstacleBR.y && tempContainerBL.y > tempObstacleTL.y)
+			if(position.x > tempObstacleTL.x && position.x < tempObstacleBR.x
+					&& position.y < tempObstacleBR.y && position.y > tempObstacleTL.y)
 			{
-				isHorizontal = checkIsHorizontal(tempContainerBL, **_obstacleIter);
+				isHorizontal = checkIsHorizontal(position, **_obstacleIter);
 				return true;
 			}
-			else if (tempContainerBR.x > tempObstacleTL.x && tempContainerBR.x < tempObstacleBR.x
-					&& tempContainerBR.y < tempObstacleBR.y && tempContainerBR.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerBR, **_obstacleIter);
-				return true;
-			}
-			else if (tempContainerBM.x > tempObstacleTL.x && tempContainerBM.x < tempObstacleBR.x
-					&& tempContainerBM.y < tempObstacleBR.y && tempContainerBM.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerBM, **_obstacleIter);
-				return true;
-			}
-
-			++_obstacleIter;
+			else
+				++_obstacleIter;
 		}
 		// Check for vehicle collision with turrets.
 		auto _turretIter = _turrets.begin();
@@ -517,26 +436,14 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 		{
 			tempObstacleTL = (*_turretIter)->getTopLeft();
 			tempObstacleBR = (*_turretIter)->getBottomRight();
-			if(tempContainerBL.x > tempObstacleTL.x && tempContainerBL.x < tempObstacleBR.x
-					&& tempContainerBL.y < tempObstacleBR.y && tempContainerBL.y > tempObstacleTL.y)
+			if(position.x > tempObstacleTL.x && position.x < tempObstacleBR.x
+					&& position.y < tempObstacleBR.y && position.y > tempObstacleTL.y)
 			{
-				isHorizontal = checkIsHorizontal(tempContainerBL, **_turretIter);
+				isHorizontal = checkIsHorizontal(position, **_turretIter);
 				return true;
 			}
-			else if (tempContainerBR.x > tempObstacleTL.x && tempContainerBR.x < tempObstacleBR.x
-					&& tempContainerBR.y < tempObstacleBR.y && tempContainerBR.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerBR, **_turretIter);
-				return true;
-			}
-			else if (tempContainerBM.x > tempObstacleTL.x && tempContainerBM.x < tempObstacleBR.x
-					&& tempContainerBM.y < tempObstacleBR.y && tempContainerBM.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(tempContainerBM, **_turretIter);
-				return true;
-			}
-
-			++_turretIter;
+			else
+				++_turretIter;
 		}
 		return false;
 	}
@@ -577,33 +484,8 @@ void Battle::missileHit(Tank & tank)
 
 			// Check who the owner of the missile is in order to count kill toward a particular
 			// character.
-			if(tempTankPlayer == Score::PLAYER1 && (tempMissilePlayer == Score::PLAYER1
-					|| tempMissilePlayer == Score::NONPLAYER))
-				_score.increaseDeaths(Score::PLAYER1);
-			else if(tempTankPlayer == Score::PLAYER2 && (tempMissilePlayer == Score::PLAYER2
-					|| tempMissilePlayer == Score::NONPLAYER))
-				_score.increaseDeaths(Score::PLAYER2);
-			else if(tempTankPlayer == Score::PLAYER2 && tempMissilePlayer == Score::PLAYER1)
-			{
-				_score.increaseKills(Score::PLAYER1);
-				_score.increaseDeaths(Score::PLAYER2);
-			}
-			else if(tempTankPlayer == Score::PLAYER1 && tempMissilePlayer == Score::PLAYER2)
-			{
-				_score.increaseKills(Score::PLAYER2);
-				_score.increaseDeaths(Score::PLAYER1);
-			}
+			playerHit(tempTankPlayer, tempMissilePlayer);
 
-			// Respawn both tanks to prevent an unfair spawn advantage.
-			_tank1.respawn();
-			_tank2.respawn();
-
-			// Replace turrets.
-			placeTurrets();
-
-			// Clear the missiles and mines from the screen to prevent accidental deaths from respawning.
-			_missiles.clear();
-			_mines.clear();
 			break;
 		}
 		else
@@ -638,9 +520,9 @@ void Battle::missileHitTurret()
 
 				// Delete the turret that it hit.
 				_turretIter = _turrets.erase(_turretIter);
-				break;
 			}
-			++_missileIter;
+			else
+				++_missileIter;
 		}
 		++_turretIter;
 	}
@@ -692,36 +574,44 @@ void Battle::mineHit(Tank & tank)
 
 			// Check who the owner of the mine is in order to count kill toward a particular
 			// character.
-			if(tempTankPlayer == Score::PLAYER1 && tempMinePlayer == Score::PLAYER1)
-				_score.increaseDeaths(Score::PLAYER1);
-			else if(tempTankPlayer == Score::PLAYER2 && tempMinePlayer == Score::PLAYER2)
-				_score.increaseDeaths(Score::PLAYER2);
-			else if(tempTankPlayer == Score::PLAYER2 && tempMinePlayer == Score::PLAYER1)
-			{
-				_score.increaseKills(Score::PLAYER1);
-				_score.increaseDeaths(Score::PLAYER2);
-			}
-			else if(tempTankPlayer == Score::PLAYER1 && tempMinePlayer == Score::PLAYER2)
-			{
-				_score.increaseKills(Score::PLAYER2);
-				_score.increaseDeaths(Score::PLAYER1);
-			}
+			playerHit(tempTankPlayer, tempMinePlayer);
 
-			// Reset the locations of the tanks to prevent unfair advantage.
-			_tank1.respawn();
-			_tank2.respawn();
-
-			// Replace turrets.
-			placeTurrets();
-
-			// Clear list of missiles and mines to prevent accidental detonation.
-			_missiles.clear();
-			_mines.clear();
 			break;
 		}
 		else
 			++_mineIterator;
 	}
+}
+
+void Battle::playerHit(Score::PLAYER player, Score::PLAYER projectileOwner)
+{
+	if(player == Score::PLAYER1 && (projectileOwner == Score::PLAYER1
+			|| projectileOwner == Score::NONPLAYER))
+		_score.increaseDeaths(Score::PLAYER1);
+	else if(player == Score::PLAYER2 && (projectileOwner == Score::PLAYER2
+			|| projectileOwner == Score::NONPLAYER))
+		_score.increaseDeaths(Score::PLAYER2);
+	else if(player == Score::PLAYER2 && projectileOwner == Score::PLAYER1)
+	{
+		_score.increaseKills(Score::PLAYER1);
+		_score.increaseDeaths(Score::PLAYER2);
+	}
+	else if(player == Score::PLAYER1 && projectileOwner == Score::PLAYER2)
+	{
+		_score.increaseKills(Score::PLAYER2);
+		_score.increaseDeaths(Score::PLAYER1);
+	}
+
+	// Respawn both tanks to prevent an unfair spawn advantage.
+	_tank1.respawn();
+	_tank2.respawn();
+
+	// Replace turrets.
+	placeTurrets();
+
+	// Clear the missiles and mines from the screen to prevent accidental deaths from respawning.
+	_missiles.clear();
+	_mines.clear();
 }
 
 bool Battle::isFrontTankCollision(Tank & aTank, Tank & bTank)
@@ -879,7 +769,6 @@ bool Battle::isPolyCollision(std::vector<Vector2D> & aVertex, std::vector<Vector
 				return false;
 		}
 	}
-
 	return true;
 }
 

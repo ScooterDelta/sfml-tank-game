@@ -77,6 +77,8 @@ private:
 	bool isBackWallCollision(Tank & tank, bool & isHorizontal);
 	// Test missile collision with wall
 	bool isMissileWallCollision(Vector2D & _missilePos, bool & isHorizontal);
+	// Test a generic point for collisions with the obstacles and turrets
+	bool isWallCollision(Vector2D position, bool & isHorizontal);
 	// Generic collision function, tests for collision between two polygons.
 	bool isPolyCollision(std::vector<Vector2D> & aVertex, std::vector<Vector2D> & bVertex);
 	// Test if missile has hit a tank.
@@ -99,6 +101,8 @@ private:
 	// Check which side a collision happened
 	bool checkIsHorizontal(Vector2D & point, AxisAligned & obstacle);
 	bool checkIsHorizontal(Vector2D & point);
+	// Edit the score for a player hit by an obstacle
+	void playerHit(Score::PLAYER player, Score::PLAYER projectileOwner);
 };
 
 #endif /* BATTLE_H_ */
