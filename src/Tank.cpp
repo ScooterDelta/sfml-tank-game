@@ -144,6 +144,7 @@ void Tank::respawn()
 	DrawableObject::_direction = _spawnDirection;
 	_allowedMines = 3;
 	_allowedInvis = 1;
+	_invisibilityTimer = clock() - 5000;
 }
 
 // Turn the tank invisible

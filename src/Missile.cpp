@@ -29,7 +29,7 @@ void Missile::update()
 bool Missile::isDestroyable(bool isHorizontal)
 {
 	// Returns true if the missile is out of bounces and can be destroyed.
-	if(_collisions == 0 || isDestroyCone())
+	if(_collisions == 0 || isDestroyCone(isHorizontal))
 		return true;
 	else
 	{
@@ -38,19 +38,13 @@ bool Missile::isDestroyable(bool isHorizontal)
 		{
 			_velocity.y *= -1;
 
-			if(DrawableObject::_direction.getAngle() >= 90 && DrawableObject::_direction.getAngle() < 270)
-				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
-			else
-				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
+			DrawableObject::_direction = atan2(_velocity.y, _velocity.x) * 180 / _pi + 180;
 		}
 		else
 		{
 			_velocity.x *= -1;
 
-			if(DrawableObject::_direction.getAngle() > 90 && DrawableObject::_direction.getAngle() <= 270)
-				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi;
-			else
-				DrawableObject::_direction = atan(_velocity.y/_velocity.x) * 180 / _pi + 180;
+			DrawableObject::_direction = atan2(_velocity.y,_velocity.x) * 180 / _pi;
 		}
 
 		return false;
@@ -59,18 +53,26 @@ bool Missile::isDestroyable(bool isHorizontal)
 
 // Check if the missile is hitting the wall within a small angle,
 // if so the missile can be destroyed.
-bool Missile::isDestroyCone(float cone)
+bool Missile::isDestroyCone(bool isHorizontal, float cone)
 {
-	if (DrawableObject::_direction.getAngle() < (90 + cone) && DrawableObject::_direction.getAngle() > (90 - cone))
-		return true;
-	else if ((DrawableObject::_direction.getAngle() < cone && DrawableObject::_direction.getAngle() >= 0) ||
-			(DrawableObject::_direction.getAngle() > (360 - cone) && DrawableObject::_direction.getAngle() < 360))
-		return true;
-	else if (DrawableObject::_direction.getAngle() < (180 + cone) && DrawableObject::_direction.getAngle() > (180 - cone))
-		return true;
-	else if (DrawableObject::_direction.getAngle() < (270 + cone) && DrawableObject::_direction.getAngle() > (270 - cone))
-		return true;
-	else return false;
+	if(isHorizontal)
+	{
+		if (DrawableObject::_direction.getAngle() < (90 + cone) && DrawableObject::_direction.getAngle() > (90 - cone))
+			return true;
+		else if (DrawableObject::_direction.getAngle() < (270 + cone) && DrawableObject::_direction.getAngle() > (270 - cone))
+			return true;
+		else return false;
+	}
+	else
+	{
+		if ((DrawableObject::_direction.getAngle() < cone && DrawableObject::_direction.getAngle() >= 0) ||
+				(DrawableObject::_direction.getAngle() > (360 - cone) && DrawableObject::_direction.getAngle() < 360))
+			return true;
+		else if (DrawableObject::_direction.getAngle() < (180 + cone) && DrawableObject::_direction.getAngle() > (180 - cone))
+			return true;
+		else return false;
+	}
+
 }
 
 Score::PLAYER Missile::getPlayer()

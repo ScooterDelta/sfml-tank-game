@@ -78,7 +78,7 @@ void Battle::moveTank(Tank::Movement movement, Tank & tankA, Tank & tankB)
 		tankA.setMovement(Tank::FORWARD, 0, 0.01);
 	}
 	else if (movement == Tank::BACKWARD && (isBackWallCollision(tankA, isHorizontal)
-			||  isBackTankCollision(tankA, _tank2)))
+			||  isBackTankCollision(tankA, tankB)))
 	{
 		while(isBackWallCollision(tankA, isHorizontal) || isBackTankCollision(tankA, tankB))
 			tankA.setMovement(Tank::FORWARD, 0, 0.01);
@@ -108,11 +108,11 @@ void Battle::moveTank(Tank::Direction direction, Tank & tankA, Tank & tankB)
 	if (isFrontWallCollision(tankA, isHorizontal)
 			||  isFrontTankCollision(tankA, tankB))
 	{
-		while(isFrontWallCollision(_tank1, isHorizontal) || isFrontTankCollision(tankA, tankB))
+		while(isFrontWallCollision(tankA, isHorizontal) || isFrontTankCollision(tankA, tankB))
 			tankA.setMovement(Tank::BACKWARD, 0.1);
 		tankA.setMovement(Tank::FORWARD, 0.1);
 	}
-	else if (isBackWallCollision(_tank1, isHorizontal)
+	else if (isBackWallCollision(tankA, isHorizontal)
 			||  isBackTankCollision(tankA, tankB))
 	{
 		while(isBackWallCollision(tankA, isHorizontal) || isBackTankCollision(tankA, tankB))

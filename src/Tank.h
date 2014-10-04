@@ -18,33 +18,92 @@
 
 using namespace sf;
 
+//! Tank class, inherits from nonAxisAligned.
+/*!
+ * This class stores the location and utility functions for the
+ * tank objects.
+ */
 class Tank : public nonAxisAligned
 {
 public:
 	// Enumerations for control.
-	enum Movement{NONE = 0, FORWARD, BACKWARD, FORWARDOBSTACLE, BACKWARDOBSTACLE};
-	enum Direction{STRAIGHT = 0, CLOCKWISE, ANTICLOCKWISE};
+	//! Enum defining the possible movements for the tank.
+	enum Movement{
+		NONE = 0,	//!< Make no movement.
+		FORWARD,	//!< Make a forward movement.
+		BACKWARD,	//!< Make a backward movement.
+		FORWARDOBSTACLE,	//!< Calling movement into obstacle (used to make tank move along tank).
+		BACKWARDOBSTACLE	//!< Calling movement into obstacle (used to make tank move along tank).
+	};
+	//! Enum defining the possible directions for the tank.
+	enum Direction{
+		STRAIGHT = 0,	//!< Dont rotate the tank.
+		CLOCKWISE,		//!< Rotate the tank clockwise.
+		ANTICLOCKWISE	//!< Rotate the tank anticlockwise.
+	};
 	// Public access functions.
+	//! Tank constructor.
+	/*!
+	 * Initializes the location and player that the tank belongs to, by default the tank spawns
+	 * facing upwards. The location is stored so that the tank will respawn in that position.
+	 * \param position The location that the tank will spawn.
+	 * \param player The PLAYER that the tank belongs to.
+	 * \param ScreenSize The size of the screen, used to scale the hit box based on screen size.
+	 */
 	Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize = {1600.f, 900.f});
-	// Virtual functions from Drawable
 	// Destructor for the tank.
+	//! Destructor.
 	virtual ~Tank() {}
 	// Overloaded functions for moving the tank object
+	//! Move the tank in a direction.
+	/*!
+	 * The tank will accelerate in the movement specified, up to a maximum speed of Magnitude,
+	 * if the collision functions are called then isHorizontal is used to determine what
+	 * motion is allowed.
+	 * \param movement Type of Movement the tank should make.
+	 * \param isHorizontal If the tank is colliding with an object is it horizontal or not.
+	 * \param Magnitude The maximum velocity the tank can accelerate to.
+	 */
 	void setMovement(Movement movement, bool isHorizontal = false, float Magnitude = 6.f);
+	//! Rotate the tank in a particular direciton.
+	/*
+	 * The tank will rotate with an angular acceleration in the Direction specified,
+	 * up to a maximum angular velocity of Magnitude.
+	 * \param direction The Direction that the tank will rotate in.
+	 * \param Magnitude The maximum angular velocity that the tank can rotate at.
+	 */
 	void setMovement(Direction direction, float Magnitude = 4.f);
 	// Function to set the respawn location
+	//! Set the respawn location to a new value.
+	//! \param location The new spawn location to be set.
+	//! \param direction The spawn direction to be set.
 	void setSpawn(Vector2D location, float direction = 90);
 	// Return number of mines remaining.
+	//! Return the number of mines the tank is allowed to place.
 	int getAllowedMines();
 	// Decrement mines since one is planted
+	//! Call the function if the tank plants a mine.
+	/*!
+	 * This function will decrease the number of mines the tank
+	 * is still allowed to place.
+	 */
 	void plantMine();
 	// Respawn the tank in the starting location
+	//! Respawn the tank, reseting it's ammo, and reseting its position and direction.
+	/*!
+	 * The default values for the position and direction can be changed with
+	 * setSpawn(Vector2D location, float direction = 90).
+	 * \sa setSpawn(Vector2D location, float direction = 90)
+	 */
 	void respawn();
 	// Return the player of the tank.
+	//! Return the player that the tank belongs to.
 	Score::PLAYER getPlayer();
 	// Turn the tank invisible
+	//! Turn the tank invisible.
 	void turnInvisible();
 	// Check if the tank is invisible
+	//! Check if the tank is invisible.
 	bool isInvisible();
 private:
 	// Private member variables.

@@ -53,7 +53,9 @@ public:
 	//! Draw a tank on the screen.
 	/*!
 	 * The tank will be drawn with the texture relating to the player.
+	 * \param tank The tank object to be displayed on the screen.
 	 * \param player The player that the tank belongs to.
+	 * \param contrast Sets the contrast of the texture loaded.
 	 */
 	void draw(Tank & tank, Score::PLAYER player, sf::Uint8  contrast = 255);
 	//! Draw all the turrets in the list on the screen.
@@ -73,14 +75,14 @@ public:
 	//! \param contrast Sets the contrast of the texture loaded.
 	void draw(std::list<std::unique_ptr<Obstacle>> * obstacle, sf::Uint8  contrast = 255);
 	//! Draw all the mines in the list on the screen.
-	//! \param obstacle Pointer to the list of mines in the game.
+	//! \param mine Pointer to the list of mines in the game.
 	//! \param contrast Sets the contrast of the texture loaded.
 	void draw(std::list<std::unique_ptr<Mine>> * mine, sf::Uint8 contrast = 255);
 	//! Draw the remaining time on the screen.
 	/*!
 	 * This is on the screen while the game is running in order to
 	 * show the players how much time is left in the round.
-	 * \param float remainingTime The amount of time remaining in a round.
+	 * \param remainingTime The amount of time remaining in a round.
 	 */
 	void draw(float remainingTime);
 	//! Draw the score screen.

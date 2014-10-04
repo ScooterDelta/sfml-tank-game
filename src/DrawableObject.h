@@ -117,8 +117,11 @@ public:
 	virtual ~DrawableObject() {}
 protected:
 	// Private member variables
+	//! Stores the direction the object is facing.
 	Angle _direction;
+	//! Stores the position of the object.
 	Vector2D _position;
+	//! Stores the size of the object.
 	RectSize _size;
 };
 

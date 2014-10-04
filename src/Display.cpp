@@ -298,6 +298,6 @@ void Display::initializeTurret()
 
 	_turretTexture.loadFromFile("assets/turret.png");
 	_drawTurret.setTexture(_turretTexture, true);
-	_drawTurret.setOrigin(9604, 832);
-	_drawTurret.setScale(0.05 * windowSize.x / 1600, 0.05 * windowSize.y / 900);
+	_drawTurret.setOrigin(_drawTurret.getGlobalBounds().width - 168, _drawTurret.getGlobalBounds().height/2);
+	_drawTurret.setScale(0.12 * windowSize.x / 1600, 0.12 * windowSize.y / 900);
 }
