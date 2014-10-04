@@ -28,6 +28,8 @@ public:
 	void display();
 	// Restart the game if needed.
 	void restartGame();
+	// Draw the splash screen for the start of the game.
+	void drawSplash();
 private:
 	// Private member variables.
 	Battle _battle;
@@ -75,6 +77,13 @@ bool Gameplay::isGameOver()
 			restartGame();
 		return true;
 	}
+}
+
+void Gameplay::drawSplash()
+{
+	_display.DrawSplash();
+	// While splash is being displayed stop game from starting by constantly restarting it.
+	restartGame();
 }
 
 void Gameplay::display()
@@ -126,6 +135,9 @@ void Gameplay::checkControls()
 	if(Keyboard::isKeyPressed(Keyboard::LControl))
 		_battle.plantMine(Score::PLAYER1);
 
+	if(Keyboard::isKeyPressed(Keyboard::E))
+		_battle.turnInvisible(Score::PLAYER1);
+
 	// Player 2 Controls.
 	if(Keyboard::isKeyPressed(Keyboard::Up))
 		_battle.moveTank(Score::PLAYER2, Tank::FORWARD);
@@ -146,6 +158,9 @@ void Gameplay::checkControls()
 
 	if(Keyboard::isKeyPressed(Keyboard::Slash))
 		_battle.plantMine(Score::PLAYER2);
+
+	if(Keyboard::isKeyPressed(Keyboard::Period))
+		_battle.turnInvisible(Score::PLAYER2);
 }
 
 void Gameplay::restartGame()

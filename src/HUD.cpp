@@ -100,6 +100,15 @@ void HUD::DrawTimer(float remainingTime)
 	displayString(tempString, {180, 10});
 }
 
+void HUD::DrawSplash()
+{
+	Vector2f windowSize{_window->getSize()};
+	std::string tempString = "Press Q to quit the game.";
+	displayString(tempString, {windowSize.x/16, windowSize.y * 8/9});
+	tempString = "Or press P to start a new game. ";
+	displayString(tempString, {windowSize.x/16, windowSize.y * 8/9 + 30.f});
+}
+
 // Convert float to string.
 std::string HUD::floatToString(float input)
 {

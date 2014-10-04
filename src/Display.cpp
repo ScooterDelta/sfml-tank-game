@@ -31,9 +31,13 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 {
 	if (player == Score::PLAYER1)
 	{
-		_drawPlayer1Tank.setColor(Color{255,255,255,100});
 		_drawPlayer1Tank.setPosition({tank.getPosition().x, tank.getPosition().y});
 		_drawPlayer1Tank.setRotation(tank.getDirection());
+
+		if(tank.isInvisible())
+			_drawPlayer1Tank.setColor(Color{255, 255, 255, 60});
+		else
+			_drawPlayer1Tank.setColor(Color{255, 255, 255, 255});
 
 		_window->draw(_drawPlayer1Tank);
 	}
@@ -42,10 +46,20 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 		_drawPlayer2Tank.setPosition({tank.getPosition().x, tank.getPosition().y});
 		_drawPlayer2Tank.setRotation(tank.getDirection());
 
+		if(tank.isInvisible())
+			_drawPlayer2Tank.setColor(Color{255, 255, 255, 60});
+		else
+			_drawPlayer2Tank.setColor(Color{255, 255, 255, 255});
+
 		_window->draw(_drawPlayer2Tank);
 	}
 	// Draw the UI for the particular tank.
 	_hud.DrawUI(tank, player);
+}
+
+void Display::DrawSplash()
+{
+	_hud.DrawSplash();
 }
 
 // Draw the turrets on the screen.

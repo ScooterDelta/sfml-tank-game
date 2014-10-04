@@ -23,6 +23,8 @@ public:
 	void DrawScore(Score & score, bool isPaused);
 	void DrawTimer(float remainingTime);
 
+	void DrawSplash();
+
 private:
 	// Private member variables.
 	RenderWindow * _window;

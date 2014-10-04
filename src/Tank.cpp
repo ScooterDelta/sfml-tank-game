@@ -10,9 +10,11 @@ Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
 	_velocityModifier{0},
 	_angleModifier{0},
 	_allowedMines{3},
+	_allowedInvis{1},
 	_spawnLocation{position},
 	_screenDimensions{ScreenSize},
-	_player{player}
+	_player{player},
+	_invisibilityTimer{clock() - 5000}
 {}
 
 void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
@@ -134,4 +136,25 @@ void Tank::respawn()
 	DrawableObject::_position = _spawnLocation;
 	DrawableObject::_direction = 90;
 	_allowedMines = 3;
+	_allowedInvis = 1;
+}
+
+// Turn the tank invisible
+void Tank::turnInvisible()
+{
+	if(_allowedInvis > 0)
+	{
+		_invisibilityTimer = clock();
+		_allowedInvis--;
+	}
+
+}
+
+// Check if the tank is invisible
+bool Tank::isInvisible()
+{
+	if(clock() - _invisibilityTimer < 5000)
+		return true;
+	else
+		return false;
 }

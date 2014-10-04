@@ -30,25 +30,40 @@ int main()
 	// Initialise all game components to 0 before it starts.
 	game.restartGame();
 
+	bool startGame = false;
+
 	while (window.isOpen())
 	{
 		eventHandle(window);
 
 		window.clear(Color::Black);
 
-		// Continuously checks if the game is running, if it is then display it.
-		// If the game stops running then end game screen is displayed.
-		if(!game.isGameOver())
+		if(!startGame)
 		{
-			game.display();
-			// Load the pause menu for the game, if pressed again then break.
-			if(Keyboard::isKeyPressed(Keyboard::Escape))
-				if(endGame(game, window))
-					break;
+			game.drawSplash();
+
+			if(Keyboard::isKeyPressed(Keyboard::Q))
+				break;
+			else if(Keyboard::isKeyPressed(Keyboard::P))
+				startGame = true;
 		}
-		// If the game is not running and Q is pressed then exit game loop.
-		else if(Keyboard::isKeyPressed(Keyboard::Q))
-			break;
+		else
+		{
+			// Continuously checks if the game is running, if it is then display it.
+			// If the game stops running then end game screen is displayed.
+			if(!game.isGameOver())
+			{
+				game.display();
+				// Load the pause menu for the game, if pressed again then break.
+				if(Keyboard::isKeyPressed(Keyboard::Escape))
+					if(endGame(game, window))
+						break;
+			}
+			// If the game is not running and Q is pressed then exit game loop.
+			else if(Keyboard::isKeyPressed(Keyboard::Q))
+				break;
+		}
+
 
 		// Display the window:
 		window.display();

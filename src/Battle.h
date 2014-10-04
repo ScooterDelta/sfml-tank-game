@@ -34,6 +34,7 @@ public:
 	// Function for a particular tank (player) to fire a missile or plant a mine.
 	void fireMissile(Score::PLAYER player);
 	void plantMine(Score::PLAYER player);
+	void turnInvisible(Score::PLAYER player);
 	// Restart battle, resets all values to initial conditions.
 	void restartBattle();
 
@@ -62,7 +63,6 @@ private:
 	clock_t _missileTimer2;
 	clock_t _mineTimer1;
 	clock_t _mineTimer2;
-	std::list<clock_t> _turretTimers;
 	Score _score;
 
 	// Private helper functions
@@ -91,6 +91,9 @@ private:
 	void makeMap();
 	// Place turrets on the map.
 	void placeTurrets();
+	// Move tank
+	void moveTank(Tank::Movement movement, Tank & tankA, Tank & tankB);
+	void moveTank(Tank::Direction direction, Tank & tankA, Tank & tankB);
 	// Fill group
 	void fillObstacle(Vector2D location, Vector2D size, Obstacle::TEXTURE texture);
 	// Check which side a collision happened

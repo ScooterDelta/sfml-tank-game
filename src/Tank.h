@@ -40,15 +40,21 @@ public:
 	void respawn();
 	// Return the player of the tank.
 	Score::PLAYER getPlayer();
+	// Turn the tank invisible
+	void turnInvisible();
+	// Check if the tank is invisible
+	bool isInvisible();
 private:
 	// Private member variables.
 	const float _pi;
 	float _velocityModifier;
 	float _angleModifier;
 	int _allowedMines;
+	int _allowedInvis;
 	Vector2D _spawnLocation;
 	Vector2D _screenDimensions;
 	Score::PLAYER _player;
+	clock_t _invisibilityTimer;
 };
 
 #endif /* TANK_H_ */

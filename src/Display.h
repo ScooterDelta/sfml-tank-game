@@ -29,6 +29,7 @@ public:
 	Display(RenderWindow * window);
 	// Draw functions for various objects in the game.
 	void drawBackGround();
+	void DrawSplash();
 	void draw(Tank & tank, Score::PLAYER player);
 	void draw(std::list<std::unique_ptr<Turret>> * turret);
 	void draw(std::list<std::unique_ptr<Missile>> * missile);
