@@ -383,6 +383,9 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 	if(isWallCollision(tempContainerFL, isHorizontal) || isWallCollision(tempContainerFR, isHorizontal)
 			|| isWallCollision(tempContainerFM, isHorizontal))
 		return true;
+	else if(isTurretCollision(tempContainerFL, isHorizontal) || isTurretCollision(tempContainerFR, isHorizontal)
+			|| isTurretCollision(tempContainerFM, isHorizontal))
+		return true;
 	else return false;
 }
 
@@ -399,6 +402,9 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 
 	if(isWallCollision(tempContainerBL, isHorizontal) || isWallCollision(tempContainerBR, isHorizontal)
 			|| isWallCollision(tempContainerBM, isHorizontal))
+		return true;
+	else if(isTurretCollision(tempContainerBL, isHorizontal) || isTurretCollision(tempContainerBR, isHorizontal)
+			|| isTurretCollision(tempContainerBM, isHorizontal))
 		return true;
 	else return false;
 }
@@ -430,23 +436,29 @@ bool Battle::isWallCollision(Vector2D position, bool & isHorizontal)
 			else
 				++_obstacleIter;
 		}
-		// Check for vehicle collision with turrets.
-		auto _turretIter = _turrets.begin();
-		while(_turretIter != _turrets.end())
-		{
-			tempObstacleTL = (*_turretIter)->getTopLeft();
-			tempObstacleBR = (*_turretIter)->getBottomRight();
-			if(position.x > tempObstacleTL.x && position.x < tempObstacleBR.x
-					&& position.y < tempObstacleBR.y && position.y > tempObstacleTL.y)
-			{
-				isHorizontal = checkIsHorizontal(position, **_turretIter);
-				return true;
-			}
-			else
-				++_turretIter;
-		}
 		return false;
 	}
+}
+
+bool Battle::isTurretCollision(Vector2D position, bool & isHorizontal)
+{
+	Vector2D tempObstacleTL, tempObstacleBR;
+	// Check for point collision with turrets.
+	auto _turretIter = _turrets.begin();
+	while(_turretIter != _turrets.end())
+	{
+		tempObstacleTL = (*_turretIter)->getTopLeft();
+		tempObstacleBR = (*_turretIter)->getBottomRight();
+		if(position.x > tempObstacleTL.x && position.x < tempObstacleBR.x
+				&& position.y < tempObstacleBR.y && position.y > tempObstacleTL.y)
+		{
+			isHorizontal = checkIsHorizontal(position, **_turretIter);
+			return true;
+		}
+		else
+			++_turretIter;
+	}
+	return false;
 }
 
 void Battle::missileHit(Tank & tank)
@@ -520,6 +532,7 @@ void Battle::missileHitTurret()
 
 				// Delete the turret that it hit.
 				_turretIter = _turrets.erase(_turretIter);
+				break;
 			}
 			else
 				++_missileIter;

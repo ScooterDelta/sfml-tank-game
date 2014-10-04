@@ -13,16 +13,50 @@
 
 using namespace sf;
 
+//! HUD class to display text.
+/*!
+ * This class is used as a sub class of Display in order to
+ * draw any text onto the sf::RenderWindow.
+ */
 class HUD
 {
 public:
 	// Initializer.
+	//! HUD Constructor.
+	/*!
+	 * Initializes the sf::RenderWindow pointer and the fonts
+	 * required for display.
+	 * \param window The pointer to the sf::RenderWindow.
+	 */
 	HUD(RenderWindow * window);
 	// DrawUI for a tank.
+	//! Draw the UI for the tank.
+	/*!
+	 * This displays remaining ammunitions during the game (Mines)
+	 * belonging to a particular tank.
+	 * \param tank The tank that the remaining ammunition belongs to.
+	 * \param player The player that the tank belongs to.
+	 */
 	void DrawUI(Tank & tank, Score::PLAYER player);
+	//! Draw score screen.
+	/*!
+	 * This displays the score screen on the sf::RenderWindow,
+	 * it requires the score and checks to display the pause
+	 * screen or end game screen.
+	 * \param score The Score of the current game.
+	 * \param isPaused This boolean is to check if the HUD should display the end game screen or pause screen.
+	 */
 	void DrawScore(Score & score, bool isPaused);
+	//! Displays the remaining time on the display.
+	/*!
+	 * Displays remaining time on sf::DisplayWindow.
+	 * \param remainingTime The amount of time left in the game.
+	 */
 	void DrawTimer(float remainingTime);
-
+	//! Displays the splash screen text.
+	/*!
+	 * This function is used to display the text for the splash screen.
+	 */
 	void DrawSplash();
 
 private:

@@ -9,28 +9,81 @@
 #include "Battle.h"
 #include "Display.h"
 
+//! Gameplay class.
+/*!
+ * This class manages player input, game timers and pausing and resuming the game.
+ * It also passes displayable objects between the Battle class and the Display class.
+ */
 class Gameplay
 {
 public:
 	// Constructor.
+	//! Class constructor.
+	/*!
+	 * The class constructor initializes the pointer to the sf::RenderWindow so that objects can be
+	 * displayed in the Display class.
+	 * \param window The pointer to the sf::RenderWindow for display purposes.
+	 */
 	Gameplay(RenderWindow * window);
 	// Check if the game is over, call continuously in game loop.
+	//! Check if the game is over, call in game loop.
+	/*!
+	 * This function must be called in the game loop as it handles updating the game objects
+	 * in every loop, allowing the game to update.
+	 */
 	bool isGameOver();
 	// Get score of current game.
+	//! Get the score of the game, returns a Score object.
+	/*!
+	 * Returns the current score of the game as a Score object.
+	 */
 	Score getScore();
 	// Get the remaining time for the game.
-	clock_t getRemainingTime();
+	//! Get the remaining time in the game.
+	/*!
+	 * Returns the amount of time remaining in the game in seconds.
+	 */
+	float getRemainingTime();
 	// Pause game, call continuously while game is paused
+	//! Display the pause game screen.
+	/*!
+	 * Call this in the pause game loop to display the score screen
+	 * and control information while paused.
+	 */
 	void pauseGame();
 	// Pause timer, call when pause game is initially called.
+	//! Pause the game timer before pause loop.
+	/*!
+	 * Call this function before the game enters a pause game loop,
+	 * since it will pause the game timer.
+	 */
 	void pauseTimer();
 	// Resume timer is used when pause game is finished being called.
+	//! Resume the game timer after the pause loop.
+	/*!
+	 * Call this function after game leaves the pause loop, this
+	 * will resume the game timer.
+	 */
 	void resumeTimer();
 	// Display the obstacles on the screen.
+	//! Display the game on the screen.
+	/*!
+	 * Call this function in the game loop in order to display all objects
+	 * on the sf::RenderWindow.
+	 */
 	void display();
 	// Restart the game if needed.
+	//! Restart all game assets to starting positions.
+	/*!
+	 * This function will reset all objects in the game to their starting conditions,
+	 * and reset the score and timer.
+	 */
 	void restartGame();
 	// Draw the splash screen for the start of the game.
+	//! Draw the splash screen.
+	/*!
+	 * Use this function to display the starting screen before the game starts.
+	 */
 	void drawSplash();
 private:
 	// Private member variables.
@@ -40,9 +93,11 @@ private:
 	clock_t _timer;
 	clock_t _pauseTime;
 	float _pausedTime;
+	float _displayPauseTime;
 
 	// Helper functions
 	void checkControls();
+	void displayGameObjects(int Contrast);
 };
 
 // Constructor.
@@ -52,7 +107,8 @@ Gameplay::Gameplay(RenderWindow * window):
 	_score{0, 0},
 	_timer{clock()},
 	_pauseTime{0},
-	_pausedTime{0}
+	_pausedTime{0},
+	_displayPauseTime{0}
 {}
 
 // Continuously check if game is over.
@@ -73,6 +129,7 @@ bool Gameplay::isGameOver()
 	{
 		// Display score screen.
 		_score = _battle.getScore();
+		displayGameObjects(60);
 		_display.draw(_score);
 		// Press P to restart game.
 		if(Keyboard::isKeyPressed(Keyboard::P))
@@ -88,7 +145,7 @@ void Gameplay::drawSplash()
 	restartGame();
 }
 
-clock_t Gameplay::getRemainingTime()
+float Gameplay::getRemainingTime()
 {
 	return ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
 }
@@ -97,15 +154,21 @@ void Gameplay::display()
 {
 // Draw all objects onto the screen calling the display class.
 	float runTime = ((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime;
-	_display.drawBackGround();
-	_display.draw(_battle.getTurrets());
-	_display.draw(_battle.getObstacles());
-	_display.draw(_battle.getMines());
-	_display.draw(_battle.getMissiles());
-	_display.draw(*_battle.getTank1(), Score::PLAYER1);
-	_display.draw(*_battle.getTank2(), Score::PLAYER2);
-	_display.draw(_battle.getExplosions());
+	displayGameObjects(255);
 	_display.draw((120 - runTime));
+}
+
+void Gameplay::displayGameObjects(int Contrast)
+{
+	sf::Uint8 _contrast = (sf::Uint8)Contrast;
+	_display.drawBackGround(_contrast);
+	_display.draw(_battle.getTurrets(), _contrast);
+	_display.draw(_battle.getObstacles(), _contrast);
+	_display.draw(_battle.getMines(), _contrast);
+	_display.draw(_battle.getMissiles(), _contrast);
+	_display.draw(*_battle.getTank1(), Score::PLAYER1, _contrast);
+	_display.draw(*_battle.getTank2(), Score::PLAYER2, _contrast);
+	_display.draw(_battle.getExplosions(), _contrast);
 }
 
 Score Gameplay::getScore()
@@ -117,6 +180,8 @@ Score Gameplay::getScore()
 void Gameplay::pauseGame()
 {
 	_score = _battle.getScore();
+	displayGameObjects(60);
+	_display.draw(_displayPauseTime);
 	_display.draw(_score, true);
 }
 
@@ -184,6 +249,7 @@ void Gameplay::pauseTimer()
 {
 	// Store time that game is paused.
 	_pauseTime = clock();
+	_displayPauseTime = 120 - (((clock() - _timer)/(double) CLOCKS_PER_SEC) - _pausedTime);
 }
 
 void Gameplay::resumeTimer()

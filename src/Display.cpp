@@ -21,13 +21,14 @@ Display::Display(RenderWindow * window) :
 
 // Draw functions for various objects.
 // Draw the back drop on the game.
-void Display::drawBackGround()
+void Display::drawBackGround(sf::Uint8 contrast)
 {
+	_drawBackGround.setColor(Color{contrast, contrast, contrast});
 	_window->draw(_drawBackGround);
 }
 
 // Draw the tank on the screen in a particular position.
-void Display::draw(Tank & tank, Score::PLAYER player)
+void Display::draw(Tank & tank, Score::PLAYER player, sf::Uint8 contrast)
 {
 	if (player == Score::PLAYER1)
 	{
@@ -35,9 +36,9 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 		_drawPlayer1Tank.setRotation(tank.getDirection());
 
 		if(tank.isInvisible())
-			_drawPlayer1Tank.setColor(Color{255, 255, 255, 60});
+			_drawPlayer1Tank.setColor(Color{contrast, contrast, contrast, 60});
 		else
-			_drawPlayer1Tank.setColor(Color{255, 255, 255, 255});
+			_drawPlayer1Tank.setColor(Color{contrast, contrast, contrast, 255});
 
 		_window->draw(_drawPlayer1Tank);
 	}
@@ -47,9 +48,9 @@ void Display::draw(Tank & tank, Score::PLAYER player)
 		_drawPlayer2Tank.setRotation(tank.getDirection());
 
 		if(tank.isInvisible())
-			_drawPlayer2Tank.setColor(Color{255, 255, 255, 60});
+			_drawPlayer2Tank.setColor(Color{contrast, contrast, contrast, 60});
 		else
-			_drawPlayer2Tank.setColor(Color{255, 255, 255, 255});
+			_drawPlayer2Tank.setColor(Color{contrast, contrast, contrast, 255});
 
 		_window->draw(_drawPlayer2Tank);
 	}
@@ -63,7 +64,7 @@ void Display::DrawSplash()
 }
 
 // Draw the turrets on the screen.
-void Display::draw(std::list<std::unique_ptr<Turret>> * turret)
+void Display::draw(std::list<std::unique_ptr<Turret>> * turret, sf::Uint8 contrast)
 {
 	Vector2f tempVect;
 	auto _turretIterator = turret->begin();
@@ -73,6 +74,7 @@ void Display::draw(std::list<std::unique_ptr<Turret>> * turret)
 		tempVect = {(*_turretIterator)->getPosition().x, (*_turretIterator)->getPosition().y};
 		_drawTurret.setPosition(tempVect);
 		_drawTurret.setRotation((*_turretIterator)->getDirection());
+		_drawTurret.setColor(Color{contrast, contrast, contrast});
 
 		_window->draw(_drawTurret);
 
@@ -82,7 +84,7 @@ void Display::draw(std::list<std::unique_ptr<Turret>> * turret)
 }
 
 // Draw the missiles on the screen in their positions
-void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
+void Display::draw(std::list<std::unique_ptr<Missile>> * missile, sf::Uint8 contrast)
 {
 	Vector2f tempVect;
 	auto _missileIterator = missile->begin();
@@ -92,6 +94,7 @@ void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
 		tempVect = {(*_missileIterator)->getPosition().x, (*_missileIterator)->getPosition().y};
 		_drawMissile.setPosition(tempVect);
 		_drawMissile.setRotation((*_missileIterator)->getDirection());
+		_drawMissile.setColor(Color{contrast, contrast, contrast});
 
 		_window->draw(_drawMissile);
 		++_missileIterator;
@@ -100,7 +103,7 @@ void Display::draw(std::list<std::unique_ptr<Missile>> * missile)
 }
 
 // Draw the explosions on the screen in their positions.
-void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
+void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion, sf::Uint8  contrast)
 {
 	Vector2f tempVect;
 	auto _explosionIterator = explosion->begin();
@@ -109,6 +112,7 @@ void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
 	{
 		tempVect = {(*_explosionIterator)->getPosition().x, (*_explosionIterator)->getPosition().y};
 		_drawExplosion.setPosition(tempVect);
+		_drawExplosion.setColor(Color{contrast, contrast, contrast});
 
 		_window->draw(_drawExplosion);
 		++_explosionIterator;
@@ -116,7 +120,7 @@ void Display::draw(std::list<std::unique_ptr<Explosion>> * explosion)
 }
 
 // Draw the obstacles on the screen.
-void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
+void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle, sf::Uint8  contrast)
 {
 	Vector2f tempVect;
 	auto _obstacleIterator = obstacle->begin();
@@ -149,7 +153,7 @@ void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 			else
 				_drawObstacle.setTexture(&_obstacleTextureBrick1, true);
 		}
-
+		_drawObstacle.setFillColor(Color{contrast, contrast, contrast});
 		// Draw on the screen.
 		_window->draw(_drawObstacle);
 		++_obstacleIterator;
@@ -157,7 +161,7 @@ void Display::draw(std::list<std::unique_ptr<Obstacle>> * obstacle)
 }
 
 // Draw the mines on the screen.
-void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
+void Display::draw(std::list<std::unique_ptr<Mine>> * mine, sf::Uint8 contrast)
 {
 	Vector2f tempVect;
 	_mineTime++;
@@ -172,6 +176,7 @@ void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
 		{
 			tempVect = {(*_mineIterator)->getPosition().x, (*_mineIterator)->getPosition().y};
 			_drawMine1.setPosition(tempVect);
+			_drawMine1.setColor(Color{contrast, contrast, contrast});
 
 			_window->draw(_drawMine1);
 		}
@@ -179,6 +184,7 @@ void Display::draw(std::list<std::unique_ptr<Mine>> * mine)
 		{
 			tempVect = {(*_mineIterator)->getPosition().x, (*_mineIterator)->getPosition().y};
 			_drawMine2.setPosition(tempVect);
+			_drawMine2.setColor(Color{contrast, contrast, contrast});
 
 			_window->draw(_drawMine2);
 		}
