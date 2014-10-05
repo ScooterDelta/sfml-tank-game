@@ -53,13 +53,27 @@ public:
 	Score::PLAYER getPlayer();
 private:
 	// Private member variables
+	//! The velocity that the missile moves in.
+	/*!
+	 * The velocity is stored as a Vector2D,
+	 * defining the x and y parameters of it's movement.
+	 */
 	Vector2D _velocity;
+	//! Value of pi for calculations.
 	const float _pi;
+	//! The number of collisions remaining for the missile.
 	float _collisions;
+	//! The magnitude of the velocity vector.
 	float _velocityModifier;
+	//! The PLAYER that the missile belongs to.
 	Score::PLAYER _player;
 
 	// Private helper functions
+	//! Check if the missile is inside a destroyable cone.
+	/*!
+	 * This checks if the missile was fired directly at a wall,
+	 * if so the missile will not down and will be instantly destroyed.
+	 */
 	bool isDestroyCone(bool isHorizontal, float cone = 3);
 };
 

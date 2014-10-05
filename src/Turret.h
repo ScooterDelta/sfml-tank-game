@@ -55,10 +55,20 @@ public:
 
 private:
 	// Private member variables
+	//! The range that the turret will rotate throught.
 	Vector2D _range;
+	//! Value of pi used for calculations.
 	const float _pi;
+	//! The direction of rotation for the turret.
+	/*!
+	 * The turret will rotate clockwise and anticlockwise between the
+	 * min and max values of the range.
+	 */
 	bool _isClockwise;
+	//! Amount of time between firing missiles.
 	clock_t _fireTime;
+	//! The maximum distance for the turret to see a Tank.
+	float _lockDistance;
 };
 
 

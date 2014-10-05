@@ -5,7 +5,7 @@
 #include "HUD.h"
 
 // Constructor:
-HUD::HUD(RenderWindow * window):
+HUD::HUD(std::shared_ptr<RenderWindow> window):
 	_window{window}
 {
 	_font.loadFromFile("assets/CRYSTAL-Regular.ttf");

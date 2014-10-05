@@ -107,15 +107,23 @@ public:
 	bool isInvisible();
 private:
 	// Private member variables.
+	//! Value of pi for calculations.
 	const float _pi;
+	//! Value of the magnitude of velocity.
 	float _velocityModifier;
+	//! Value of the magnitude of angular rotation.
 	float _angleModifier;
+	//! Number of mines the tank is allowed to place.
 	int _allowedMines;
+	//! Check if the tank is still allowed to turn invisible.
 	int _allowedInvis;
+	//! The direction that the tank will respawn in.
 	float _spawnDirection;
+	//! The location that the tank will respawn in.
 	Vector2D _spawnLocation;
-	Vector2D _screenDimensions;
+	//! The PLAYER that the Tank belongs to.
 	Score::PLAYER _player;
+	//! Time how long the tank can be invisible for.
 	clock_t _invisibilityTimer;
 };
 

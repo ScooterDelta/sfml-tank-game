@@ -61,7 +61,10 @@ public:
 
 private:
 	// Private member variables
+	//! The amount of remaining hits the Obstacle can take.
 	int _remainingHits;
+	//! The type of texture that should be displayed for the Obstacle.
+	//! \sa getTexture()
 	TEXTURE _texture;
 };
 

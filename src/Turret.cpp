@@ -5,7 +5,8 @@ Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :
 	_range{range},
 	_pi{atan(1) * 4},
 	_isClockwise{true},
-	_fireTime{clock() - 500}
+	_fireTime{clock() - 500},
+	_lockDistance{500 * screenSize.x / 1600}
 {}
 
 bool Turret::canFollowTarget(DrawableObject & target, bool TargetInvisible)
@@ -15,7 +16,7 @@ bool Turret::canFollowTarget(DrawableObject & target, bool TargetInvisible)
 	Angle direction = atan2(_position.y - target.getPosition().y,
 			_position.x - target.getPosition().x) / _pi * 180 ;
 
-	if(distance < 500 && (direction.getAngle() - DrawableObject::_direction.getAngle() < 5
+	if(distance < _lockDistance && (direction.getAngle() - DrawableObject::_direction.getAngle() < 5
 			&& direction.getAngle() - DrawableObject::_direction.getAngle() > -5)
 			&& (direction > _range.x && direction < _range.y)
 			&& !TargetInvisible)

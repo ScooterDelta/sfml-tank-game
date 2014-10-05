@@ -13,7 +13,6 @@ Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
 	_allowedInvis{1},
 	_spawnDirection{90},
 	_spawnLocation{position},
-	_screenDimensions{ScreenSize},
 	_player{player},
 	_invisibilityTimer{clock() - 5000}
 {}

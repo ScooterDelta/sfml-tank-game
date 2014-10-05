@@ -3,8 +3,6 @@
 // ELEN3009 Game - main.cpp
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include <memory>
 #include "Gameplay.h"
 
@@ -14,29 +12,30 @@ using namespace sf;
 constexpr int windowWidth{1600}, windowHeight{900};
 
 // Function for handling the pause menu and ending game.
-bool endGame(Gameplay & game, RenderWindow & window);
+bool endGame(Gameplay & game, shared_ptr<RenderWindow> & window);
 // Function for handling windows events.
-void eventHandle(RenderWindow & window);
+void eventHandle(shared_ptr<RenderWindow> & window);
 
 int main()
 {
 	// Add Style::Fullscreen for fullscreen (last command input)
-	RenderWindow window{{windowWidth, windowHeight}, "Epic tank battles of DOOOOM"};
-	window.setFramerateLimit(60);
+	shared_ptr<RenderWindow> window(new RenderWindow{{windowWidth, windowHeight},
+		"Epic tank battles of DOOM", Style::Fullscreen});
+	window->setFramerateLimit(60);
 	//window.setVerticalSyncEnabled(true);
 
-	Gameplay game(&window);
+	Gameplay game(window);
 
 	// Initialise all game components to 0 before it starts.
 	game.restartGame();
 
 	bool startGame = false;
 
-	while (window.isOpen())
+	while (window->isOpen())
 	{
 		eventHandle(window);
 
-		window.clear(Color::Black);
+		window->clear(Color::Black);
 
 		if(!startGame)
 		{
@@ -66,12 +65,12 @@ int main()
 
 
 		// Display the window:
-		window.display();
+		window->display();
 	}
 }
 
 // Function for handling the pause menu and ending game.
-bool endGame(Gameplay & game, RenderWindow & window)
+bool endGame(Gameplay & game, shared_ptr<RenderWindow> & window)
 {
 	while(Keyboard::isKeyPressed(Keyboard::Escape));
 
@@ -79,7 +78,7 @@ bool endGame(Gameplay & game, RenderWindow & window)
 
 	while(1)
 	{
-		window.clear(Color::Black);
+		window->clear(Color::Black);
 
 		game.pauseGame();
 		// Pressing the escape key while in the pause menu will return to the game.
@@ -100,16 +99,16 @@ bool endGame(Gameplay & game, RenderWindow & window)
 			return true;
 
 		// Display the window:
-		window.display();
+		window->display();
 	}
 	return false;
 }
 
 // Function for handling windows events.
-void eventHandle(RenderWindow & window)
+void eventHandle(shared_ptr<RenderWindow> & window)
 {
 	sf::Event event;
-	while (window.pollEvent(event))
+	while (window->pollEvent(event))
 		if (event.type == sf::Event::Closed)
-			window.close();
+			window->close();
 }

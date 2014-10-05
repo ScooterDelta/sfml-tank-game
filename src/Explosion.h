@@ -35,6 +35,7 @@ public:
 	clock_t getExplosionTime();
 private:
 	// Private member variables
+	//! Timer for the life of the explosion.
 	clock_t _explosionTimer;
 };
 

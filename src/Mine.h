@@ -47,7 +47,9 @@ public:
 	Score::PLAYER getPlayer();
 private:
 	// Private member variables
+	//! Variable defining if the mine is active or not.
 	bool _isActive;
+	//! Store the player that the mine belongs to.
 	Score::PLAYER _player;
 };
 

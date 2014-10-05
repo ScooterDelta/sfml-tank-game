@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <sstream>
+#include <memory>
 #include "Battle.h"
 #include "Score.h"
 
@@ -28,7 +29,7 @@ public:
 	 * required for display.
 	 * \param window The pointer to the sf::RenderWindow.
 	 */
-	HUD(RenderWindow * window);
+	HUD(std::shared_ptr<RenderWindow> window);
 	// DrawUI for a tank.
 	//! Draw the UI for the tank.
 	/*!
@@ -61,16 +62,32 @@ public:
 
 private:
 	// Private member variables.
-	RenderWindow * _window;
+	//! Shared pointer to the RenderWindow.
+	std::shared_ptr<RenderWindow> _window;
+	//! Font file for display.
 	Font _font;
+	//! The text that will be displayed.
 	Text _description;
 
 	// Converts a float to a string.
+	//! Convert from a float to a string.
+	//! \param input The float to be converted to string.
 	std::string floatToString(float input);
+	//! Convert from an int to a string.
+	//! \param input The int to be converted to string.
 	std::string intToString(int input);
 	// Display the score screen.
+	//! Display the score on the screen.
+	//! \param score The in game score.
 	void displayScore(Score & score);
 	// Display a string in a particular location.
+	//! Display any string.
+	/*!
+	 * Displays the string in a particular location and with a defined font size.
+	 * \param str The string to be displayed.
+	 * \param location The location of the top left corner of the string.
+	 * \param size The font size.
+	 */
 	void displayString(std::string str, Vector2f location, unsigned int size = 20);
 };
 

@@ -59,9 +59,13 @@ public:
 	Score & operator=(const Score & rhs);
 private:
 	// Private member variables.
+	//! Amount of kills for PLAYER1
 	int _player1Kills;
+	//! Amount of kills for PLAYER2
 	int _player1Deaths;
+	//! Amount of deaths for PLAYER1
 	int _player2Kills;
+	//! Amount of deaths for PLAYER2
 	int _player2Deaths;
 };
 

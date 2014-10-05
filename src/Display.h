@@ -36,7 +36,7 @@ public:
 	 * can draw all objects onto the window itself.
 	 * \param window A pointer to the RenderWindow used for the game.
 	 */
-	Display(RenderWindow * window);
+	Display(std::shared_ptr<RenderWindow> window);
 	// Draw functions for various objects in the game.
 	//! Draw the background for the battle.
 	/*!
@@ -95,50 +95,95 @@ public:
 	void draw(Score & _score, bool isPaused = false);
 
 private:
-	RenderWindow * _window;
+	//! Shared pointer to the RenderWindow.
+	std::shared_ptr<RenderWindow> _window;
 
 	// Textures for objects
+	//! Texture for Tank belonging to PLAYER1
 	Texture _player1TankTexture;
+	//! Texture for Tank belonging to PLAYER2
 	Texture _player2TankTexture;
+	//! Texture for the missile object.
 	Texture _missileTexture;
+	//! First texture for box obstacle.
 	Texture _obstacleTextureBox1;
+	//! Second texture for box obstacle.
 	Texture _obstacleTextureBox2;
+	//! Third texture for box obstacle.
 	Texture _obstacleTextureBox3;
+	//! Fourth texture for box obstacle.
 	Texture _obstacleTextureBox4;
+	//! First texture for brick obstacle.
 	Texture _obstacleTextureBrick1;
+	//! Second texture for brick obstacle.
 	Texture _obstacleTextureBrick2;
+	//! Third texture for brick obstacle.
 	Texture _obstacleTextureBrick3;
+	//! Fourth texture for brick obstacle.
 	Texture _obstacleTextureBrick4;
+	//! Texture for explosion object.
 	Texture _explosionTexture;
+	//! First texture for mine object.
 	Texture _mineTexture1;
+	//! Second texture for mine object.
 	Texture _mineTexture2;
+	//! Texture for game back ground
 	Texture _backGroundTexture;
+	//! Texture for the turret object.
 	Texture _turretTexture;
+	//! Texture for the splash screen.
+	Texture _splashTexture;
 
 	// Sprites for objects on screen.
+	//! Sprite for drawing Tank for PLAYER1
 	Sprite _drawPlayer1Tank;
+	//! Sprite for drawing Tank for PLAYER2
 	Sprite _drawPlayer2Tank;
+	//! Sprite for drawing a Missile.
 	Sprite _drawMissile;
+	//! RectangleShape object for drawing an Obstacle.
 	RectangleShape _drawObstacle;
+	//! Sprite for drawing an Explosion.
 	Sprite _drawExplosion;
+	//! Sprite for drawing the Mine animation
 	Sprite _drawMine1;
+	//! Sprite for drawing the Mine animation
 	Sprite _drawMine2;
+	//! Sprite for drawing the game background
 	Sprite _drawBackGround;
+	//! Sprite for drawing the Turret.
 	Sprite _drawTurret;
+	//! Sprite for drawing the splash screen.
+	Sprite _drawSplash;
 
 	// Private member variables.
+	//! HUD object for drawing text on the screen.
+	/*!
+	 * All text in the game is drawn using the HUD object.
+	 */
 	HUD _hud;
+	//! Timer for the Mine display animation.
 	unsigned int _mineTime;
+	//! Check which state the mine animation is in.
 	bool _mineLight;
 
 	// Private helper functions
+	//! Initialize the Tank objects (Texture and Sprite).
 	void initializeTank();
+	//! Initialize the Missile objects (Texture and Sprite).
 	void initializeMissile();
+	//! Initialize the Explosion objects (Texture and Sprite).
 	void initializeExplosion();
+	//! Initialize the Obstacle objects (Texture and Sprite).
 	void initializeObstacle();
+	//! Initialize the Mine objects (Texture and Sprite).
 	void initializeMine();
+	//! Initialize the Back Ground objects (Texture and Sprite).
 	void initializeBackGround();
+	//! Initialize the Turret objects (Texture and Sprite).
 	void initializeTurret();
+	//! Initialize the Splash screen objects (Texture and Sprite).
+	void initializeSplash();
 };
 
 #endif /* DISPLAY_H_ */

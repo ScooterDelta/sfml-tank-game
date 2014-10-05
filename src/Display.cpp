@@ -5,7 +5,7 @@
 #include "Display.h"
 
 // Constructor:
-Display::Display(RenderWindow * window) :
+Display::Display(std::shared_ptr<RenderWindow> window) :
 	_window{window},
 	_hud{window},
 	_mineLight{false}
@@ -17,6 +17,7 @@ Display::Display(RenderWindow * window) :
 	initializeMine();
 	initializeBackGround();
 	initializeTurret();
+	initializeSplash();
 }
 
 // Draw functions for various objects.
@@ -60,6 +61,7 @@ void Display::draw(Tank & tank, Score::PLAYER player, sf::Uint8 contrast)
 
 void Display::DrawSplash()
 {
+	_window->draw(_drawSplash);
 	_hud.DrawSplash();
 }
 
@@ -288,6 +290,18 @@ void Display::initializeBackGround()
 	_drawBackGround.setOrigin(0,0);
 	_drawBackGround.setScale(windowSize.x/3200, windowSize.y/1800);
 	_drawBackGround.setPosition(0,0);
+}
+
+// Initialize the splash screen sprite and texture.
+void Display::initializeSplash()
+{
+	Vector2f windowSize{_window->getSize()};
+	// Initialize the splash screen texture.
+	_splashTexture.loadFromFile("assets/splash.png");
+	_drawSplash.setTexture(_splashTexture, true);
+	_drawSplash.setOrigin(0,0);
+	_drawSplash.setScale(windowSize.x/3200, windowSize.y/1800);
+	_drawSplash.setPosition(0,0);
 }
 
 // Initialize the explosion sprite and texture.

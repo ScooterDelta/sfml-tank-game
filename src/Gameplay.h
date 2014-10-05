@@ -6,6 +6,7 @@
 #define GAMEPLAY_H_
 
 #include <ctime>
+#include <memory>
 #include "Battle.h"
 #include "Display.h"
 
@@ -24,7 +25,7 @@ public:
 	 * displayed in the Display class.
 	 * \param window The pointer to the sf::RenderWindow for display purposes.
 	 */
-	Gameplay(RenderWindow * window);
+	Gameplay(std::shared_ptr<RenderWindow> window);
 	// Check if the game is over, call continuously in game loop.
 	//! Check if the game is over, call in game loop.
 	/*!
@@ -87,21 +88,35 @@ public:
 	void drawSplash();
 private:
 	// Private member variables.
+	//! The game Battle object, handling game interactions.
 	Battle _battle;
+	//! The display class, for drawing the game objects.
 	Display _display;
+	//! The game Score.
 	Score _score;
+	//! Variable used for timing the game.
 	clock_t _timer;
+	//! Variable used for timing the game.
 	clock_t _pauseTime;
+	//! Variable used for timing the game.
 	float _pausedTime;
+	//! Variable used for timing the game.
 	float _displayPauseTime;
 
 	// Helper functions
+	//! Check the game controls, and input them if pressed.
 	void checkControls();
+	//! Display the game objects.
+	/*!
+	 * All the ingame objects in battle are displayed using this function,
+	 * their Contrast can be defined.
+	 * \param Contrast The contrast of the ingame objects.
+	 */
 	void displayGameObjects(int Contrast);
 };
 
 // Constructor.
-Gameplay::Gameplay(RenderWindow * window):
+Gameplay::Gameplay(std::shared_ptr<RenderWindow> window):
 	_battle{Vector2D{(float)window->getSize().x, (float)window->getSize().y}},
 	_display{window},
 	_score{0, 0},
