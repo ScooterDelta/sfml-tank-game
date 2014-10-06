@@ -140,6 +140,7 @@ void Tank::respawn()
 {
 	DrawableObject::_position = _spawnLocation;
 	DrawableObject::_direction = _spawnDirection;
+	_velocityModifier = 0;
 	_allowedMines = 3;
 	_allowedInvis = 1;
 	_invisibilityTimer = clock() - 5000;

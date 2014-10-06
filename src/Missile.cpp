@@ -44,7 +44,7 @@ bool Missile::isDestroyable(bool isHorizontal)
 		{
 			_velocity.x *= -1;
 
-			DrawableObject::_direction = atan2(_velocity.y,_velocity.x) * 180 / _pi;
+			DrawableObject::_direction = atan2(_velocity.y,_velocity.x) * 180 / _pi + 180;
 		}
 
 		return false;
