@@ -5,8 +5,6 @@
 #ifndef DRAWABLEOBJECT_H_
 #define DRAWABLEOBJECT_H_
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include "Vector2D.h"
 #include "Angle.h"
 #include <cmath>

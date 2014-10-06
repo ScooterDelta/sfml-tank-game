@@ -9,16 +9,8 @@
 #include <SFML/System.hpp>
 #include <list>
 #include <memory>
-#include <iostream>
-#include "DrawableObject.h"
 #include "Battle.h"
-#include "Tank.h"
-#include "Missile.h"
-#include "Explosion.h"
-#include "Mine.h"
-#include "Obstacle.h"
 #include "HUD.h"
-#include "Score.h"
 
 using namespace sf;
 

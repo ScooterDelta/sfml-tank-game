@@ -5,16 +5,9 @@
 #ifndef TANK_H_
 #define TANK_H_
 
-#include <SFML/Graphics.hpp>
-#include <cmath>
-#include <iostream>
-#include <list>
-#include <memory>
 #include <ctime>
 #include "nonAxisAligned.h"
 #include "Score.h"
-#include "Angle.h"
-#include "Vector2D.h"
 
 using namespace sf;
 

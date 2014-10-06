@@ -85,7 +85,6 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 			DrawableObject::_position.x += Magnitude / 2 * cos(DrawableObject::_direction.getAngle() * _pi / 180);
 		break;
 	default:
-		std::cerr << "Tank::setMovement - Oops something went wrong." << std::endl;
 		break;
 	}
 }

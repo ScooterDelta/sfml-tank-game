@@ -4,7 +4,6 @@
 #include "AxisAligned.h"
 #include <cmath>
 #include <ctime>
-#include <iostream>
 
 //! Turret class, inherits from AxisAligned.
 /*!

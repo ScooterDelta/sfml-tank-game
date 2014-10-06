@@ -5,7 +5,6 @@
 #ifndef MINE_H_
 #define MINE_H_
 
-#include <SFML/Graphics.hpp>
 #include "DrawableObject.h"
 #include "Score.h"
 

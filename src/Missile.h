@@ -5,9 +5,7 @@
 #ifndef MISSILE_H_
 #define MISSILE_H_
 
-#include <SFML/Graphics.hpp>
 #include <cmath>
-#include "Angle.h"
 #include "DrawableObject.h"
 #include "Score.h"
 

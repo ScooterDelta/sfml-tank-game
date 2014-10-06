@@ -5,7 +5,6 @@
 #ifndef BATTLE_H_
 #define BATTLE_H_
 
-#include <SFML/Graphics.hpp>
 #include <list>
 #include <ctime>
 #include <memory>
@@ -14,6 +13,7 @@
 #include "Obstacle.h"
 #include "Explosion.h"
 #include "Angle.h"
+#include "Vector2D.h"
 #include "Mine.h"
 #include "Turret.h"
 #include "Score.h"
