@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - nonAxisAligned.h
+
 #ifndef NONAXISALIGNED_H_
 #define NONAXISALIGNED_H_
 

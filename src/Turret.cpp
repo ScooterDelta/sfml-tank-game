@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Turret.cpp
+
 #include "Turret.h"
 
 Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :

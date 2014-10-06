@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - AxisAligned.h
+
 #ifndef AXISALIGNED_H_
 #define AXISALIGNED_H_
 

@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Turret.h
+
 #ifndef TURRET_H_
 #define TURRET_H_
 

@@ -1,3 +1,7 @@
+// Anthony Farquharson - 563648
+// Frederick Nieuwoudt - 386372
+// ELEN3009 Game - Angle.cpp
+
 #include "Angle.h"
 
 // Constructors:
