@@ -9,7 +9,7 @@
 using namespace std;
 using namespace sf;
 
-constexpr int windowWidth{1600}, windowHeight{900};
+constexpr int windowWidth{1920}, windowHeight{1080};
 
 // Function for handling the pause menu and ending game.
 bool endGame(Gameplay & game, shared_ptr<RenderWindow> & window);
@@ -22,7 +22,7 @@ int main()
 	shared_ptr<RenderWindow> window(new RenderWindow{{windowWidth, windowHeight},
 		"Epic tank battles of DOOM", Style::Fullscreen});
 	window->setFramerateLimit(60);
-	//window.setVerticalSyncEnabled(true);
+//	window->setVerticalSyncEnabled(true);
 
 	Gameplay game(window);
 
