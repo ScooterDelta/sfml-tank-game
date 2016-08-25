@@ -8,6 +8,7 @@
 #include <list>
 #include <ctime>
 #include <memory>
+#include <vector>
 #include "Tank.h"
 #include "Missile.h"
 #include "Obstacle.h"

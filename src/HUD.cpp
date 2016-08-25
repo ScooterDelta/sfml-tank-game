@@ -14,7 +14,7 @@ HUD::HUD(std::shared_ptr<RenderWindow> window):
 	_description.setOrigin({0.f, 0.f});
 	_description.setCharacterSize(20);
 	_description.setStyle(Text::Regular);
-	_description.setColor(Color::White);
+	_description.setFillColor(Color::White);
 }
 
 // Draw the UI for a particular player (Display remaining ammo for the tank).
@@ -92,7 +92,6 @@ void HUD::displayScore(Score & score)
 // Draw the time remaining on the game screen.
 void HUD::DrawTimer(float remainingTime)
 {
-	Vector2f windowSize{_window->getSize()};
 	std::string tempString;
 
 	displayString("Time Remaining: ", {10, 10});
