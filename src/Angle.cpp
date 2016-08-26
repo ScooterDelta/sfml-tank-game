@@ -6,13 +6,13 @@
 
 // Constructors:
 Angle::Angle() :
-	_pi{atan(1) * 4}
+	_pi{(float) (atan(1) * 4)}
 {
 	_angle = 0;
 }
 
 Angle::Angle(float angle):
-	_pi{atan(1) * 4}
+	_pi{(float) (atan(1) * 4)}
 {
 	while(angle >= 360)
 		angle -= 360;
@@ -24,7 +24,7 @@ Angle::Angle(float angle):
 }
 
 Angle::Angle(const Angle & angle):
-	_pi{atan(1) * 4}
+	_pi{(float) (atan(1) * 4)}
 {
 	_angle = angle._angle;
 }

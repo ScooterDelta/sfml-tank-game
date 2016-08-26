@@ -6,7 +6,7 @@
 
 Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
 	nonAxisAligned{position, 90, {30 * ScreenSize.x / 1600.f, 30 * ScreenSize.y / 900.f}},
-	_pi{atan(1) * 4},
+	_pi{(const float) (atan(1) * 4)},
 	_velocityModifier{0},
 	_angleModifier{0},
 	_allowedMines{3},
@@ -72,14 +72,14 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 		break;
 	case FORWARDOBSTACLE:
 		_velocityModifier = Magnitude / 2;
-		if(isHorizontal == false)
+		if(!isHorizontal)
 			DrawableObject::_position.y += -Magnitude / 2 * sin(DrawableObject::_direction.getAngle() * _pi / 180);
 		else
 			DrawableObject::_position.x += -Magnitude / 2 * cos(DrawableObject::_direction.getAngle() * _pi / 180);
 		break;
 	case BACKWARDOBSTACLE:
 		_velocityModifier = -Magnitude / 2;
-		if(isHorizontal == false)
+		if(!isHorizontal)
 			DrawableObject::_position.y += Magnitude / 2 * sin(DrawableObject::_direction.getAngle() * _pi / 180);
 		else
 			DrawableObject::_position.x += Magnitude / 2 * cos(DrawableObject::_direction.getAngle() * _pi / 180);
@@ -87,12 +87,6 @@ void Tank::setMovement(Movement movement, bool isHorizontal, float Magnitude)
 	default:
 		break;
 	}
-}
-
-void Tank::setSpawn(Vector2D location, float direction)
-{
-	_spawnLocation = location;
-	_spawnDirection = direction;
 }
 
 void Tank::setMovement(Direction direction, float Magnitude)
@@ -160,8 +154,5 @@ void Tank::turnInvisible()
 // Check if the tank is invisible
 bool Tank::isInvisible()
 {
-	if(clock() - _invisibilityTimer < 5000)
-		return true;
-	else
-		return false;
+	return clock() - _invisibilityTimer < 5000;
 }

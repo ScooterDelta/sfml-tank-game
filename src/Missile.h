@@ -28,7 +28,7 @@ public:
 	 * \param player The player who fired the missile.
 	 * \param windowSize The size of the game window (sf::RenderWindow).
 	 */
-	Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize = {1600, 900});
+	Missile(Vector2D location, float direction, Score::PLAYER player);
 	//! Destructor.
 	virtual ~Missile();
 	// Update missile object

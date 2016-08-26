@@ -7,7 +7,7 @@
 Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :
 	AxisAligned{position, (range.x + range.y) / 2, {40.f * screenSize.x/1600.f, 40.f * screenSize.y/900.f}},
 	_range{range},
-	_pi{atan(1) * 4},
+	_pi{(const float) (atan(1) * 4)},
 	_isClockwise{true},
 	_fireTime{clock() - 500},
 	_lockDistance{500 * screenSize.x / 1600}
@@ -15,9 +15,9 @@ Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :
 
 bool Turret::canFollowTarget(DrawableObject & target, bool TargetInvisible)
 {
-	float distance = sqrt(pow(target.getPosition().x - _position.x,2) +
+	float distance = (float)sqrt(pow(target.getPosition().x - _position.x,2) +
 			pow(target.getPosition().y - _position.y, 2));
-	Angle direction = atan2(_position.y - target.getPosition().y,
+	Angle direction = (float)atan2(_position.y - target.getPosition().y,
 			_position.x - target.getPosition().x) / _pi * 180 ;
 
 	if(distance < _lockDistance && (direction.getAngle() - DrawableObject::_direction.getAngle() < 5
@@ -57,7 +57,7 @@ void Turret::update()
 
 Vector2D Turret::getFirePosition()
 {
-	float cornerDist = sqrt(pow(_size.Height/2,2) + pow(_size.Width/2,2));
+	float cornerDist = (float) sqrt(pow(_size.Height / 2, 2) + pow(_size.Width / 2, 2));
 	Vector2D firePosition{_position};
 
 	firePosition.x -= cornerDist * (cos(DrawableObject::_direction.getAngleRadians()));

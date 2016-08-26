@@ -4,6 +4,8 @@
 
 #include "Battle.h"
 
+using std::abs;
+
 Battle::Battle(Vector2D screenDimensions) :
 	_screenDimensions{screenDimensions},
 	_tank1{{200, screenDimensions.y/2}, Score::PLAYER1, screenDimensions},
@@ -109,15 +111,15 @@ void Battle::moveTank(Tank::Direction direction, Tank & tankA, Tank & tankB)
 			||  isFrontTankCollision(tankA, tankB))
 	{
 		while(isFrontWallCollision(tankA, isHorizontal) || isFrontTankCollision(tankA, tankB))
-			tankA.setMovement(Tank::BACKWARD, 0.1);
-		tankA.setMovement(Tank::FORWARD, 0.1);
+			tankA.setMovement(Tank::BACKWARD, isHorizontal, 0.1f);
+		tankA.setMovement(Tank::FORWARD, isHorizontal, 0.1f);
 	}
 	else if (isBackWallCollision(tankA, isHorizontal)
 			||  isBackTankCollision(tankA, tankB))
 	{
 		while(isBackWallCollision(tankA, isHorizontal) || isBackTankCollision(tankA, tankB))
-			tankA.setMovement(Tank::FORWARD, 0.1);
-		tankA.setMovement(Tank::BACKWARD, 0.1);
+			tankA.setMovement(Tank::FORWARD, isHorizontal, 0.1f);
+		tankA.setMovement(Tank::BACKWARD, isHorizontal, 0.1f);
 	}
 	tankA.setMovement(direction);
 }
@@ -259,9 +261,7 @@ bool Battle::checkIsHorizontal(Vector2D & point, AxisAligned & obstacle)
 bool Battle::checkIsHorizontal(Vector2D & point)
 {
 	// Check that the collision with the screen boundaries is horizontal or not.
-	if(point.x < 0 || point.x > (_screenDimensions.x - 10))
-		return false;
-	else return true;
+	return !(point.x < 0 || point.x > (_screenDimensions.x - 10) );
 }
 
 void Battle::fireMissile(Score::PLAYER player)
@@ -383,10 +383,9 @@ bool Battle::isFrontWallCollision(Tank & tank, bool & isHorizontal)
 	if(isWallCollision(tempContainerFL, isHorizontal) || isWallCollision(tempContainerFR, isHorizontal)
 			|| isWallCollision(tempContainerFM, isHorizontal))
 		return true;
-	else if(isTurretCollision(tempContainerFL, isHorizontal) || isTurretCollision(tempContainerFR, isHorizontal)
-			|| isTurretCollision(tempContainerFM, isHorizontal))
-		return true;
-	else return false;
+	else
+        return isTurretCollision(tempContainerFL, isHorizontal) || isTurretCollision(tempContainerFR, isHorizontal)
+               || isTurretCollision(tempContainerFM, isHorizontal);
 }
 
 bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
@@ -403,10 +402,9 @@ bool Battle::isBackWallCollision(Tank & tank, bool & isHorizontal)
 	if(isWallCollision(tempContainerBL, isHorizontal) || isWallCollision(tempContainerBR, isHorizontal)
 			|| isWallCollision(tempContainerBM, isHorizontal))
 		return true;
-	else if(isTurretCollision(tempContainerBL, isHorizontal) || isTurretCollision(tempContainerBR, isHorizontal)
-			|| isTurretCollision(tempContainerBM, isHorizontal))
-		return true;
-	else return false;
+	else
+        return isTurretCollision(tempContainerBL, isHorizontal) || isTurretCollision(tempContainerBR, isHorizontal)
+               || isTurretCollision(tempContainerBM, isHorizontal);
 }
 
 bool Battle::isWallCollision(Vector2D position, bool & isHorizontal)
@@ -652,9 +650,7 @@ bool Battle::isFrontTankCollision(Tank & aTank, Tank & bTank)
 		double frontDistance = sqrt(pow(aTankFront.x - bTankCenter.x, 2) + pow(aTankFront.y - bTankCenter.y, 2));
 		double backDistance = sqrt(pow(aTankBack.x - bTankCenter.x, 2) + pow(aTankBack.y - bTankCenter.y, 2));
 
-		if(frontDistance < backDistance)
-			return true;
-		else return false;
+		return frontDistance < backDistance;
 	}
 	else
 		return false;
@@ -685,9 +681,7 @@ bool Battle::isBackTankCollision(Tank & aTank, Tank & bTank)
 		double frontDistance = sqrt(pow(aTankFront.x - bTankCenter.x, 2) + pow(aTankFront.y - bTankCenter.y, 2));
 		double backDistance = sqrt(pow(aTankBack.x - bTankCenter.x, 2) + pow(aTankBack.y - bTankCenter.y, 2));
 
-		if(frontDistance > backDistance)
-			return true;
-		else return false;
+        return frontDistance > backDistance;
 	}
 	else
 		return false;

@@ -66,12 +66,8 @@ public:
 	 * \param Magnitude The maximum angular velocity that the tank can rotate at.
 	 */
 	void setMovement(Direction direction, float Magnitude = 4.f);
-	// Function to set the respawn location
-	//! Set the respawn location to a new value.
-	//! \param location The new spawn location to be set.
-	//! \param direction The spawn direction to be set.
-	void setSpawn(Vector2D location, float direction = 90);
-	// Return number of mines remaining.
+
+    // Return number of mines remaining.
 	//! Return the number of mines the tank is allowed to place.
 	int getAllowedMines();
 	// Decrement mines since one is planted

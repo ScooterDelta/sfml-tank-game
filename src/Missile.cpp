@@ -4,15 +4,15 @@
 
 #include "Missile.h"
 
-Missile::Missile(Vector2D location, float direction, Score::PLAYER player, Vector2D windowSize) :
+Missile::Missile(Vector2D location, float direction, Score::PLAYER player) :
 	DrawableObject{location, direction, {0,0}},
-	_pi{atan(1) * 4},
+	_pi{(const float) (atan(1) * 4)},
 	_collisions{1},
 	_velocityModifier{-12.f},
 	_player{player}
 {
-	_velocity.x = _velocityModifier * cos(_direction.getAngle() * _pi / 180);
-	_velocity.y = _velocityModifier * sin(_direction.getAngle() * _pi / 180);
+	_velocity.x = (float) (_velocityModifier * cos(_direction.getAngle() * _pi / 180));
+	_velocity.y = (float) (_velocityModifier * sin(_direction.getAngle() * _pi / 180));
 }
 
 Missile::~Missile()
@@ -59,18 +59,14 @@ bool Missile::isDestroyCone(bool isHorizontal, float cone)
 	{
 		if (DrawableObject::_direction.getAngle() < (90 + cone) && DrawableObject::_direction.getAngle() > (90 - cone))
 			return true;
-		else if (DrawableObject::_direction.getAngle() < (270 + cone) && DrawableObject::_direction.getAngle() > (270 - cone))
-			return true;
-		else return false;
+		else return DrawableObject::_direction.getAngle() < (270 + cone) && DrawableObject::_direction.getAngle() > (270 - cone);
 	}
 	else
 	{
 		if ((DrawableObject::_direction.getAngle() < cone && DrawableObject::_direction.getAngle() >= 0) ||
 				(DrawableObject::_direction.getAngle() > (360 - cone) && DrawableObject::_direction.getAngle() < 360))
 			return true;
-		else if (DrawableObject::_direction.getAngle() < (180 + cone) && DrawableObject::_direction.getAngle() > (180 - cone))
-			return true;
-		else return false;
+		else return DrawableObject::_direction.getAngle() < (180 + cone) && DrawableObject::_direction.getAngle() > (180 - cone);
 	}
 
 }
