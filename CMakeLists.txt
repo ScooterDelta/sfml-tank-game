@@ -68,7 +68,7 @@ endif ()
 # Only done on Windows if the SFML Root Dir variable is defined
 if (WIN32)
     if (IS_DIRECTORY ${SFML_ROOT_DIR})
-        file(GLOB SFML_LINK_DLLS "${SFML_ROOT_DIR}/bin/*.dll")
+        file(GLOB SFML_LINK_DLLS "${SFML_ROOT_DIR}/lib/*.dll")
         foreach(SFML_LINK_DLL ${SFML_LINK_DLLS})
             add_custom_command(TARGET ${EXECUTABLE_NAME}
                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
