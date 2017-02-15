@@ -1,6 +1,6 @@
 // Anthony Farquharson - 563648
 // Frederick Nieuwoudt - 386372
-// ELEN3009 Game - nonAxisAligned.h
+// ELEN3009 Game - NonAxisAligned.h
 
 #ifndef NONAXISALIGNED_H_
 #define NONAXISALIGNED_H_
@@ -12,7 +12,7 @@
  * Objects derived from this class are not aligned to the axis,
  * their hit box is dependant on the direction that they face.
  */
-class nonAxisAligned : public DrawableObject
+class NonAxisAligned : public DrawableObject
 {
 public:
 	//! nonAxisAligned constructor.
@@ -23,7 +23,7 @@ public:
 	 * \param direction The direction the object is facing.
 	 * \param size The size of the object.
 	 */
-	nonAxisAligned(Vector2D position, float direction, RectSize size) :
+	NonAxisAligned(Vector2D position, float direction, RectSize size) :
 		DrawableObject(position, direction, size),
 		_pi{(const float) (atan(1) * 4)}
 	{
