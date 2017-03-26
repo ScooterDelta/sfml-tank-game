@@ -432,7 +432,7 @@ void Battle::missileHit(Tank &tank) {
 
 void Battle::missileHitTurret() {
     // Check the particular missile against all obstacles.
-    auto _missileIter;
+    auto _missileIter = _missiles.begin();
     auto _turretIter = _turrets.begin();
     Vector2D tempTurretTL, tempTurretBR, _missilePos;
 

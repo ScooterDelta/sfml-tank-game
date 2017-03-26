@@ -25,7 +25,7 @@ set(SOURCE_FILES
         src/Mine.h
         src/Missile.cpp
         src/Missile.h
-        src/nonAxisAligned.h
+        src/NonAxisAligned.h
         src/Obstacle.cpp
         src/Obstacle.h
         src/Score.cpp

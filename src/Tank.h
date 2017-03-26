@@ -6,7 +6,7 @@
 #define TANK_H_
 
 #include <ctime>
-#include "nonAxisAligned.h"
+#include "NonAxisAligned.h"
 #include "Score.h"
 
 using namespace sf;
@@ -16,7 +16,7 @@ using namespace sf;
  * This class stores the location and utility functions for the
  * tank objects.
  */
-class Tank : public nonAxisAligned {
+class Tank : public NonAxisAligned {
 public:
     // Enumerations for control.
     //! Enum defining the possible movements for the tank.

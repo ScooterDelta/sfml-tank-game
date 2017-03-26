@@ -5,7 +5,7 @@
 #include "Tank.h"
 
 Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
-        nonAxisAligned{position, 90, {30 * ScreenSize.x / 1600.f, 30 * ScreenSize.y / 900.f}},
+        NonAxisAligned{position, 90, {30 * ScreenSize.x / 1600.f, 30 * ScreenSize.y / 900.f}},
         _pi{(const float) (atan(1) * 4)},
         _velocityModifier{0},
         _angleModifier{0},
