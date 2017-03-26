@@ -4,25 +4,21 @@
 
 #include "Mine.h"
 
-Mine::Mine(Vector2D position, Score::PLAYER player):
-	DrawableObject{position, 0, {0,0}},
-	_isActive{false},
-	_player{player}
-{}
+Mine::Mine(Vector2D position, Score::PLAYER player) :
+        DrawableObject{position, 0, {0, 0}},
+        _isActive{false},
+        _player{player} {}
 
-bool Mine::checkIsActive()
-{
-	return _isActive;
+bool Mine::checkIsActive() {
+    return _isActive;
 }
 
-void Mine::activateMine()
-{
-	if(_isActive == false)
-		_isActive = true;
+void Mine::activateMine() {
+    if (!_isActive)
+        _isActive = true;
 }
 
 
-Score::PLAYER Mine::getPlayer()
-{
-	return _player;
+Score::PLAYER Mine::getPlayer() {
+    return _player;
 }
