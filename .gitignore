@@ -26,3 +26,4 @@ fabric.properties
 
 ## CLion Files:
 /build/
+/cmake-build-debug/
