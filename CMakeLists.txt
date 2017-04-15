@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 3.5)
 project(ELEN3009_Game_SFML)
 # On Windows recommended to set the SFML_ROOT environment variable to specify SFML sources.
 
@@ -37,14 +37,6 @@ set(SOURCE_FILES
         src/Vector2D.cpp
         src/Vector2D.h)
 
-# Set version information in a config.h file
-set(myproject_VERSION_MAJOR 1)
-set(myproject_VERSION_MINOR 0)
-configure_file(
-        "${PROJECT_SOURCE_DIR}/config.h.in"
-        "${PROJECT_BINARY_DIR}/config.h"
-)
-
 include_directories("${PROJECT_BINARY_DIR}")
 
 # Enable debug symbols by default
@@ -61,34 +53,27 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 find_package(SFML 2 REQUIRED system window graphics network audio)
+
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
-endif ()
 
-# Install target
-install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
+    # Copy SFML Dll's to target output directory.
+    # Only done on Windows if the SFML Root Dir variable is defined
+    if (WIN32)
+        foreach (SFML_PATH ${FIND_SFML_PATHS})
+            if (IS_DIRECTORY ${SFML_PATH})
+                file(GLOB SFML_LINK_DLLS "${SFML_PATH}/lib/*.dll")
+                foreach (SFML_LINK_DLL ${SFML_LINK_DLLS})
+                    add_custom_command(TARGET ${EXECUTABLE_NAME}
+                            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                            ${SFML_LINK_DLL} $<TARGET_FILE_DIR:${EXECUTABLE_NAME}>)
+                endforeach ()
+            endif ()
+        endforeach ()
+    endif ()
+endif ()
 
 add_custom_command(TARGET ${EXECUTABLE_NAME}
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/assets)
-
-# CPack packaging
-include(InstallRequiredSystemLibraries)
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
-set(CPACK_PACKAGE_VERSION_MAJOR "${myproject_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${myproject_VERSION_MINOR}")
-include(CPack)
-
-# Copy SFML Dll's to target output directory.
-# Only done on Windows if the SFML Root Dir variable is defined
-if (WIN32)
-    if (IS_DIRECTORY ${SFML_ROOT})
-        file(GLOB SFML_LINK_DLLS "${SFML_ROOT}/lib/*.dll")
-        foreach (SFML_LINK_DLL ${SFML_LINK_DLLS})
-            add_custom_command(TARGET ${EXECUTABLE_NAME}
-                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    ${SFML_LINK_DLL} $<TARGET_FILE_DIR:${EXECUTABLE_NAME}>)
-        endforeach ()
-    endif ()
-endif ()
