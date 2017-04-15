@@ -9,7 +9,7 @@
 using namespace std;
 using namespace sf;
 
-constexpr int windowWidth{1600}, windowHeight{900};
+constexpr unsigned int windowWidth{1600}, windowHeight{900};
 
 // Function for handling the pause menu and ending game.
 bool endGame(Gameplay &game, shared_ptr<RenderWindow> &window);

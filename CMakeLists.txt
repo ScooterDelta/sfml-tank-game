@@ -4,7 +4,7 @@ project(ELEN3009_Game_SFML)
 
 # Define sources and executable
 set(EXECUTABLE_NAME "ELEN3009_Game_SFML")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
         src/Angle.cpp
@@ -56,27 +56,6 @@ endif ()
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
-# Check SFML Root Variable
-if (EXISTS ${SFML_ROOT})
-    # Check if SFML_ROOT is Set
-    set(SFML_ROOT_DIR "${SFML_ROOT}")
-else ()
-    # Otherwise assign to environment
-    set(SFML_ROOT_DIR "$ENV{SFML_ROOT}")
-endif ()
-# Copy SFML Dll's to target output directory.
-# Only done on Windows if the SFML Root Dir variable is defined
-if (WIN32)
-    if (IS_DIRECTORY ${SFML_ROOT_DIR})
-        file(GLOB SFML_LINK_DLLS "${SFML_ROOT_DIR}/lib/*.dll")
-        foreach (SFML_LINK_DLL ${SFML_LINK_DLLS})
-            add_custom_command(TARGET ${EXECUTABLE_NAME}
-                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    ${SFML_LINK_DLL} $<TARGET_FILE_DIR:${EXECUTABLE_NAME}>)
-        endforeach ()
-    endif ()
-endif ()
-
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 #Find any version 2.X of SFML
@@ -100,3 +79,16 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${myproject_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${myproject_VERSION_MINOR}")
 include(CPack)
+
+# Copy SFML Dll's to target output directory.
+# Only done on Windows if the SFML Root Dir variable is defined
+if (WIN32)
+    if (IS_DIRECTORY ${SFML_ROOT})
+        file(GLOB SFML_LINK_DLLS "${SFML_ROOT}/lib/*.dll")
+        foreach (SFML_LINK_DLL ${SFML_LINK_DLLS})
+            add_custom_command(TARGET ${EXECUTABLE_NAME}
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    ${SFML_LINK_DLL} $<TARGET_FILE_DIR:${EXECUTABLE_NAME}>)
+        endforeach ()
+    endif ()
+endif ()
