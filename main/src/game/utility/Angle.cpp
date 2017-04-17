@@ -4,6 +4,9 @@
 
 #include "Angle.h"
 
+namespace game {
+namespace utility {
+
 // Constructors:
 Angle::Angle() :
         _pi{(float) (atan(1) * 4)} {
@@ -170,4 +173,7 @@ float Angle::getAngle() {
 
 float Angle::getAngleRadians() {
     return _angle / 180 * _pi;
+}
+
+}
 }

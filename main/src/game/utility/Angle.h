@@ -7,6 +7,9 @@
 
 #include <cmath>
 
+namespace game {
+namespace utility {
+
 //! Class to hold an Angle.
 /*!
  * The angle can only exist between 0 and 360 degrees.
@@ -143,5 +146,7 @@ private:
     float _pi;
 };
 
+}
+}
 
 #endif /* ANGLE_H_ */

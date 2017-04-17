@@ -10,6 +10,11 @@
 #include "Battle.h"
 #include "../display/Display.h"
 
+using game::display::Display;
+
+namespace game {
+namespace gameplay {
+
 //! Gameplay class.
 /*!
  * This class manages player input, game timers and pausing and resuming the game.
@@ -257,5 +262,10 @@ void Gameplay::resumeTimer() {
     // When game is resumed add to paused time total.
     _pausedTime += (clock() - _pauseTime) / (double) CLOCKS_PER_SEC;
 }
+
+}
+}
+
+
 
 #endif /* GAMEPLAY_H_ */

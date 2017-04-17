@@ -9,6 +9,9 @@
 #include <cmath>
 #include <ctime>
 
+namespace game {
+namespace domain {
+
 //! Turret class, inherits from AxisAligned.
 /*!
  * The Turret class stores the values required for turret, and
@@ -73,5 +76,7 @@ private:
     float _lockDistance;
 };
 
+}
+}
 
 #endif /* TURRET_H_ */

@@ -8,6 +8,9 @@
 #include "DrawableObject.h"
 #include <ctime>
 
+namespace game {
+namespace domain {
+
 //! Explosion class, inherits from DrawableObject.
 /*!
  * The explosion function is used for drawing explosions on the screen,
@@ -38,5 +41,8 @@ private:
     //! Timer for the life of the explosion.
     clock_t _explosionTimer;
 };
+
+}
+}
 
 #endif /* EXPLOSION_H_ */

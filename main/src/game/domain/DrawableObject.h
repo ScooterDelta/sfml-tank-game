@@ -11,6 +11,12 @@
 
 using namespace sf;
 
+using game::utility::Vector2D;
+using game::utility::Angle;
+
+namespace game {
+namespace domain {
+
 // Structure for the size of the object.
 //! Struct to define the size of an object.
 /*!
@@ -122,5 +128,8 @@ protected:
     //! Stores the size of the object.
     RectSize _size;
 };
+
+}
+}
 
 #endif /* DRAWABLEOBJECT_H_ */

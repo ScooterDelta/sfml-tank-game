@@ -4,6 +4,9 @@
 
 #include "Battle.h"
 
+namespace game {
+namespace gameplay {
+
 using std::abs;
 
 Battle::Battle(Vector2D screenDimensions) :
@@ -726,4 +729,7 @@ void Battle::restartBattle() {
     _score = Score{0, 0};
     makeMap();
     placeTurrets();
+}
+
+}
 }

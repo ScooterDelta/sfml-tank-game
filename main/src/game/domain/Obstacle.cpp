@@ -4,6 +4,9 @@
 
 #include "Obstacle.h"
 
+namespace game {
+namespace domain {
+
 // Constructor
 Obstacle::Obstacle(Vector2D position, Vector2D windowSize, TEXTURE texture) :
         AxisAligned{position, 0, {windowSize.x / 32, windowSize.y / 18}},
@@ -38,4 +41,7 @@ Vector2D Obstacle::getBottomRight() {
     tempPos.y += tempRect.Height;
 
     return tempPos;
+}
+
+}
 }

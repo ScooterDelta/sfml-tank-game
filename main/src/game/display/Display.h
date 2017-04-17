@@ -12,6 +12,9 @@
 #include "../gameplay/Battle.h"
 #include "HUD.h"
 
+namespace game {
+namespace display {
+
 using namespace sf;
 
 //! Class to display objects on the screen.
@@ -188,5 +191,8 @@ private:
     //! Initialize the Splash screen objects (Texture and Sprite).
     void initializeSplash();
 };
+
+}
+}
 
 #endif /* DISPLAY_H_ */

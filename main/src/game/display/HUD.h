@@ -12,6 +12,9 @@
 #include "../gameplay/Battle.h"
 #include "../gameplay/Score.h"
 
+namespace game {
+namespace display {
+
 using namespace sf;
 
 //! HUD class to display text.
@@ -92,5 +95,7 @@ private:
     void displayString(std::string str, Vector2f location, unsigned int size = 20);
 };
 
+}
+}
 
 #endif /* HUD_H_ */

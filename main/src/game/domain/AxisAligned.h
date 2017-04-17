@@ -7,6 +7,9 @@
 
 #include "DrawableObject.h"
 
+namespace game {
+namespace domain {
+
 //! Base class for Axis Aligned objects.
 /*!
  * This class allows for easy implementation of objects that are axis aligned
@@ -57,5 +60,7 @@ public:
     }
 };
 
+}
+}
 
 #endif /* AXISALIGNED_H_ */

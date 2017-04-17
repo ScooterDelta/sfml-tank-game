@@ -21,6 +21,17 @@
 
 using namespace sf;
 
+using game::domain::Tank;
+using game::domain::Turret;
+using game::domain::Explosion;
+using game::domain::Mine;
+using game::domain::Missile;
+using game::domain::Obstacle;
+using game::domain::AxisAligned;
+
+namespace game {
+namespace gameplay {
+
 //! Battle class that handles internal game conditions.
 /*!
  * The battle class stores the objects within the game and handles their
@@ -305,5 +316,8 @@ private:
      */
     void playerHit(Score::PLAYER player, Score::PLAYER projectileOwner);
 };
+
+}
+}
 
 #endif /* BATTLE_H_ */

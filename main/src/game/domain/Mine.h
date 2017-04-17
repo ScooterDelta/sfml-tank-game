@@ -8,6 +8,11 @@
 #include "DrawableObject.h"
 #include "../gameplay/Score.h"
 
+using game::gameplay::Score;
+
+namespace game {
+namespace domain {
+
 //! Mine class, inherits from DrawableObject.
 /*!
  * This class is used for displaying the mines on the screen,
@@ -53,5 +58,7 @@ private:
     Score::PLAYER _player;
 };
 
+}
+}
 
 #endif /* MINE_H_ */

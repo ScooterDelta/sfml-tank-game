@@ -4,6 +4,9 @@
 
 #include "Tank.h"
 
+namespace game {
+namespace domain {
+
 Tank::Tank(Vector2D position, Score::PLAYER player, Vector2D ScreenSize) :
         NonAxisAligned{position, 90, {30 * ScreenSize.x / 1600.f, 30 * ScreenSize.y / 900.f}},
         _pi{(const float) (atan(1) * 4)},
@@ -142,4 +145,7 @@ void Tank::turnInvisible() {
 // Check if the tank is invisible
 bool Tank::isInvisible() {
     return clock() - _invisibilityTimer < 5000;
+}
+
+}
 }

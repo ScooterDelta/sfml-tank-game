@@ -4,6 +4,9 @@
 
 #include "Score.h"
 
+namespace game {
+namespace gameplay {
+
 // Constructor.
 Score::Score(const Score &score) :
         _player1Kills{score._player1Kills},
@@ -59,4 +62,7 @@ int Score::getDeaths(PLAYER player) {
     else if (player == PLAYER2)
         return _player2Deaths;
     else return 0;
+}
+
+}
 }

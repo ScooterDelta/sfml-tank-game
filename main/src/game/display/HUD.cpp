@@ -4,6 +4,9 @@
 
 #include "HUD.h"
 
+namespace game {
+namespace display {
+
 // Constructor:
 HUD::HUD(std::shared_ptr<RenderWindow> window) :
         _window{window} {
@@ -117,4 +120,7 @@ void HUD::displayString(std::string str, Vector2f location, unsigned int size) {
     _description.setString(str);
 
     _window->draw(_description);
+}
+
+}
 }

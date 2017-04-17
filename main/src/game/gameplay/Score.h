@@ -5,6 +5,9 @@
 #ifndef PLAYERS_H_
 #define PLAYERS_H_
 
+namespace game {
+namespace gameplay {
+
 //! Class to store the Score of the game.
 /*!
  * The class will hold the number of deaths and kills
@@ -72,5 +75,8 @@ private:
     //! Amount of deaths for PLAYER2
     int _player2Deaths;
 };
+
+}
+}
 
 #endif /* PLAYERS_H_ */

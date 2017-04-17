@@ -7,6 +7,9 @@
 
 #include <SFML/System.hpp>
 
+namespace game {
+namespace utility {
+
 //! Utility class for storing 2 Dimensional Vectors.
 /*!
  * A utility class to store a 2 dimension vector, used to
@@ -76,5 +79,7 @@ public:
     float y;
 };
 
+}
+}
 
 #endif /* VECTOR2D_H_ */

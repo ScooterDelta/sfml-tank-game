@@ -11,6 +11,11 @@
 
 using namespace sf;
 
+using game::gameplay::Score;
+
+namespace game {
+namespace domain {
+
 //! Tank class, inherits from nonAxisAligned.
 /*!
  * This class stores the location and utility functions for the
@@ -119,5 +124,8 @@ private:
     //! Time how long the tank can be invisible for.
     clock_t _invisibilityTimer;
 };
+
+}
+}
 
 #endif /* TANK_H_ */

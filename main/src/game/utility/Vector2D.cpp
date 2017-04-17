@@ -4,6 +4,9 @@
 
 #include "Vector2D.h"
 
+namespace game {
+namespace utility {
+
 // Constructors:
 Vector2D::Vector2D() :
         x{0},
@@ -39,4 +42,7 @@ Vector2D &Vector2D::operator=(const sf::Vector2f &rhs) {
     this->y = rhs.y;
 
     return *this;
+}
+
+}
 }

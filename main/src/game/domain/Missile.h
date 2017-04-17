@@ -11,6 +11,11 @@
 
 using namespace sf;
 
+using game::gameplay::Score;
+
+namespace game {
+namespace domain {
+
 //! Missile utility class, inherits from DrawableObject.
 /*!
  * This class is used to store the location and direction of the missile,
@@ -76,5 +81,8 @@ private:
      */
     bool isDestroyCone(bool isHorizontal, float cone = 3);
 };
+
+}
+}
 
 #endif /* MISSILE_H_ */

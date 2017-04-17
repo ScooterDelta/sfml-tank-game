@@ -7,6 +7,9 @@
 
 #include "AxisAligned.h"
 
+namespace game {
+namespace domain {
+
 //! Obstacle class, inherits from AxisAligned.
 /*!
  * Class for handling the obstacles on the screen, different from normal Axis Aligned
@@ -70,5 +73,7 @@ private:
     TEXTURE _texture;
 };
 
+}
+}
 
 #endif /* OBSTACLE_H_ */

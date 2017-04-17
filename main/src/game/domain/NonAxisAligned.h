@@ -7,6 +7,9 @@
 
 #include "DrawableObject.h"
 
+namespace game {
+namespace domain {
+
 //! Non Axis Aligned base class.
 /*!
  * Objects derived from this class are not aligned to the axis,
@@ -104,5 +107,7 @@ protected:
     float _cornerAngle;
 };
 
+}
+}
 
 #endif /* NONAXISALIGNED_H_ */

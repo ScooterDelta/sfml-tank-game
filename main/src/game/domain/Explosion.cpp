@@ -4,6 +4,9 @@
 
 #include "Explosion.h"
 
+namespace game {
+namespace domain {
+
 // Constructor:
 Explosion::Explosion(Vector2D position) :
         DrawableObject{position, 0, {0, 0}},
@@ -17,3 +20,5 @@ clock_t Explosion::getExplosionTime() {
     return _explosionTimer;
 }
 
+}
+}

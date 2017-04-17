@@ -4,6 +4,9 @@
 
 #include "Missile.h"
 
+namespace game {
+namespace domain {
+
 Missile::Missile(Vector2D location, float direction, Score::PLAYER player) :
         DrawableObject{location, direction, {0, 0}},
         _pi{(const float) (atan(1) * 4)},
@@ -65,4 +68,7 @@ bool Missile::isDestroyCone(bool isHorizontal, float cone) {
 
 Score::PLAYER Missile::getPlayer() {
     return _player;
+}
+
+}
 }

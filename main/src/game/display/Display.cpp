@@ -4,6 +4,9 @@
 
 #include "Display.h"
 
+namespace game {
+namespace display {
+
 // Constructor:
 Display::Display(std::shared_ptr<RenderWindow> window) :
         _window{window},
@@ -284,4 +287,7 @@ void Display::initializeTurret() {
     _drawTurret.setTexture(_turretTexture, true);
     _drawTurret.setOrigin(_drawTurret.getGlobalBounds().width - 168, _drawTurret.getGlobalBounds().height / 2);
     _drawTurret.setScale((float) (0.12 * windowSize.x / 1600), (float) (0.12 * windowSize.y / 900));
+}
+
+}
 }

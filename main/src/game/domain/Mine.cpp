@@ -4,6 +4,9 @@
 
 #include "Mine.h"
 
+namespace game {
+namespace domain {
+
 Mine::Mine(Vector2D position, Score::PLAYER player) :
         DrawableObject{position, 0, {0, 0}},
         _isActive{false},
@@ -21,4 +24,7 @@ void Mine::activateMine() {
 
 Score::PLAYER Mine::getPlayer() {
     return _player;
+}
+
+}
 }
