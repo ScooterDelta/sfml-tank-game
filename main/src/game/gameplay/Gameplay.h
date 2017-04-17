@@ -8,7 +8,7 @@
 #include <ctime>
 #include <memory>
 #include "Battle.h"
-#include "Display.h"
+#include "../display/Display.h"
 
 //! Gameplay class.
 /*!

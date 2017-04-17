@@ -9,14 +9,14 @@
 #include <ctime>
 #include <memory>
 #include <vector>
-#include "Tank.h"
-#include "Missile.h"
-#include "Obstacle.h"
-#include "Explosion.h"
-#include "Angle.h"
-#include "Vector2D.h"
-#include "Mine.h"
-#include "Turret.h"
+#include "../domain/Tank.h"
+#include "../domain/Missile.h"
+#include "../domain/Obstacle.h"
+#include "../domain/Explosion.h"
+#include "../utility/Angle.h"
+#include "../utility/Vector2D.h"
+#include "../domain/Mine.h"
+#include "../domain/Turret.h"
 #include "Score.h"
 
 using namespace sf;

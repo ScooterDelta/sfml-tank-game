@@ -9,7 +9,7 @@
 #include <SFML/System.hpp>
 #include <list>
 #include <memory>
-#include "Battle.h"
+#include "../gameplay/Battle.h"
 #include "HUD.h"
 
 using namespace sf;

@@ -2,37 +2,38 @@ set(SOURCE_FILES
         src/main.cpp)
 
 set(LIBRARY_SOURCE_FILES
-        src/Angle.cpp
-        src/Angle.h
-        src/AxisAligned.h
-        src/Battle.cpp
-        src/Battle.h
-        src/Display.cpp
-        src/Display.h
-        src/DrawableObject.h
-        src/Explosion.cpp
-        src/Explosion.h
-        src/Gameplay.h
-        src/HUD.cpp
-        src/HUD.h
-        src/Mine.cpp
-        src/Mine.h
-        src/Missile.cpp
-        src/Missile.h
-        src/NonAxisAligned.h
-        src/Obstacle.cpp
-        src/Obstacle.h
-        src/Score.cpp
-        src/Score.h
-        src/Tank.cpp
-        src/Tank.h
-        src/Turret.cpp
-        src/Turret.h
-        src/Vector2D.cpp
-        src/Vector2D.h)
+        src/game/utility/Angle.cpp
+        src/game/utility/Angle.h
+        src/game/domain/AxisAligned.h
+        src/game/gameplay/Battle.cpp
+        src/game/gameplay/Battle.h
+        src/game/display/Display.cpp
+        src/game/display/Display.h
+        src/game/domain/DrawableObject.h
+        src/game/domain/Explosion.cpp
+        src/game/domain/Explosion.h
+        src/game/gameplay/Gameplay.h
+        src/game/display/HUD.cpp
+        src/game/display/HUD.h
+        src/game/domain/Mine.cpp
+        src/game/domain/Mine.h
+        src/game/domain/Missile.cpp
+        src/game/domain/Missile.h
+        src/game/domain/NonAxisAligned.h
+        src/game/domain/Obstacle.cpp
+        src/game/domain/Obstacle.h
+        src/game/gameplay/Score.cpp
+        src/game/gameplay/Score.h
+        src/game/domain/Tank.cpp
+        src/game/domain/Tank.h
+        src/game/domain/Turret.cpp
+        src/game/domain/Turret.h
+        src/game/utility/Vector2D.cpp
+        src/game/utility/Vector2D.h)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 find_package(SFML 2 REQUIRED system window graphics network audio)

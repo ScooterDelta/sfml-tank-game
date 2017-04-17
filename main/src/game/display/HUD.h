@@ -9,8 +9,8 @@
 #include <string>
 #include <sstream>
 #include <memory>
-#include "Battle.h"
-#include "Score.h"
+#include "../gameplay/Battle.h"
+#include "../gameplay/Score.h"
 
 using namespace sf;
 

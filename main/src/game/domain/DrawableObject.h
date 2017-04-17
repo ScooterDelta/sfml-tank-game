@@ -5,8 +5,8 @@
 #ifndef DRAWABLEOBJECT_H_
 #define DRAWABLEOBJECT_H_
 
-#include "Vector2D.h"
-#include "Angle.h"
+#include "../utility/Vector2D.h"
+#include "../utility/Angle.h"
 #include <cmath>
 
 using namespace sf;

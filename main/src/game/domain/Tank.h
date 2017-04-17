@@ -7,7 +7,7 @@
 
 #include <ctime>
 #include "NonAxisAligned.h"
-#include "Score.h"
+#include "../gameplay/Score.h"
 
 using namespace sf;
 

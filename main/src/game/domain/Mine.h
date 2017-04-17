@@ -6,7 +6,7 @@
 #define MINE_H_
 
 #include "DrawableObject.h"
-#include "Score.h"
+#include "../gameplay/Score.h"
 
 //! Mine class, inherits from DrawableObject.
 /*!

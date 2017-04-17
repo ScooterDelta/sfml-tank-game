@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include "DrawableObject.h"
-#include "Score.h"
+#include "../gameplay/Score.h"
 
 using namespace sf;
 

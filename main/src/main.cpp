@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <memory>
-#include "Gameplay.h"
+#include "game/gameplay/Gameplay.h"
 
 using namespace std;
 using namespace sf;
