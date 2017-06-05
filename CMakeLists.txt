@@ -3,7 +3,7 @@ project(ELEN3009_Game_SFML)
 # On Windows recommended to set the SFML_ROOT environment variable to specify SFML sources.
 
 # Define sources and executable
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(EXECUTABLE_NAME "ELEN3009_Game_SFML")
 set(LIBRARY_NAME "ELEN_Game_SFML_LIB")
