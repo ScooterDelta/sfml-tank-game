@@ -30,12 +30,17 @@ fabric.properties
 
 ## CMake Files:
 CMakeCache.txt
-CMakeFiles/
-CTestTestfile.cmake
+CMakeFiles
+CMakeScripts
+Testing
 Makefile
 cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+## Build Binaries
 main/ELEN3009_Game_SFML
 test/ELEN3009_Game_SFML_TESTS
 main/assets/
 main/*ELEN_Game_SFML_LIB*
-compile_commands.json
