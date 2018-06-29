@@ -4,6 +4,7 @@ project(ELEN3009_Game_SFML)
 
 # Define sources and executable
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(EXECUTABLE_NAME "ELEN3009_Game_SFML")
 set(LIBRARY_NAME "ELEN_Game_SFML_LIB")

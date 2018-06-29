@@ -27,3 +27,15 @@ fabric.properties
 ## CLion Files:
 /build/
 /cmake-build-debug/
+
+## CMake Files:
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+Makefile
+cmake_install.cmake
+main/ELEN3009_Game_SFML
+test/ELEN3009_Game_SFML_TESTS
+main/assets/
+main/*ELEN_Game_SFML_LIB*
+compile_commands.json
