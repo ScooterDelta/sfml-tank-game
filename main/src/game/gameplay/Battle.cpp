@@ -14,6 +14,9 @@ namespace game::gameplay {
   using std::chrono::duration_cast;
   using std::chrono::milliseconds;
 
+  const long missileTimeout = 500;
+  const long mineTimeout = 2000;
+
   Battle::Battle(Vector2D screenDimensions) :
     _screenDimensions{screenDimensions},
     _tank1{{200, screenDimensions.y / 2}, Score::PLAYER1, screenDimensions},
@@ -238,7 +241,7 @@ namespace game::gameplay {
     Vector2D turret;
     high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 
-    if (player == Score::PLAYER1 && duration_cast<milliseconds>( currentTime - _missileTimer1 ).count() > 500) {
+    if (player == Score::PLAYER1 && duration_cast<milliseconds>( currentTime - _missileTimer1 ).count() > missileTimeout) {
       turret.x = (_tank1.getFrontLeft().x + _tank1.getFrontRight().x) / 2;
       turret.y = (_tank1.getFrontRight().y + _tank1.getFrontLeft().y) / 2;
 
@@ -246,7 +249,7 @@ namespace game::gameplay {
       _missiles.push_back(std::move(newMissile));
 
       _missileTimer1 = currentTime;
-    } else if (player == Score::PLAYER2 && duration_cast<milliseconds>( currentTime - _missileTimer2 ).count() > 500) {
+    } else if (player == Score::PLAYER2 && duration_cast<milliseconds>( currentTime - _missileTimer2 ).count() > missileTimeout) {
       turret.x = (_tank2.getFrontLeft().x + _tank2.getFrontRight().x) / 2;
       turret.y = (_tank2.getFrontRight().y + _tank2.getFrontLeft().y) / 2;
 
@@ -261,14 +264,14 @@ namespace game::gameplay {
   void Battle::plantMine(Score::PLAYER player) {
     // Plant a mine from the location of the tank related to player.
     high_resolution_clock::time_point currentTime = high_resolution_clock::now();
-    if (player == Score::PLAYER1 && duration_cast<milliseconds>( currentTime - _mineTimer1 ).count() > 1000 && _tank1.getAllowedMines() != 0) {
+    if (player == Score::PLAYER1 && duration_cast<milliseconds>( currentTime - _mineTimer1 ).count() > mineTimeout && _tank1.getAllowedMines() != 0) {
       std::unique_ptr < Mine > newMine(new Mine{_tank1.getPosition(), Score::PLAYER1});
       _mines.push_back(std::move(newMine));
 
       _tank1.plantMine();
 
       _mineTimer1 = currentTime;
-    } else if (player == Score::PLAYER2 && duration_cast<milliseconds>( currentTime - _mineTimer2 ).count() > 1000 && _tank2.getAllowedMines() != 0) {
+    } else if (player == Score::PLAYER2 && duration_cast<milliseconds>( currentTime - _mineTimer2 ).count() > mineTimeout && _tank2.getAllowedMines() != 0) {
       std::unique_ptr < Mine > newMine(new Mine{_tank2.getPosition(), Score::PLAYER2});
       _mines.push_back(std::move(newMine));
 

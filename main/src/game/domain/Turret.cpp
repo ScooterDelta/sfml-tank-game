@@ -10,6 +10,8 @@ namespace game::domain {
   using std::chrono::duration_cast;
   using std::chrono::milliseconds;
 
+  const long missileTimeout = 500;
+
   Turret::Turret(Vector2D position, Vector2D range, Vector2D screenSize) :
     AxisAligned{position, (range.x + range.y) / 2, {40.f * screenSize.x / 1600.f, 40.f * screenSize.y / 900.f}},
     _range{range},
@@ -35,7 +37,7 @@ namespace game::domain {
   }
 
   bool Turret::canFireMissile() {
-    if (duration_cast<milliseconds>( high_resolution_clock::now() - _fireTime ).count()  > 500) {
+    if (duration_cast<milliseconds>( high_resolution_clock::now() - _fireTime ).count() > missileTimeout) {
       _fireTime = high_resolution_clock::now();
       return true;
     } else return false;
