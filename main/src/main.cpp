@@ -24,7 +24,7 @@ int main() {
     shared_ptr<RenderWindow> window(new RenderWindow{{windowWidth, windowHeight},
                                                      "Epic tank battles of DOOM", Style::Default});
     window->setFramerateLimit(60);
-//	window->setVerticalSyncEnabled(true);
+    // window->setVerticalSyncEnabled(true);
 
     Gameplay game(window);
 

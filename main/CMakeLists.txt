@@ -12,6 +12,7 @@ set(LIBRARY_SOURCE_FILES
         src/game/domain/DrawableObject.h
         src/game/domain/Explosion.cpp
         src/game/domain/Explosion.h
+        src/game/gameplay/Gameplay.cpp
         src/game/gameplay/Gameplay.h
         src/game/display/HUD.cpp
         src/game/display/HUD.h
