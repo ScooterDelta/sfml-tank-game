@@ -103,11 +103,11 @@ namespace game::gameplay {
     //! Variable used for timing the game.
     high_resolution_clock::time_point _timer;
     //! Variable used for timing the game.
-    long _pauseTime;
+    high_resolution_clock::time_point _pauseTime;
     //! Variable used for timing the game.
-    float _pausedTime;
+    double _pausedTime;
     //! Variable used for timing the game.
-    float _displayPauseTime;
+    double _displayPauseTime;
 
     // Helper functions
     //! Check the game controls, and input them if pressed.

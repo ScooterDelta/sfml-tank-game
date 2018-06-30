@@ -18,7 +18,7 @@ namespace game::gameplay {
     _display{window},
     _score{0, 0},
     _timer{high_resolution_clock::now()},
-    _pauseTime{0},
+    _pauseTime{high_resolution_clock::now()},
     _pausedTime{0},
     _displayPauseTime{0} {}
 
@@ -140,18 +140,18 @@ namespace game::gameplay {
     _score = Score{0, 0};
     _timer = high_resolution_clock::now();
     _battle.restartBattle();
-    _pauseTime = 0;
+    _pauseTime = high_resolution_clock::now();
     _pausedTime = 0;
   }
 
   void Gameplay::pauseTimer() {
     // Store time that game is paused.
-    _pauseTime = clock();
+    _pauseTime = high_resolution_clock::now();
     _displayPauseTime = (float) (gameDuration - ((duration_cast<milliseconds>( high_resolution_clock::now() - _timer ) / 1000.0).count() - _pausedTime));
   }
 
   void Gameplay::resumeTimer() {
     // When game is resumed add to paused time total.
-    _pausedTime += (clock() - _pauseTime) / (double) CLOCKS_PER_SEC;
+    _pausedTime += duration_cast<milliseconds>( high_resolution_clock::now() - _pauseTime ).count() / 1000.0;
   }
 }
