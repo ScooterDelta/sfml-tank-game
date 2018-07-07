@@ -18,6 +18,6 @@ jobs:
           name: Build
           command: make
 
-      - run:
-          name: Test
-          command: make test
+#       - run:
+#           name: Test
+#           command: make test
