@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: scooterdelta/gcc-sfml:latest
+
+    working_directory: ~/usr/src/myapp
+
+    steps:
+      - checkout
+
+      - run:
+          name: Configure Build
+          command: cmake .
+
+      - run:
+          name: Build
+          command: make
+
+      - run:
+          name: Test
+          command: make test
